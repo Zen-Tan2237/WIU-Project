@@ -37,7 +37,7 @@ void Game::initGame()
     }
 }
 
-int Game::getCurrentTick()
+int Game::getCurrentTick() const
 {
     return this->currentTick;
 }
@@ -51,7 +51,10 @@ void Game::doTurn()
 {
     // starting
     if (currentTick == 0) {
-        //player.setInitials();
+        player.setInitials(companies);
+        for (int j = 0; j < maxCompany; j++) {
+            companies[j]->setVirus(player.getPlayerVirus());
+        }
     }
 
     // update company infectivity

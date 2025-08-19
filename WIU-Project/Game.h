@@ -69,7 +69,7 @@ private:
 
 	void initGame();
 
-	int getCurrentTick(); // Getter
+	int getCurrentTick() const; // Getter
 	void setCurrentTick(int tickInterval); // Setter
 
     void doTurn();
