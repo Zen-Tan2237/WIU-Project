@@ -18,6 +18,3 @@ Worm::~Worm() {
 
 }
 
-void Worm::applyEffect(Company& company) {
-
-}

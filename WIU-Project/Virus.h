@@ -15,7 +15,6 @@ protected:
 
 public:
 	void evolve(Upgrades toUpgrade);
-	virtual void applyEffect(Company& company) = 0;
 
 	//GETTERS SETTERS
 	int getSpeed() const;
