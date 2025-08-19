@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
-#include "Company.h"
 #include <string>
 #include "Upgrades.h"
+
 class Virus
 {
 protected:
@@ -13,7 +13,7 @@ protected:
 	int resilience;
 
 public:
-	void evolve(Upgrades toUpgrade);
+	void evolve(Upgrades& toUpgrade);
 
 	Virus();
 	~Virus();
