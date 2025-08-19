@@ -15,7 +15,7 @@ protected:
 public:
 	virtual void evolve(std::string upgrade);
 	virtual void applyEffect(Company& company) = 0;
-	virtual void displayStats() const;
+	void displayStats() const;
 
 	//GETTERS SETTERS
 	int getSpeed() const;
