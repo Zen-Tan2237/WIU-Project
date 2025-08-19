@@ -10,6 +10,7 @@ class Player
 private:
 	int hackingPoints;
 	int companyChoice;
+	int maxCompany;
 	Virus* playerVirus; 
 
 public:
@@ -26,6 +27,7 @@ public:
 	int getHackingPoints() const;
 	int getCompanyChoice() const;
 	void setCompanyChoice(int choice);	
+	void setMaxCompany(int maxCompany);
 	Virus* getPlayerVirus() const;
 	
 	void setHackingPoints(int hackingPoints);

@@ -26,6 +26,11 @@ void Player::setCompanyChoice(int choice)
 	this->companyChoice = choice;
 }
 
+void Player::setMaxCompany(int maxCompany)
+{
+	this->maxCompany = maxCompany;
+}
+
 Virus* Player::getPlayerVirus() const {
 	return playerVirus;
 }
@@ -51,7 +56,7 @@ void Player::setInitials(Company* companyList[])
 	
 	do {
 		std::cout << "Enter the company you want to start at: ";
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < maxCompany; i++) {
 			std::cout << i + 1 << "." << companyList[i]->getName() << std::endl;
 		}
 		std::cin >> companyChoice;
