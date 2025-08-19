@@ -55,7 +55,13 @@ int Company::getInfectedStatus() const
 	return infectedStatus;
 }
 
-//Worm Company::getVirus() const
-//{
-//	return;
-//}
+void Company::setVirus(Virus* Virus)
+{
+	virus = Virus;
+}
+
+int Company::getinfectionLevel() const
+{
+	return infectionLevel;
+}
+

@@ -18,6 +18,8 @@ public:
 
 	void updateInfection();
 	int getInfectedStatus() const;
-	//Worm getVirus() const;
+	void setVirus(Virus* viruS);
+	int getinfectionLevel() const;
+	
 };
 
