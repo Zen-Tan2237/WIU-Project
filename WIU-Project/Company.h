@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Worm.h"
+#include "Virus.h"
 class Company
 {
 private:
