@@ -18,9 +18,3 @@ Worm::~Worm() {
 
 }
 
-void Worm::evolve(std::string name) {
-
-}
-void Worm::applyEffect(Company& company) {
-
-}
