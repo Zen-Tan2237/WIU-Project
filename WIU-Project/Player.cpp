@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Worm.h"
+
 Player::Player() {
 	hackingPoints = 0;
 	companyChoice = 0;
@@ -53,7 +55,11 @@ void Player::setInitials(Company* companyList[])
 		std::cout << "Enter your virus (1 - Worm): ";
 		std::cin >> type;
 	} while (type < 1 || type > 1);
-	
+
+	if (type == 1) {
+		playerVirus = new Worm;
+	}
+
 	do {
 		std::cout << "Enter the company you want to start at: ";
 		for (int i = 0; i < maxCompany; i++) {
