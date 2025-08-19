@@ -72,7 +72,7 @@ void Game::doTurn()
 void Game::printInterface()
 {
     for (int i = 0; i < maxCompany; i++) {
-        std::cout << i + 1 << companies[i]->getName() << " | " << companies[i]->getInfectedStatus() << ", " << companies[i]->getinfectionLevel() << std::endl;
+        std::cout << i + 1 << companies[i]->getName() << " | " << companies[i]->getInfectedStatus() << ", " << companies[i]->getNoOfInfectedComputers() << std::endl;
         std::cout << std::endl;
     }
 }
