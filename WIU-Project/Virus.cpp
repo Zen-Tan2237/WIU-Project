@@ -1,13 +1,19 @@
 #include "Virus.h"
+#include "Upgrades.h"
 
 Virus::Virus() {
+	name = " ";
 	speed = 0;
 	stealth = 0;
 	payload = 0;
 	resilience = 0;
 }
 
-void Virus::evolve(Upgrades toUpgrade) {
+Virus::~Virus() {
+
+}
+
+void Virus::evolve(Upgrades& toUpgrade) {
 	speed += toUpgrade.getSpeed();
 	stealth += toUpgrade.getStealth();
 	payload += toUpgrade.getPayload();

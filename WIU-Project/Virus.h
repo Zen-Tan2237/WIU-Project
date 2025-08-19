@@ -1,11 +1,10 @@
 #pragma once
 #include <iostream>
-#include "Company.h"
 #include <string>
 #include "Upgrades.h"
+
 class Virus
 {
-	// THIS CLASS IS ABSTRACT! INSTANTIATE CHILD OBJECT INSTEAD!
 protected:
 	std::string name;
 	int speed;
@@ -14,7 +13,10 @@ protected:
 	int resilience;
 
 public:
-	void evolve(Upgrades toUpgrade);
+	void evolve(Upgrades& toUpgrade);
+
+	Virus();
+	~Virus();
 
 	//GETTERS SETTERS
 	int getSpeed() const;

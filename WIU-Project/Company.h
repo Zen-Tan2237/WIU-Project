@@ -1,12 +1,13 @@
+// V1.1.3
 #pragma once
 #include <iostream>
-#include "Worm.h"
+#include "Virus.h"
 class Company
 {
 private:
 	std::string companyName;
 	int networkSize; // how big the company is 
-	float securityLevel; // defence against virus
+	int securityLevel; // defence against virus
 	int noOfInfectedComputers; // company infection based off networkSize
 	int infectedStatus; // 0 = not infected, 1 = partially infected, 2 = fully infected/company dead
 	Virus* virus;

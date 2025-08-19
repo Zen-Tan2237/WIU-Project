@@ -1,7 +1,7 @@
 #include "Company.h"
 #include "stdlib.h"
 #include "time.h"
-#include "Worm.h"
+#include "Virus.h"
 
 Company::Company()
 {
