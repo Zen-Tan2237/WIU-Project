@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Company.h"
+#include "Virus.h"
 Player::Player() {
 	hackingPoints = 0;
 	playerVirus = nullptr;
@@ -15,9 +17,20 @@ int Player :: getHackingPoints()const {
 	return hackingPoints;
 }
 
+int Player::getCompanyChoice() const
+{
+	return companyChoice;
+}
+
+void Player::setCompanyChoice(int choice)
+{
+	this->companyChoice = choice;
+}
+
 Virus* Player::getPlayerVirus() const {
 	return playerVirus;
 }
+
 
 void Player :: earnPoints(int points) {
 	hackingPoints += points;
@@ -28,17 +41,14 @@ bool Player::spendPoints(int points) {
 	} 
 }
 
-void Player::showMenu() {
-
-}
 void Player::setInitials(Company* companyList[])
 {
 	int type;
-	int companyChoice;
 	do {
 		std::cout << "Enter your virus (1 - Worm): ";
 		std::cin >> type;
 	} while (type < 1 || type > 1);
+	
 	do {
 		std::cout << "Enter the company you want to start at: ";
 		for (int i = 0; i < 50; i++) {
@@ -48,3 +58,9 @@ void Player::setInitials(Company* companyList[])
 	} while (companyChoice < 1 || companyChoice > 50);
 
 }
+void Player::update(){
+	int upgrade;
+	std::cout << "Do you want to spend points upgrading? (1 - Yes, 0 - skip to next day): ";
+	std::cin >> upgrade ;
+}
+
