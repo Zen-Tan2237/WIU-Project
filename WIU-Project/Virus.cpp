@@ -24,18 +24,18 @@ std::string Virus::getName() const {
 	return name;
 }
 
-int Virus::getPayload() const {
+float Virus::getPayload() const {
 	return payload;
 }
 
-int Virus::getResilience() const{
+float Virus::getResilience() const{
 	return resilience;
 }
-int Virus::getSpeed() const {
+float Virus::getSpeed() const {
 	return speed;
 }
 
-int Virus::getComplexity() const{
+float Virus::getComplexity() const{
 	return complexity;
 }
 
@@ -43,18 +43,18 @@ void Virus::setName(std::string name) {
 	this->name = name;
 }
 
-void Virus::setPayload(int payload) {
+void Virus::setPayload(float payload) {
 	this->payload = payload;
 }
 
-void Virus::setResilience(int resilience) {
+void Virus::setResilience(float resilience) {
 	this->resilience = resilience;
 }
 
-void Virus::setSpeed(int speed) {
+void Virus::setSpeed(float speed) {
 	this->speed = speed;
 }
 
-void Virus::setComplexity(int complexity) {
+void Virus::setComplexity(float complexity) {
 	this->complexity = complexity;
 }

@@ -60,6 +60,7 @@ void Player::setInitials(Company* companyList[])
 		playerVirus = new Worm;
 	}
 
+
 	do {
 		std::cout << "Enter the company you want to start at: ";
 		for (int i = 0; i < maxCompany; i++) {
@@ -68,10 +69,15 @@ void Player::setInitials(Company* companyList[])
 		std::cin >> companyChoice;
 	} while (companyChoice < 1 || companyChoice > maxCompany);
 
+	
+
 }
 void Player::update(){
 	int upgrade;
 	std::cout << "Do you want to spend points upgrading? (1 - Yes, 0 - skip to next day): ";
-	std::cin >> upgrade ;
+	std::cin >> upgrade;
+
+	if (upgrade == 1) {
+	}
 }
 

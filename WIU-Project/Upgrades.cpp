@@ -8,7 +8,7 @@ Upgrades::Upgrades() {
 	resilience = 0;
 }
 
-Upgrades::Upgrades(std::string name, int speed, int complexity, int payload, int resilience) {
+Upgrades::Upgrades(std::string name, float speed, float complexity, float payload, float resilience) {
 	this->name = name;
 	this->speed = speed;
 	this->complexity = complexity;

@@ -6,19 +6,19 @@ class Upgrades
 {
 private:
 	std::string name;
-	int speed;
-	int complexity;
-	int payload;
-	int resilience;
+	float speed;
+	float complexity;
+	float payload;
+	float resilience;
 public:
 	std::string getName();
-	int getSpeed();
-	int getComplexity();
-	int getPayload();
-	int getResilience();
+	float getSpeed();
+	float getComplexity();
+	float getPayload();
+	float getResilience();
 
 	Upgrades();
-	Upgrades(std::string name, int speed, int stealth, int payload, int resilience);
+	Upgrades(std::string name, float speed, float stealth, float payload, float resilience);
 	~Upgrades();
 };
 
