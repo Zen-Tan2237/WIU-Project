@@ -1,5 +1,12 @@
 #include "Virus.h"
 
+Virus::Virus() {
+	speed = 0;
+	stealth = 0;
+	payload = 0;
+	resilience = 0;
+}
+
 std::string Virus::getName() const {
 	return name;
 }
