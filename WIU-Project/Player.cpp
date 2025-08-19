@@ -62,22 +62,21 @@ void Player::setInitials(Company* companyList[])
 
 
 	do {
-		std::cout << "Enter the company you want to start at: ";
+		std::cout << "Enter the company you want to start at: " << std::endl;
 		for (int i = 0; i < maxCompany; i++) {
 			std::cout << i + 1 << "." << companyList[i]->getName() << std::endl;
 		}
 		std::cin >> companyChoice;
 	} while (companyChoice < 1 || companyChoice > maxCompany);
 
-	
+	companyList[companyChoice - 1]->setNoOfInfectedComputers(1);
 
 }
 void Player::update(){
-	int upgrade;
-	std::cout << "Do you want to spend points upgrading? (1 - Yes, 0 - skip to next day): ";
-	std::cin >> upgrade;
-
-	if (upgrade == 1) {
-	}
+	std::string upgrade;
+	std::cout << "Enter to continue, U to open Upgrade Menu";
+	do {
+		getline(std::cin, upgrade);
+	} while (!(upgrade == "" || upgrade == "U"));
 }
 

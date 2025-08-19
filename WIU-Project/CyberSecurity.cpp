@@ -55,18 +55,18 @@ float CyberSecurity::getGlobalCureProgress() const{
 int CyberSecurity::getDetectionLevel() const {
 	return this->detectionLevel;
 }
-int CyberSecurity::getFightStrength() const {
+float CyberSecurity::getFightStrength() const {
 	return this->fightStrength;
 }
 
 /* Setters */
-void CyberSecurity::setGlobalCureProgress(int gcp) {
+void CyberSecurity::setGlobalCureProgress(float gcp) {
 	this->globalCureProgress = gcp;
 }
 void CyberSecurity::setDetectionLevel(int dl) {
 	this->detectionLevel = dl;
 }
-void CyberSecurity::setFightStrength(int fs) {
+void CyberSecurity::setFightStrength(float fs) {
 	this->fightStrength = fs;
 }
 
@@ -75,6 +75,7 @@ CyberSecurity::CyberSecurity() {
 	globalCureProgress = 0.0f;
 	cureComplete = 0;
 	detectionLevel = 0;
+	fightStrength = 0;
 }
 /*
 CyberSecurity::CyberSecurity(float gcp, int dl) {

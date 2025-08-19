@@ -33,7 +33,7 @@ void Game::initGame()
             temp = rand() % 50;
         } while (companyNames[temp] == "none");
         
-        companies[i] = new Company(companyNames[temp], networkSize[temp]);
+        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 1001) - 500), rand() % 11);
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
@@ -76,7 +76,10 @@ void Game::doTurn()
 void Game::printInterface()
 {
     for (int i = 0; i < maxCompany; i++) {
-        std::cout << i + 1 << ". " << companies[i]->getName() << " | " << companies[i]->getInfectedStatus() << ", " << companies[i]->getNoOfInfectedComputers() << std::endl;
+        std::cout << i + 1 << ". " << companies[i]->getName() << std::endl
+            << "Network Size: " << companies[i]->getNetworkSize() << std::endl
+            << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
+            << std::endl;
         std::cout << std::endl;
     }
 }
