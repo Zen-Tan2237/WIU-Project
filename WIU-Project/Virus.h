@@ -5,7 +5,6 @@
 #include "Upgrades.h"
 class Virus
 {
-	// THIS CLASS IS ABSTRACT! INSTANTIATE CHILD OBJECT INSTEAD!
 protected:
 	std::string name;
 	int speed;
@@ -15,6 +14,9 @@ protected:
 
 public:
 	void evolve(Upgrades toUpgrade);
+
+	Virus();
+	~Virus();
 
 	//GETTERS SETTERS
 	int getSpeed() const;
