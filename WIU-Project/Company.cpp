@@ -39,7 +39,7 @@ void Company::updateInfection()
 		{
 			infectedStatus = 0;
 		}
-		else if (infectionLevel = 100)
+		else if (infectionLevel == networkSize)
 		{
 			infectedStatus = 2;
 		}
