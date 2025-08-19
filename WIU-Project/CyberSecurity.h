@@ -8,6 +8,7 @@
 class CyberSecurity {
 private:
 	static int globalCureProgress;
+	//static float globalCureProgress;
 	int detectionLevel;
 
 	bool cureComplete;
@@ -36,6 +37,7 @@ public:
 	static void setGlobalCureProgress(int cp);
 	void setDetectionLevel(int dl);
 
+	CyberSecurity();
 	CyberSecurity(int dl);
 	~CyberSecurity();
 };
