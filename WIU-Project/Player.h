@@ -18,10 +18,11 @@ public:
 	bool spendPoints(int points);
 
 	void showMenu();
-	void setInitials();
+	void setInitials(Company companyList[]);
 
 	// Getters and Setters
 	int getHackingPoints() const;
+	Virus* getPlayerVirus() const;
 
 	void setHackingPoints(int hackingPoints);
 };
