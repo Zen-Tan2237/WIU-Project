@@ -18,7 +18,7 @@ public:
 	bool spendPoints(int points);
 
 	void showMenu();
-	void setInitials(Company companyList[]);
+	void setInitials(Company* companyList[]);
 
 	// Getters and Setters
 	int getHackingPoints() const;
