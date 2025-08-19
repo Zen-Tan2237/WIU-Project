@@ -7,6 +7,10 @@ Virus::Virus() {
 	resilience = 0;
 }
 
+Virus::~Virus() {
+
+}
+
 void Virus::evolve(Upgrades toUpgrade) {
 	speed += toUpgrade.getSpeed();
 	stealth += toUpgrade.getStealth();
