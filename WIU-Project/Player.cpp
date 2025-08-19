@@ -60,7 +60,7 @@ void Player::setInitials(Company* companyList[])
 			std::cout << i + 1 << "." << companyList[i]->getName() << std::endl;
 		}
 		std::cin >> companyChoice;
-	} while (companyChoice < 1 || companyChoice > 50);
+	} while (companyChoice < 1 || companyChoice > maxCompany);
 
 }
 void Player::update(){
