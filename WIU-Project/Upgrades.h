@@ -7,13 +7,13 @@ class Upgrades
 private:
 	std::string name;
 	int speed;
-	int stealth;
+	int complexity;
 	int payload;
 	int resilience;
 public:
 	std::string getName();
 	int getSpeed();
-	int getStealth();
+	int getComplexity();
 	int getPayload();
 	int getResilience();
 

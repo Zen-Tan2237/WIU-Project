@@ -4,7 +4,7 @@
 Virus::Virus() {
 	name = " ";
 	speed = 0;
-	stealth = 0;
+	complexity = 0;
 	payload = 0;
 	resilience = 0;
 }
@@ -15,7 +15,7 @@ Virus::~Virus() {
 
 void Virus::evolve(Upgrades& toUpgrade) {
 	speed += toUpgrade.getSpeed();
-	stealth += toUpgrade.getStealth();
+	complexity += toUpgrade.getComplexity();
 	payload += toUpgrade.getPayload();
 	resilience += toUpgrade.getResilience();
 }
@@ -35,8 +35,8 @@ int Virus::getSpeed() const {
 	return speed;
 }
 
-int Virus::getStealth() const{
-	return stealth;
+int Virus::getComplexity() const{
+	return complexity;
 }
 
 void Virus::setName(std::string name) {
@@ -55,6 +55,6 @@ void Virus::setSpeed(int speed) {
 	this->speed = speed;
 }
 
-void Virus::setStealth(int stealth) {
-	this->stealth = stealth;
+void Virus::setComplexity(int complexity) {
+	this->complexity = complexity;
 }
