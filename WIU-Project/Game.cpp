@@ -60,11 +60,19 @@ void Game::doTurn()
     // update company infectivity
     for (int i = 0; i < tickInterval; i++) {
         for (int j = 0; j < maxCompany;  j++) {
-            companies[j]->updateInfection();
+            companies[j]->update();
         }
         currentTick++;
     }
 
     // update player chioces
-    //player.updateTurn()
+    // player.update();
+}
+
+void Game::printInterface()
+{
+    for (int i = 0; i < maxCompany; i++) {
+        std::cout << i + 1 << companies[i]->getName() << " | " << companies[i]->getInfectedStatus() << ", " << companies[i]->getinfectionLevel() << std::endl;
+        std::cout << std::endl;
+    }
 }

@@ -73,5 +73,6 @@ private:
 	void setCurrentTick(int tickInterval); // Setter
 
     void doTurn();
+    void printInterface();
 };
 
