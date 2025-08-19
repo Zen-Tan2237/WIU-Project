@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Company.h"
 #include <string>
+#include "Upgrades.h"
 class Virus
 {
 	// THIS CLASS IS ABSTRACT! INSTANTIATE CHILD OBJECT INSTEAD!
@@ -13,9 +14,7 @@ protected:
 	int resilience;
 
 public:
-	virtual void evolve(std::string upgrade);
-	virtual void applyEffect(Company& company) = 0;
-	void displayStats() const;
+	void evolve(Upgrades toUpgrade);
 
 	//GETTERS SETTERS
 	int getSpeed() const;

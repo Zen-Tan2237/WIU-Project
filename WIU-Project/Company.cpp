@@ -6,21 +6,21 @@
 Company::Company()
 {
 	infectedStatus = 0;
-	companyName = "halalpork";
+	companyName = "We sell 100% halalpork";
 	securityLevel = 1;
-	infectionLevel = 0;
+	noOfInfectedComputers = 0;
 	networkSize = 1;
 	virus = nullptr;
 
 }
 
-Company::Company(std::string Name, int size)
+Company::Company(std::string Name, int size, int securityLevelMulti)
 {
 	companyName = Name;
 	networkSize = size;
 	infectedStatus = 0;
-	infectionLevel = 0;
-	securityLevel = networkSize * 350;
+	noOfInfectedComputers = 0;
+	securityLevel = networkSize ;
 	virus = nullptr;
 }
 
@@ -28,18 +28,18 @@ Company::~Company()
 {
 }
 
-void Company::updateInfection()
+void Company::update()
 {
 	if (infectedStatus < 2)
 	{
 		// logic for infection level in the company
-		infectionLevel += securityLevel - virus->getSpeed();
+		noOfInfectedComputers += securityLevel - virus->getSpeed();
 
-		if (infectionLevel = 0)
+		if (noOfInfectedComputers = 0)
 		{
 			infectedStatus = 0;
 		}
-		else if (infectionLevel == networkSize)
+		else if (noOfInfectedComputers == networkSize)
 		{
 			infectedStatus = 2;
 		}
@@ -60,9 +60,9 @@ void Company::setVirus(Virus* Virus)
 	virus = Virus;
 }
 
-int Company::getinfectionLevel() const
+int Company::getNoOfInfectedComputers() const
 {
-	return infectionLevel;
+	return noOfInfectedComputers;
 }
 
 std::string Company::getName() const

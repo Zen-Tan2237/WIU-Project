@@ -7,12 +7,11 @@ Virus::Virus() {
 	resilience = 0;
 }
 
-void Virus::displayStats() const {
-	std::cout << "Your stats: " << std::endl
-		<< "Speed: " << speed << std::endl
-		<< "Stealth: " << stealth << std::endl
-		<< "Payload: " << payload << std::endl
-		<< "Resilience: " << resilience << std::endl;
+void Virus::evolve(Upgrades toUpgrade) {
+	speed += toUpgrade.getSpeed();
+	stealth += toUpgrade.getStealth();
+	payload += toUpgrade.getPayload();
+	resilience += toUpgrade.getResilience();
 }
 
 std::string Virus::getName() const {

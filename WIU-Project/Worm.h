@@ -3,7 +3,6 @@
 class Worm :public Virus
 {
 public:
-	void evolve(std::string upgrade) override;
 	void applyEffect(Company& company);
 
 	Worm();
