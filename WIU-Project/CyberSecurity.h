@@ -11,7 +11,7 @@ private:
 	bool cureComplete;
 
 	int detectionLevel;
-	int fightStrength;
+	float fightStrength;
 
 
 	/*
@@ -33,11 +33,11 @@ public:
 
 	float getGlobalCureProgress() const;
 	int getDetectionLevel() const;
-	int getFightStrength() const;
+	float getFightStrength() const;
 
-	void setGlobalCureProgress(int);
+	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
-	void setFightStrength(int);
+	void setFightStrength(float);
 
 	CyberSecurity();
 	//CyberSecurity(float, int);
