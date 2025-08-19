@@ -1,4 +1,4 @@
-// V1.1.3
+// V1.1.4
 #pragma once
 #include <iostream>
 #include "Virus.h"
@@ -8,7 +8,7 @@ private:
 	std::string companyName;
 	int networkSize; // how big the company is 
 	int securityLevel; // defence against virus
-	int noOfInfectedComputers; // company infection based off networkSize
+	float noOfInfectedComputers; // company infection based off networkSize
 	int infectedStatus; // 0 = not infected, 1 = partially infected, 2 = fully infected/company dead
 	Virus* virus;
 
@@ -22,6 +22,6 @@ public:
 	void setVirus(Virus* Virus);
 	int getNoOfInfectedComputers() const;
 	std::string getName() const;
-	
+	int getNetworkSize() const;
 };
 

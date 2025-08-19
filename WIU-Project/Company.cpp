@@ -1,6 +1,5 @@
+#include <iostream>
 #include "Company.h"
-#include "stdlib.h"
-#include "time.h"
 #include "Virus.h"
 
 Company::Company()
@@ -33,9 +32,12 @@ void Company::update()
 	if (infectedStatus < 2)
 	{
 		// logic for infection level in the company
-		noOfInfectedComputers += securityLevel - virus->getSpeed();
+		if (securityLevel != virus->getComplexity())
+		{
+			noOfInfectedComputers += virus->getSpeed();
+		}
 
-		if (noOfInfectedComputers = 0)
+		if (noOfInfectedComputers == 0)
 		{
 			infectedStatus = 0;
 		}
@@ -68,5 +70,10 @@ int Company::getNoOfInfectedComputers() const
 std::string Company::getName() const
 {
 	return companyName;
+}
+
+int Company::getNetworkSize() const
+{
+	return networkSize;
 }
 
