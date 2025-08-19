@@ -3,20 +3,21 @@
 #include <iostream>
 #include <string>
 #include "Virus.h"
+#include "Company.h"
 
 class Player
 {
 private:
-	int hackingPoints; // Points for the virus
-	Virus* playerVirus; // Virus that the player has
+	int hackingPoints;
 	int companyChoice;
+	Virus* playerVirus; 
 
 public:
 	Player();
 	~Player();
 
 	void earnPoints(int points);
-	bool spendPoints(int points);
+	void spendPoints(int cost);
 
 	void setInitials(Company* companyList[]);
 	void update();

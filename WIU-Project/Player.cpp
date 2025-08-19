@@ -1,8 +1,7 @@
 #include "Player.h"
-#include "Company.h"
-#include "Virus.h"
 Player::Player() {
 	hackingPoints = 0;
+	companyChoice = 0;
 	playerVirus = nullptr;
 }
 Player::~Player() {
@@ -35,10 +34,11 @@ Virus* Player::getPlayerVirus() const {
 void Player :: earnPoints(int points) {
 	hackingPoints += points;
 }
-bool Player::spendPoints(int points) {
-	if (points <= hackingPoints) {
-		hackingPoints -= points;
+void Player::spendPoints(int cost) {
+	if (cost <= hackingPoints) {
+		hackingPoints -= cost;
 	} 
+
 }
 
 void Player::setInitials(Company* companyList[])
