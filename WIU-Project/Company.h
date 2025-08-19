@@ -20,6 +20,7 @@ public:
 	int getInfectedStatus() const;
 	void setVirus(Virus* viruS);
 	int getinfectionLevel() const;
+	std::string getName() const;
 	
 };
 

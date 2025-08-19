@@ -65,3 +65,8 @@ int Company::getinfectionLevel() const
 	return infectionLevel;
 }
 
+std::string Company::getName() const
+{
+	return companyName;
+}
+
