@@ -49,16 +49,13 @@ void Game::setCurrentTick(int tickInterval)
     this->currentTick += tickInterval;
 }
 
-int Game::getMaxCompany() const
-{
-    return this->maxCompany;
-}
-
 void Game::doTurn()
 {
     // starting
     if (currentTick == 0) {
+        player.setMaxCompany(maxCompany);
         player.setInitials(companies);
+
         for (int j = 0; j < maxCompany; j++) {
             companies[j]->setVirus(player.getPlayerVirus());
         }

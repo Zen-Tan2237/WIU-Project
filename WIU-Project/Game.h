@@ -73,8 +73,6 @@ public:
 	int getCurrentTick() const; // Getter
 	void setCurrentTick(int tickInterval); // Setter
 
-    int getMaxCompany() const;
-
     void doTurn();
     void printInterface();
 };
