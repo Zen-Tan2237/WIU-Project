@@ -14,12 +14,13 @@ private:
 
 public:
 	Company();
-	Company(std::string Name, int size); //overloaded
+	Company(std::string Name, int size, int startingSecurityLevel); //overloaded
 	~Company();
 
 	void update();
 	int getInfectedStatus() const;
 	void setVirus(Virus* Virus);
+	void setNoOfInfectedComputers(int noOfInfectedComputers);
 	int getNoOfInfectedComputers() const;
 	std::string getName() const;
 	int getNetworkSize() const;

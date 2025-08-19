@@ -3,6 +3,8 @@
 
 int main() {
 
+	srand(time(0));
+
 	Game* game = new Game;
 
 	game->initGame();
@@ -11,9 +13,7 @@ int main() {
 		game->doTurn();
 	}
 
-
 	delete game;
-
 
 	std::cout << "Halalworld" << std::endl;
 	return 0;
