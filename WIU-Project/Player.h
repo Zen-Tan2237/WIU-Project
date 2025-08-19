@@ -22,7 +22,7 @@ public:
 	void setInitials();
 
 	// Getters and Setters
-	int getHackingPoints(void) const;
+	int getHackingPoints() const;
 
 	void setHackingPoints(int hackingPoints);
 };

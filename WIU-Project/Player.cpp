@@ -6,16 +6,16 @@ Player::Player() {
 Player::~Player() {
 
 }
-void setHackingPoints(int hackingPoints) {
+void Player::setHackingPoints(int hackingPoints) {
 	this->hackingPoints = hackingPoints;
 }
-int getHackingPoints() {
+int Player::getHackingPoints() const{
 	return hackingPoints;
 }
-void earnPoints(int points) {
+void Player::earnPoints(int points) {
 	
 }
-void spendPoints(int points) {
+bool Player::spendPoints(int points) {
 	if (points <= hackingPoints) {
 		hackingPoints -= points;
 	} 
