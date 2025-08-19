@@ -11,20 +11,19 @@ private:
 	int detectionLevel;
 
 	bool cureComplete;
-
-	/*
-	int eventsAmount = 3;
-	enum events {
+	
+	/*enum events {
 		fireWall,
 		antiVirus,
-		itLockdowns
-	};
-	*/
+		itLockdowns,
+
+		eventsAmount
+	};*/
 
 	Company* coy;
 
 public:
-	void triggerEvent(std::vector<Company>& );
+	void triggerEvent(std::vector<Company>&);
 	void advanceCure();
 	bool isCureComplete() const;
 	void displayStatus() const;
