@@ -16,13 +16,13 @@ public:
 
 	void earnPoints(int points);
 	bool spendPoints(int points);
-	void upgradeVirus(int points );
+	void upgradeVirus(int points);
 
 	void showMenu();
 	void setInitials();
 
 	// Getters and Setters
-	int getHackingPoints(void) const;
+	int getHackingPoints() const;
 
 	void setHackingPoints(int hackingPoints);
 };
