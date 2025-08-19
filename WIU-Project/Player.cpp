@@ -31,7 +31,7 @@ bool Player::spendPoints(int points) {
 void Player::showMenu() {
 
 }
-void Player::setInitials(Company companyList[])
+void Player::setInitials(Company* companyList[])
 {
 	int type;
 	int companyChoice;
@@ -42,7 +42,7 @@ void Player::setInitials(Company companyList[])
 	do {
 		std::cout << "Enter the company you want to start at: ";
 		for (int i = 0; i < 50; i++) {
-			std::cout << i + 1 << "." << companyList[i].getName() << std::endl;
+			std::cout << i + 1 << "." << companyList[i]->getName() << std::endl;
 		}
 		std::cin >> companyChoice;
 	} while (companyChoice < 1 || companyChoice > 50);
