@@ -1,10 +1,10 @@
 #include "Worm.h"
 
 Worm::Worm() {
-	speed = 0;
-	stealth = 0;
-	payload = 0;
-	resilience = 0;
+	speed = 7;       // spreads quickly through networks
+	stealth = 3;     // not very stealthy, easy to notice
+	payload = 2;     // weak direct damage (annoying but not catastrophic)
+	resilience = 4;  // moderate resistance to cleanup
 }
 
 Worm::Worm(int speed, int stealth, int payload, int resilience) {
@@ -22,8 +22,5 @@ void Worm::evolve(std::string name) {
 
 }
 void Worm::applyEffect(Company& company) {
-
-}
-void Worm::displayStats() const {
 
 }

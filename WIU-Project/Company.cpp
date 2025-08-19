@@ -10,7 +10,7 @@ Company::Company()
 	securityLevel = 1;
 	infectionLevel = 0;
 	networkSize = 1;
-	virusType = nullptr;
+	virus = nullptr;
 
 }
 
@@ -21,25 +21,25 @@ Company::Company(std::string Name, int size)
 	infectedStatus = 0;
 	infectionLevel = 0;
 	securityLevel = networkSize * 350;
-	virusType = nullptr;
+	virus = nullptr;
 }
 
 Company::~Company()
 {
 }
 
-void Company::updateInfection(int virusStrength)
+void Company::updateInfection()
 {
 	if (infectedStatus < 2)
 	{
 		// logic for infection level in the company
-		infectionLevel += securityLevel - virusStrength;
+		infectionLevel += securityLevel - virus->getSpeed();
 
 		if (infectionLevel = 0)
 		{
 			infectedStatus = 0;
 		}
-		else if (infectionLevel = 100)
+		else if (infectionLevel == networkSize)
 		{
 			infectedStatus = 2;
 		}
@@ -55,7 +55,13 @@ int Company::getInfectedStatus() const
 	return infectedStatus;
 }
 
-//Worm Company::getVirus() const
-//{
-//	return;
-//}
+void Company::setVirus(Virus* Virus)
+{
+	virus = Virus;
+}
+
+int Company::getinfectionLevel() const
+{
+	return infectionLevel;
+}
+

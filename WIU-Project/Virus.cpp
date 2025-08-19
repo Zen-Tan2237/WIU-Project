@@ -7,6 +7,14 @@ Virus::Virus() {
 	resilience = 0;
 }
 
+void Virus::displayStats() const {
+	std::cout << "Your stats: " << std::endl
+		<< "Speed: " << speed << std::endl
+		<< "Stealth: " << stealth << std::endl
+		<< "Payload: " << payload << std::endl
+		<< "Resilience: " << resilience << std::endl;
+}
+
 std::string Virus::getName() const {
 	return name;
 }
