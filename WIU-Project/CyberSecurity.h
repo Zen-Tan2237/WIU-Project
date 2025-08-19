@@ -1,44 +1,46 @@
 #pragma once
 
-#include <cstring>
+#include <string>
 #include <random>
 #include "Company.h"
 
 
 class CyberSecurity {
 private:
-	static int globalCureProgress;
-	//static float globalCureProgress;
-	int detectionLevel;
-
+	float globalCureProgress;
 	bool cureComplete;
-	
-	/*enum events {
+
+	int detectionLevel;
+	int fightStrength;
+
+
+	/*
+	enum events {
 		fireWall,
 		antiVirus,
 		itLockdowns,
 
 		eventsAmount
-	};*/
-
-	Company* coy;
+	};
+	*/
 
 public:
-	void triggerEvent(std::vector<Company>&);
-	void advanceCure();
-	bool isCureComplete() const;
+	void triggerEvent(const Company&);
+	void advanceCure(const Virus&, const Company*);
+	float cureProgressSpeed(float, const Virus&) const;
+	bool isCureComplete();
 	void displayStatus() const;
-	void createCompany();
-	void deleteCompany();
 
-	static int getGlobalCureProgress();
+	float getGlobalCureProgress() const;
 	int getDetectionLevel() const;
+	int getFightStrength() const;
 
-	static void setGlobalCureProgress(int cp);
-	void setDetectionLevel(int dl);
+	void setGlobalCureProgress(int);
+	void setDetectionLevel(int);
+	void setFightStrength(int);
 
 	CyberSecurity();
-	CyberSecurity(int dl);
+	//CyberSecurity(float, int);
 	~CyberSecurity();
 };
 
