@@ -1,13 +1,5 @@
 #include "Virus.h"
 
-void Virus::evolve(std::string name) {
-
-}
-
-void Virus::displayStats() const {
-
-}
-
 std::string Virus::getName() const {
 	return name;
 }
