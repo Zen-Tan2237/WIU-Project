@@ -26,7 +26,7 @@ Game::~Game()
 
 void Game::initGame()
 {
-    std::cout << "yes" << std::endl;
+    
     int temp;
     for (int i = 0; i < maxCompany; i++) {
         do {
@@ -35,6 +35,7 @@ void Game::initGame()
         
         companies[i] = new Company(companyNames[temp], networkSize[temp]);
         companyNames[temp] = "none";
+        std::cout << "yes" << std::endl;
     }
 }
 
