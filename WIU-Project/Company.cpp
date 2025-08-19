@@ -14,7 +14,7 @@ Company::Company()
 
 }
 
-Company::Company(std::string Name, int size, int securityLevelMulti)
+Company::Company(std::string Name, int size)
 {
 	companyName = Name;
 	networkSize = size;
