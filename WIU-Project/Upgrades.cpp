@@ -24,15 +24,15 @@ std::string Upgrades::getName() {
 	return name;
 }
 
-int Upgrades::getSpeed() {
+float Upgrades::getSpeed() {
 	return speed;
 }
-int Upgrades::getComplexity() {
+float Upgrades::getComplexity() {
 	return complexity;
 }
-int Upgrades::getPayload() {
+float Upgrades::getPayload() {
 	return payload;
 }
-int Upgrades::getResilience() {
+float Upgrades::getResilience() {
 	return resilience;
 }
