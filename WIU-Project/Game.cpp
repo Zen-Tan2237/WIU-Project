@@ -26,6 +26,7 @@ Game::~Game()
 
 void Game::initGame()
 {
+    std::cout << "yes" << std::endl;
     int temp;
     for (int i = 0; i < maxCompany; i++) {
         do {
