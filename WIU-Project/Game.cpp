@@ -49,6 +49,11 @@ void Game::setCurrentTick(int tickInterval)
     this->currentTick += tickInterval;
 }
 
+int Game::getMaxCompany() const
+{
+    return this->maxCompany;
+}
+
 void Game::doTurn()
 {
     // starting
