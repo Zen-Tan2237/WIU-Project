@@ -6,13 +6,13 @@ Player::Player() {
 Player::~Player() {
 
 }
-void Player::setHackingPoints(int hackingPoints) {
+void setHackingPoints(int hackingPoints) {
 	this->hackingPoints = hackingPoints;
 }
-int Player::getHackingPoints() const{
+int getHackingPoints() {
 	return hackingPoints;
 }
-void Player::earnPoints(int points) {
+void earnPoints(int points) {
 	
 }
 bool Player::spendPoints(int points) {
@@ -20,7 +20,9 @@ bool Player::spendPoints(int points) {
 		hackingPoints -= points;
 	} 
 }
+void Player::showMenu() {
 
+}
 void Player::setInitials()
 {
 	int temp;

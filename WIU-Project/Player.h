@@ -16,7 +16,6 @@ public:
 
 	void earnPoints(int points);
 	bool spendPoints(int points);
-	void upgradeVirus(int points );
 
 	void showMenu();
 	void setInitials();
