@@ -8,7 +8,7 @@ class Virus
 protected:
 	std::string name;
 	int speed;
-	int stealth;
+	int complexity;
 	int payload;
 	int resilience;
 
@@ -20,13 +20,13 @@ public:
 
 	//GETTERS SETTERS
 	int getSpeed() const;
-	int getStealth() const;
+	int getComplexity() const;
 	int getPayload() const;
 	int getResilience() const;
 	std::string getName() const;
 
 	void setSpeed(int s);
-	void setStealth(int st);
+	void setComplexity(int st);
 	void setPayload(int payload);
 	void setResilience(int resilience);
 	void setName(std::string name);

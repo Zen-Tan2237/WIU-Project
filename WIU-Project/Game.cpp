@@ -70,7 +70,7 @@ void Game::doTurn()
     }
 
     // update player chioces
-    // player.update();
+    player.update();
 }
 
 void Game::printInterface()
