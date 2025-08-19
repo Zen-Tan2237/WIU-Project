@@ -1,1 +1,67 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+#include <string>
+
 #include "Game.h"
+
+Game::Game()
+{
+    currentTick = 0;
+    tickInterval = 10; // 10 = 1 day
+    isGameRunning = true;
+
+    for (int i = 0; i < maxCompany; i++) {
+        companies[i] = nullptr;
+    }
+
+    std::cout << "Game instantiated" << std::endl;
+}
+
+Game::~Game()
+{
+    std::cout << "Game destroyed" << std::endl;
+}
+
+void Game::initGame()
+{
+    int temp;
+    for (int i = 0; i < maxCompany; i++) {
+        do {
+            temp = rand() % 50;
+        } while (companyNames[temp] != "none");
+        
+        companies[i] = new Company(companyNames[temp], networkSize[temp]);
+        companyNames[temp] = "none";
+    }
+}
+
+int Game::getCurrentTick()
+{
+    return this->currentTick;
+}
+
+void Game::setCurrentTick(int tickInterval)
+{
+    this->currentTick += tickInterval;
+}
+
+void Game::doTurn()
+{
+    // starting
+    if (currentTick == 0) {
+        //player.setInitials();
+    }
+
+    // update company infectivity
+    for (int i = 0; i < tickInterval; i++) {
+        for (int j = 0; j < maxCompany;  j++) {
+            companies[j]->updateInfection();
+        }
+        currentTick++;
+    }
+
+    // update player chioces
+    //player.updateTurn()
+}
