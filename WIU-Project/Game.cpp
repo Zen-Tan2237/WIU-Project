@@ -75,31 +75,39 @@ void Game::doTurn()
 
 void Game::printInterface()
 {
+    system("cls ");
     for (int i = 0; i < maxCompany; i++) {
-        std::cout << i + 1 << ". " << companies[i]->getName() << std::endl
+        std::cout << "---------------" << std::endl
+            << i + 1 << ". " << companies[i]->getName() << std::endl
             << "Network Size: " << companies[i]->getNetworkSize() << std::endl
-            << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
             << "Security Level: " << companies[i]->getSecurityLevel() << std::endl
+            << std::endl
+            << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
+            << "Percentage Infected: " << companies[i]->getInfectedStatus() * 100 
             << std::endl;
-        std::cout << std::endl;
+        std::cout << std::endl; 
     }
 }
 
-void Game::randomEvent()
+void Game::randomEventGenerator()
 {
-        
-}
-
-void Game::randomEventCompanyGenerator()
-{
-    companyA = rand() % 5;
-    bool BNotA = false;
-    while (BNotA)
-    {
-        companyB = rand() % 5;
-        if (companyA != companyB)
+    eventTrigger = rand() % 100;
+        if (eventTrigger >= 90)
         {
-            BNotA = true;
+            companyA = rand() % 50;
+            bool BNotA = false;
+            while (BNotA)
+            {
+                companyB = rand() % 50;
+                if (companyA != companyB)
+                {
+                    BNotA = true;
+                }
+            }
+            
+            // print out chosen companies chosen and their event
+            std::cout << companyNames[companyA] << " and " << companyNames[companyB] << randomEvents[rand() % 5] << std::endl;
+            
+            // add code to increase virus spread stuff here
         }
-    }
 }

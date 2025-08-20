@@ -8,6 +8,7 @@
 
 #include "Company.h"
 #include "Player.h"
+#include "CyberSecurity.h"
 
 class Game
 {
@@ -18,6 +19,8 @@ private:
 	int maxCompany = 5;
     int companyA;
     int companyB;
+    int eventTrigger;
+    int randomEventChosen;
 
 	std::string companyNames[50] = {
         // Tech
@@ -25,20 +28,20 @@ private:
         "Twaddler", "Netflicks", "SnapChan", "TockTock", "DisCunt",
 
         // Hardware / Electronics
-        "Samflung", "Sonii", "Dellusional", "Lenova", "Asuspect",
-        "HPee", "Acern’t", "Intell", "AMDazed", "Nvidiugh",
+        "Samflung", "Sonai", "Dellusional", "Lenova", "Asuspect",
+        "HPee", "Acers", "Intell", "AMDazed", "Nvidiugh",
 
         // Food & Beverage
-        "MacRonalds", "Bugger King", "PieHut", "KFG", "Starbucksie",
-        "Dunkin’ Dullnuts", "Substandard", "Taco Hell", "Dominosh", "Wendooz",
+        "WacDonalds", "Bugger King", "PieHut", "KFG", "Starbucksie",
+        "Dunkin Dullnuts", "Substandard", "Taco Heaven", "Dominosh", "Wendeez",
 
         // Auto / Transport
-        "Totoya", "Hondumb", "Forrrd", "Teslow", "BMDoubleU",
-        "Merceduhs", "Volkswagoned", "Hyundie", "Uberrr", "Lyfted",
+        "Tomoya", "Ascurra", "Mustung", "Teslow", "BMDoubleU",
+        "Merceduhs", "Volkswagooned", "Hyundae", "Uberrr", "Lyfted",
 
         // Finance / Retail
-        "Walmutt", "Targeted", "CosLow", "PayBuddy", "Veesa",
-        "MasturdCard", "Amexed", "Chased", "CitiNot", "AliBlaba"
+        "Walmutt", "Targeted", "Coscaw", "Pay After 10Months", "Vaesa",
+        "MasturdCard", "Amexed", "Chased", "CitiNot", "Aliboba"
     };
 
     int networkSize[50] = {
@@ -85,13 +88,16 @@ private:
         10, 8, 5, 8,
     };
 
-    //std::string randomEvents[5]{
-    //    "is having a international collaboration to learn from each other",
+    std::string randomEvents[5]{ 
+        " is having a international collaboration as a way to increase relations.",
+        " have been acquired by a parent company Zen.Inc and have started employee crossover program.",
+        " started a sustainability program to help on Earths global warming.",
+        " have decided to introduce a internship program to help students gain experience in larger and well known companies.",
+        " have cooperated in sponsering a charity event to help others in need.",
+    };
 
-    //};
-
-	Player player;                      // the hacker/player
-	Company* companies[5];     // list of all target companies
+	Player player; // the hacker/player
+	Company* companies[5]; // list of all target companies
 
 public:
 	Game();
@@ -104,7 +110,6 @@ public:
 
     void doTurn();
     void printInterface();
-    void randomEvent();
-    void randomEventCompanyGenerator();
+    void randomEventGenerator();
 };
 
