@@ -4,29 +4,46 @@
 /* Function Members */
 void CyberSecurity::triggerEvent(const Company& companies) {}
 
-float CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) const {
-	return getGlobalCureProgress() + (speed / virus.getResilience()) * getFightStrength();
+void CyberSecurity::cureProgressSpeed(int coyAmt, float speed, const Virus& virus) {
+	float totalFightStrength = 0.0f;
+	for (int i = 0; i < coyAmt; i++) {
+		totalFightStrength += this->getFightStrength(i);
+	}
+
+	/* 
+		sets cure progression base on the fighting strength, & virus resilance.
+		- Progress Result = Current Progress + speed, affected by virus resilience * fighting stregth-of-each-company.
+	*/
+	if (virus.getResilience() > 0) {
+		this->setGlobalCureProgress(this->getGlobalCureProgress() + (speed / virus.getResilience()) * totalFightStrength);
+	}
 }
-void CyberSecurity::advanceCure(const Virus& virus, const Company *company) {
-	
-	setFightStrength(sizeof(company));
-	for (int i = 0; i < sizeof(company); i++) {
-		if (company[i].getInfectedStatus() == 2) {
-			setFightStrength(getFightStrength() - 1);
+void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
+	// sets fighting strength of each company, change scale variables via float values - in light green.
+	for (int i = 0; i < sizeof(coy); i++) {
+		if (coy[i].getInfectedStatus() == 0) {
+			this->setFightStrength(i, coy[i].getNetworkSize() / (25.0f * sizeof(coy)));
+		}
+		else if (coy[i].getInfectedStatus() == 1) {
+			this->setFightStrength(i, (coy[i].getNetworkSize() - coy[i].getNoOfInfectedComputers()) / (38.0f * sizeof(coy)));
+		}
+		else {
+			this->setFightStrength(i, 0.0f);
 		}
 	}
 
-	switch (getDetectionLevel()) {
+	// sets progress speed based on detection level
+	switch (this->getDetectionLevel()) {
 	case 1:
-		setGlobalCureProgress(cureProgressSpeed(0.01f, virus));
+		this->cureProgressSpeed(sizeof(coy), 0.01f, virus);
 		break;
 
 	case 2:
-		setGlobalCureProgress(cureProgressSpeed(0.05f, virus));
+		this->cureProgressSpeed(sizeof(coy), 0.04f, virus);
 		break;
 
 	case 3:
-		setGlobalCureProgress(cureProgressSpeed(0.1f, virus));
+		this->cureProgressSpeed(sizeof(coy), 0.1f, virus);
 		break;
 
 	default:
@@ -55,8 +72,8 @@ float CyberSecurity::getGlobalCureProgress() const{
 int CyberSecurity::getDetectionLevel() const {
 	return this->detectionLevel;
 }
-float CyberSecurity::getFightStrength() const {
-	return this->fightStrength;
+float CyberSecurity::getFightStrength(int type) const {
+	return this->fightStrength[type];
 }
 
 /* Setters */
@@ -66,22 +83,24 @@ void CyberSecurity::setGlobalCureProgress(float gcp) {
 void CyberSecurity::setDetectionLevel(int dl) {
 	this->detectionLevel = dl;
 }
-void CyberSecurity::setFightStrength(float fs) {
-	this->fightStrength = fs;
+void CyberSecurity::setFightStrength(int type, float fs) {
+	this->fightStrength[type] = fs;
 }
 
 /* Constructors / Destructors */
-CyberSecurity::CyberSecurity() {
+CyberSecurity::CyberSecurity(const Company* coy) {
+	fightStrength = new float[sizeof(coy)];
 	globalCureProgress = 0.0f;
 	cureComplete = 0;
 	detectionLevel = 0;
-	fightStrength = 0;
 }
 /*
-CyberSecurity::CyberSecurity(float gcp, int dl) {
+CyberSecurity::CyberSecurity(int dl, float gcp, const Company* coy) {
 	globalCureProgress = gcp;
 	cureComplete = 0;
 	detectionLevel = dl;
 }
 */
-CyberSecurity::~CyberSecurity() {}
+CyberSecurity::~CyberSecurity() {
+	delete[] fightStrength;
+}
