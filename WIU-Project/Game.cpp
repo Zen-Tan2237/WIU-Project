@@ -81,7 +81,7 @@ void Game::printInterface()
         std::cout << "-----------------------" << std::endl
             << i + 1 << ". " << companies[i]->getName() << std::endl
             << "Network Size: " << companies[i]->getNetworkSize() << std::endl
-            << "Security Level: " << companies[i]->getSecurityLevel() << "/10" << std::endl
+            << "Security Level: " << std::fixed << std::setprecision(1) << companies[i]->getSecurityLevel() << "/10" << std::endl
             << std::endl
             << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
             << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%"

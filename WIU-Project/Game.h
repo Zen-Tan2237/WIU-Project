@@ -63,7 +63,7 @@ private:
 
         // Finance / Retail
         10, 10, 9, 7, 6,
-        6, 4, 3, 2, 5
+        6, 4, 3, 2, 2
     };
 
     float securityLevel[50] = {
@@ -85,7 +85,7 @@ private:
 
         // Finance / Retail
         5, 5 ,3, 7, 10,
-        10, 8, 5, 8,
+        10, 8, 5, 8, 1
     };
 
 
