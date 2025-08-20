@@ -2,7 +2,7 @@
 #include <iostream>
 
 /* Function Members */
-void CyberSecurity::triggerEvent(const Company& companies) {}
+void CyberSecurity::triggerEvent(const Company& coy) {}
 
 void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 	float totalFightStrength = 0.0f;
@@ -16,6 +16,9 @@ void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 	*/
 	if (virus.getResilience() > 0) {
 		this->setGlobalCureProgress(this->getGlobalCureProgress() + (speed / virus.getResilience()) * totalFightStrength);
+	}
+	if (this->getGlobalCureProgress() > 100.0f) {
+		this->setGlobalCureProgress(100.0f);
 	}
 }
 void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
@@ -52,17 +55,17 @@ void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
 }
 
 bool CyberSecurity::isCureComplete() {
-	if (globalCureProgress >= 100) {
-		cureComplete = 1;
+	if (this->getGlobalCureProgress() == 100.0f) {
+		this->setCureComplete(1);
 	}
 	else {
-		cureComplete = 0;
+		this->setCureComplete(0);
 	}
-	return cureComplete;
+	return this->getCureComplete();
 }
 
 void CyberSecurity::displayStatus() const {
-	std::cout << "Status " << globalCureProgress << "%\n";
+	std::cout << "Status " << this->getGlobalCureProgress() << "%\n";
 }
 
 /* Getters */
@@ -74,6 +77,9 @@ int CyberSecurity::getDetectionLevel() const {
 }
 float CyberSecurity::getFightStrength(int type) const {
 	return this->fightStrength[type];
+}
+bool CyberSecurity::getCureComplete() const {
+	return this->cureComplete;
 }
 int CyberSecurity::getMaxCompany() const {
 	return this->maxCompany;
@@ -88,6 +94,9 @@ void CyberSecurity::setDetectionLevel(int dl) {
 }
 void CyberSecurity::setFightStrength(int type, float fs) {
 	this->fightStrength[type] = fs;
+}
+void CyberSecurity::setCureComplete(bool cc) {
+	this->cureComplete = cc;
 }
 
 /* Constructors / Destructors */

@@ -33,14 +33,15 @@ public:
 	float getGlobalCureProgress() const;
 	int getDetectionLevel() const;
 	float getFightStrength(int) const;
+	bool getCureComplete() const;
 	int getMaxCompany() const;
 
 	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
 	void setFightStrength(int, float);
+	void setCureComplete(bool);
 
 	CyberSecurity(int);
 	//CyberSecurity(int, int, float);
 	~CyberSecurity();
 };
-
