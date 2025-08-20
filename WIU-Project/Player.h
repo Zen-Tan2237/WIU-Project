@@ -17,10 +17,14 @@ private:
 	enum UPGRADES {
 		// SPEED UPGRADES
 		POLYMORHPIC_ENGINE,
+		LAN_SCANNER,
+		SMB_EXPLOIT,
+		USB_PROPAGATION,
 		BOTNET_BOOST,
 		EMAIL_WORM_BOOST,
 		//COMPLEXITY/PAYLOAD UPGRADES
 		ENCRYPTION_LAYER,
+		KEYLOGGER_MODULE,
 		ROOTKIT_INJECTION,
 		BRICKING_ROUTINE,
 		DATA_WIPER,
@@ -31,17 +35,24 @@ private:
 		CODE_REFACTOR_I,
 		CODE_REFACTOR_II,
 		CODE_REFACTOR_III,
+		KILL_SWITCH,
+		SIGNATURE_MUTATION,
+		VIRTUAL_MACHINE_DETECTION,
 		NUM_UPGRADES,
 	};
 
 	std::string nameUpgrade[NUM_UPGRADES * 2] = { // First string is Name, After that is the description
 		// SPEED UPGRADES
 		"Polymorphic Engine", "The virus rewrites its code everytime it spreads to a new computer, harder to detect. Speed and complexity increase slightly",
+		"LAN Scanner", "The virus auto-scans local networks for vulnerable devices. Speed increases slighty",
+		"SMB Exploit", "The virus exploits the Windows file sharing vulnerability. Speed increases slighty",
+		"USB Propagation", "The virus copies itself when infected device is connected to a USB Drive. Speed increases slighty",
 		"Botnet Boost", "Virus hijacks more infected PCs to spread faster. Speed increases slightly",
 		"Email Worm Boost", "Adds auto-email propagation. Speed increases significantly",
 
 		//COMPLEXITY/PAYLOAD UPGRADES
 		"Encryption Layer", "Adds obfuscation, making it harder to analyze. Increases complexity and resilience", 
+		"Keylogger Module", "The virus drops a keylogger to steal credentials. Increases complexity and slightly to payload",
 		"Rootkit Injection", "Gains stealth and deeper system access. Increases complexity and payload", 
 		"Bricking Routine", "Aggressive payload: corrupts boot sector. Significantly increase payload",
 		"Data Wiper", "Destroys company files on infection. Significantly increases complexity and payload",
@@ -53,6 +64,9 @@ private:
 		"Code Refactor I", "The code was rewritten. Sets cures progress back",
 		"Code Refactor II", "The code was rewritten. Sets cures progress back",
 		"Code Refactor III", "The code was rewritten. Sets cures progress back",
+		"Kill Switch", "The virus has a kill switch, removing itself when it detects it's being analysed. Increases resilience and slows down cure progress.",
+		"Signature Mutation", "The virus changes it's digital signature, confusing analysts. Sets cure progress back.",
+		"Virtual Machine Detection", "The virus does not run in Virtual Machines, mutually exclusive to Virtual Machine Leak",
 	};
 
 	float statsUpgrade[NUM_UPGRADES * 5]{

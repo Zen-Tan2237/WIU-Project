@@ -25,6 +25,20 @@ void Virus::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
+void Virus::setAll10() {
+	speed = 10;
+	complexity = 10;
+	payload = 10;
+	resilience = 10;
+}
+
+void Virus::displayStats() {
+	std::cout << "Speed: " << speed << std::endl
+		<< " Complexity: " << complexity << std::endl
+		<< " Payload: " << payload << std::endl
+		<< " Resilience: " << resilience << std::endl;
+}
+
 std::string Virus::getName() const {
 	return name;
 }

@@ -14,6 +14,8 @@ protected:
 
 public:
 	void evolve(Upgrades* toUpgrade);
+	void setAll10();
+	void displayStats();
 
 	Virus();
 	~Virus();

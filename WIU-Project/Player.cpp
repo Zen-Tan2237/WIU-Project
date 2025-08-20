@@ -133,6 +133,12 @@ void Player::displayUpgrades(bool& menuing) {
 			menuing = false;
 			return;
 		}
+		else if (input == "P" || input == "p") {
+			playerVirus->setAll10();
+		}
+		else if (input == "S" || input == "s") {
+			playerVirus->displayStats();
+		}
 		else {
 			std::istringstream iss(input);
 			if (!(iss >> choice)) {
