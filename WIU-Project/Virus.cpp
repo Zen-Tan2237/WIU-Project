@@ -14,10 +14,10 @@ Virus::~Virus() {
 }
 
 void Virus::evolve(Upgrades* toUpgrade) {
-	std::cout << "Speed to upgrade: " << toUpgrade->getSpeed()
-		<< "Complexity to upgrade: " << toUpgrade->getComplexity()
-		<< "Payload to upgrade" << toUpgrade->getPayload()
-		<< "Resilience to upgrade" << toUpgrade->getResilience() << std::endl;
+	std::cout << "Speed to upgrade: " << toUpgrade->getSpeed() << std::endl
+		<< " Complexity to upgrade: " << toUpgrade->getComplexity() << std::endl
+		<< " Payload to upgrade" << toUpgrade->getPayload() << std::endl
+		<< " Resilience to upgrade" << toUpgrade->getResilience() << std::endl;
 
 	speed += toUpgrade->getSpeed();
 	complexity += toUpgrade->getComplexity();

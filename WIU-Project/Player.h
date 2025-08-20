@@ -44,7 +44,7 @@ private:
 		"Rootkit Injection", "Gains stealth and deeper system access. Increases complexity and payload", 
 		"Bricking Routine", "Aggressive payload: corrupts boot sector. Significantly increase payload",
 		"Data Wiper", "Destroys company files on infection. Significantly increases complexity and payload",
-		"Antivirus Bypass", "Mimics normal system processes, increases complexity"
+		"Antivirus Bypass", "Mimics normal system processes, increases complexity",
 
 		//RESILIENCE UPGRADES
 		"Code Obfuscation I", "Obfuscates the code. Harder to cure",
@@ -56,31 +56,31 @@ private:
 
 	float statsUpgrade[NUM_UPGRADES * 5]{
 		// Polymorphic Engine
-		0.5, 0.3, 0, 0, 0,
+		0.5f, 0.3f, 0, 0, 0,
 		// Botnet Boost
-		0.3, 0, 0, 0, 0,
+		0.3f, 0, 0, 0, 0,
 		// Email Worm Boost
-		1, 0, 0, 0, 0,
+		1.f, 0, 0, 0, 0,
 		// Encryption Layer
-		0, 0.3, 0, 0.5, 0,
+		0, 0.3f, 0, 0.5f, 0,
 		// Rootkit Injection
-		0, 0.5, 0.6, 0, 0,
+		0, 0.5f, 0.6f, 0, 0,
 		// Bricking Routine
-		0, 0.6, 2, 0, 0,
+		0, 0.6f, 2.f, 0, 0,
 		// Data Wiper
-		0, 0.7, 4, 0, 0,
+		0, 0.7f, 4.f, 0, 0,
 		// Antivirus Bypass
-		0, 1, 0.2, 0, 0,
+		0, 1.f, 0.2f, 0, 0,
 		// Code Obfuscation I
-		0, 0, 0, 1, 0,
+		0, 0, 0, 1.f, 0,
 		// Code Obfuscation II
-		0, 0, 0, 2, 0,
+		0, 0, 0, 2.f, 0,
 		// Code Refactor I
-		0, 0, 0, 2, 0,
+		0, 0, 0, 2.f, 0,
 		// Code Refactor II
-		0, 0, 0, 2.5, 0,
+		0, 0, 0, 2.5f, 0,
 		// Code Refactor III
-		0, 0, 0, 3, 0,
+		0, 0, 0, 3.f, 0,
 	};
 
 public:

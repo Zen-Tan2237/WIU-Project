@@ -120,7 +120,7 @@ void Player::displayUpgrades() {
 	int choice;
 
 	do {
-		std::cout << "Enter the number of the upgrade you want to purchase: ";
+		std::cout << "Enter the number of the upgrade you want to purchase: " << std::endl;
 		for (int i = 0; i < NUM_UPGRADES; i++) {
 			if (upgradesArray[i] != nullptr) {
 				std::cout << i + 1 << ". " << upgradesArray[i]->getName() << std::endl;
