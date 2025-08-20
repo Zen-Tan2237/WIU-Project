@@ -107,31 +107,50 @@ void Player::parseUpgrades() {
 }
 void Player::update(){
 	std::string upgrade;
-	std::cout << "Enter to continue, U to open Upgrade Menu";
+	std::cout << "Enter to continue, U to open Upgrade Menu \n";
 	do {
 		getline(std::cin, upgrade);
-	} while (!(upgrade == "" || upgrade == "U"));
-	if (upgrade == "U") {
-		displayUpgrades();
+	} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
+	bool menuing = true;
+	while (menuing == true) {
+		if (upgrade == "U" || upgrade == "u") {
+			displayUpgrades(menuing);
+		}
+		else {
+			menuing = false;
+		}
 	}
 }
-void Player::displayUpgrades() {
+void Player::displayUpgrades(bool menuing) {
 	std::cout << "Available Upgrades: " << std::endl;
-	int choice;
-
+	std::string input = "";
+	int choice = -1;
 	do {
-		std::cout << "Enter the number of the upgrade you want to purchase: " << std::endl;
+		std::cout << "Enter the number of the upgrade you want to purchase(or E to exit): \n" << std::endl;
 		for (int i = 0; i < NUM_UPGRADES; i++) {
 			if (upgradesArray[i] != nullptr) {
 				std::cout << i + 1 << ". " << upgradesArray[i]->getName() << std::endl;
 			}
 		}
-		std::cin >> choice;
-		choice -= 1;
+		std::cin >> input;
+		if (input == "E" || input == "e") {
+			menuing = false;
+			return;
+		}
+		else {
+			std::istringstream iss(input);
+			if (!(iss >> choice)) {
+				std::cout << "Invalid input. Please enter a number or 'E' to exit." << std::endl;
+				choice = -1;
+			}
+			else {
+				choice -= 1;
+			}
+		}
 	} while (choice < 0 || choice >= NUM_UPGRADES || upgradesArray[choice] == nullptr);
 
 	playerVirus->evolve(upgradesArray[choice]);
-	std::cout << "You have purchased the upgrade: "
+	std::cout << "You have purchased the upgrade:\n "
 		<< upgradesArray[choice]->getName() << std::endl;
 
 	delete upgradesArray[choice];

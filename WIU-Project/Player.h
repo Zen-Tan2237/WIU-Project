@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include<sstream>
 #include "Virus.h"
 #include "Company.h"
 
@@ -92,7 +93,7 @@ public:
 
 	void setInitials(Company* companyList[]);
 	void update();
-	void displayUpgrades();
+	void displayUpgrades(bool menuing);
 
 	void parseUpgrades();
 
