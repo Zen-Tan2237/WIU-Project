@@ -10,18 +10,19 @@ private:
 	float complexity;
 	float payload;
 	float resilience;
+	float cost;
 	std::string desc;
 
 public:
-	std::string getName();
-	float getSpeed();
-	float getComplexity();
-	float getPayload();
-	float getResilience();
-	std::string getDesc();
+	std::string getName() const;
+	float getSpeed() const;
+	float getComplexity() const;
+	float getPayload() const;
+	float getResilience() const;
+	std::string getDesc() const;
 
 	Upgrades();
-	Upgrades(std::string name, std::string desc, float speed, float stealth, float payload, float resilience);
+	Upgrades(std::string name, std::string desc, float speed, float stealth, float payload, float resilience, float cost);
 	~Upgrades();
 };
 

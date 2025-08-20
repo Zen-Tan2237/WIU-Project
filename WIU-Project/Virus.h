@@ -13,7 +13,7 @@ protected:
 	float resilience;
 
 public:
-	void evolve(Upgrades& toUpgrade);
+	void evolve(Upgrades* toUpgrade);
 
 	Virus();
 	~Virus();

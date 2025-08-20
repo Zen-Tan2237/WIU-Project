@@ -2,12 +2,21 @@
 #include "Worm.h"
 
 Player::Player() {
+	for (int i = 0; i < NUM_UPGRADES; i++) {
+		upgradesArray[i] = nullptr;
+	}
 	hackingPoints = 0;
 	companyChoice = 0;
+	maxCompany = 0;
 	playerVirus = nullptr;
 }
 Player::~Player() {
-
+	for (int i = 0; i < NUM_UPGRADES; i++) {
+		delete upgradesArray[i];
+		upgradesArray[i] = nullptr;
+	}
+	delete playerVirus;
+	playerVirus = nullptr;
 }
 
 void Player:: setHackingPoints(int hackingPoints) {
@@ -89,10 +98,11 @@ void Player::parseUpgrades() {
 				statsUpgrade[parserIndex2], 
 				statsUpgrade[parserIndex2 + 1], 
 				statsUpgrade[parserIndex2 + 2], 
-				statsUpgrade[parserIndex2 + 3]
+				statsUpgrade[parserIndex2 + 3],
+				statsUpgrade[parserIndex2 + 4]
 		);
 		parserIndex1 += 2;
-		parserIndex2 += 4;
+		parserIndex2 += 5;
 	}
 }
 void Player::update(){
