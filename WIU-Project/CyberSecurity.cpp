@@ -19,13 +19,16 @@ void CyberSecurity::cureProgressSpeed(int coyAmt, float speed, const Virus& viru
 	}
 }
 void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
+	int coyArraySize_Byte = sizeof(coy);
+	int coyArraySize = coyArraySize_Byte / sizeof(coy[0]);
+	
 	// sets fighting strength of each company, change scale variables via float values - in light green.
-	for (int i = 0; i < sizeof(coy); i++) {
+	for (int i = 0; i < coyArraySize; i++) {
 		if (coy[i].getInfectedStatus() == 0) {
-			this->setFightStrength(i, coy[i].getNetworkSize() / (25.0f * sizeof(coy)));
+			this->setFightStrength(i, coy[i].getNetworkSize() / (25.0f * coyArraySize));
 		}
 		else if (coy[i].getInfectedStatus() == 1) {
-			this->setFightStrength(i, (coy[i].getNetworkSize() - coy[i].getNoOfInfectedComputers()) / (38.0f * sizeof(coy)));
+			this->setFightStrength(i, (coy[i].getNetworkSize() - coy[i].getNoOfInfectedComputers()) / (38.0f * coyArraySize));
 		}
 		else {
 			this->setFightStrength(i, 0.0f);
@@ -35,15 +38,15 @@ void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
 	// sets progress speed based on detection level
 	switch (this->getDetectionLevel()) {
 	case 1:
-		this->cureProgressSpeed(sizeof(coy), 0.01f, virus);
+		this->cureProgressSpeed(coyArraySize, 0.01f, virus);
 		break;
 
 	case 2:
-		this->cureProgressSpeed(sizeof(coy), 0.04f, virus);
+		this->cureProgressSpeed(coyArraySize, 0.04f, virus);
 		break;
 
 	case 3:
-		this->cureProgressSpeed(sizeof(coy), 0.1f, virus);
+		this->cureProgressSpeed(coyArraySize, 0.1f, virus);
 		break;
 
 	default:
