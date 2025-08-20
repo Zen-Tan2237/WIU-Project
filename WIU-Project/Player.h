@@ -11,7 +11,7 @@ class Player
 private:
 	int hackingPoints;
 	int companyChoice;
-	static const int maxCompany;
+	int maxCompany;
 	Virus* playerVirus; 
 
 	enum UPGRADES {

@@ -7,6 +7,7 @@ Player::Player() {
 	}
 	hackingPoints = 0;
 	companyChoice = 0;
+	maxCompany = 0;
 	playerVirus = nullptr;
 }
 Player::~Player() {
@@ -35,7 +36,7 @@ void Player::setCompanyChoice(int choice){
 }
 
 void Player::setMaxCompany(int maxCompany){
-	this->maxCompany = maxCompany;
+	this-> maxCompany = maxCompany;
 }
 
 Virus* Player::getPlayerVirus() const {
