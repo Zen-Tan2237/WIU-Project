@@ -96,10 +96,10 @@ int Company::calculateInfected()
 
 void Company::calculateSpread(Company* companies[])
 {
-	float speedMult = 1.0 + 0.02 * (virus->getSpeed() - 1);
+	float speedMult = 1.0 + 0.01 * (virus->getSpeed() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
 	float advMult = 1.0 + 0.01 * advantage;
-	float networkSizeMult = 1.0 + 0.02 * networkSize;
+	float networkSizeMult = 1.0 + 0.01 * networkSize;
 
 
 	// probability calculation
@@ -108,7 +108,7 @@ void Company::calculateSpread(Company* companies[])
 	float probability = 0.01 * speedMult * advMult * infectedFrac * networkSizeMult;
 
 	if (probability < 0.0f) probability = 0.0f; // always at least 1% chance
-	if (probability > 0.01f) probability = 0.01f;  // cap at 1%
+	if (probability > 0.02f) probability = 0.02f;  // cap at 1%
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
@@ -123,7 +123,24 @@ void Company::calculateSpread(Company* companies[])
 		} while (companies[temp]->getInfectedStatus() != 0 && attempts < 100);
 
 		if (companies[temp]->getNoOfInfectedComputers() == 0) {
-			companies[temp]->setNoOfInfectedComputers(1);
+			float advantage = companies[temp]->securityLevel - virus->getComplexity();
+
+			float probability = 0.0f;
+
+			if (advantage < -2) {
+				probability = 1.0f; // guaranteed
+			}
+			else {
+				probability = 1.0f / std::pow(1.5f, advantage + 2);
+			}
+
+			std::cout << companies[temp]->getName() << " | " << probability << std::endl;
+			triggers = (rand() % 100) < (int)(probability * 100.0);
+
+			if (triggers) {
+				std::cout << "Virus managed to spread to " << companies[temp]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
+				companies[temp]->setNoOfInfectedComputers(1);
+			}
 		}
 		else {
 			int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers
@@ -137,7 +154,7 @@ void Company::calculateSpread(Company* companies[])
 	}
 }
 
-int Company::getInfectedStatus() const
+float Company::getInfectedStatus() const
 {	
 	return infectedStatus;
 }

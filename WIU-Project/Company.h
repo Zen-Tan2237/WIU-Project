@@ -21,7 +21,7 @@ public:
 	~Company();
 
 	// Getters and Setters
-	int getInfectedStatus() const;
+	float getInfectedStatus() const;
 	int getNoOfInfectedComputers() const;
 	std::string getName() const;
 	int getNetworkSize() const;
