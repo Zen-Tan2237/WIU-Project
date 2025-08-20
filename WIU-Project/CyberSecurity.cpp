@@ -88,8 +88,8 @@ void CyberSecurity::setFightStrength(int type, float fs) {
 }
 
 /* Constructors / Destructors */
-CyberSecurity::CyberSecurity(const Company* coy) {
-	fightStrength = new float[sizeof(coy)];
+CyberSecurity::CyberSecurity(int coyamt) {
+	fightStrength = new float[coyamt];
 	globalCureProgress = 0.0f;
 	cureComplete = 0;
 	detectionLevel = 0;
