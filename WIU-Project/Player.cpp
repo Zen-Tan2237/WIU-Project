@@ -117,7 +117,7 @@ void Player::update() {
 		}
 	}
 }
-void Player::displayUpgrades(bool menuing) {
+void Player::displayUpgrades(bool& menuing) {
 	std::cout << "Available Upgrades: " << std::endl;
 	std::string input = "";
 	int choice = -1;

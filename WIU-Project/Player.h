@@ -93,7 +93,7 @@ public:
 
 	void setInitials(Company* companyList[]);
 	void update();
-	void displayUpgrades(bool menuing);
+	void displayUpgrades(bool& menuing);
 
 	void parseUpgrades();
 
