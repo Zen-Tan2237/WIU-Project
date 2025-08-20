@@ -111,5 +111,25 @@ void Player::update(){
 	do {
 		getline(std::cin, upgrade);
 	} while (!(upgrade == "" || upgrade == "U"));
+	if (upgrade == "U") {
+		displayUpgrades();
+	}
 }
-
+void Player::displayUpgrades() {
+	std::cout << "Available Upgrades: " << std::endl;
+	int choice;
+	do {
+		std::cout << "Enter the number of the upgrade you want to purchase: ";
+		for (int i = 0; i < NUM_UPGRADES; i++) {
+			if (upgradesArray[i] != nullptr) {
+				std::cout << i + 1 << ". " << upgradesArray[i]->getName() << std::endl;
+			}
+		}
+			std::cin >> choice;
+	}
+	while (choice < 1 || choice > NUM_UPGRADES && upgradesArray[choice-1]!=nullptr);
+	playerVirus->evolve(upgradesArray[choice - 1]);
+	std::cout << "You have purchased the upgrade: " << upgradesArray[choice - 1]->getName() << std::endl;
+	delete upgradesArray[choice - 1];
+	upgradesArray[choice - 1] = nullptr;
+}
