@@ -20,12 +20,12 @@ void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 }
 void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
 	// sets fighting strength of each company, change scale variables via float values - in light green.
-	for (int i = 0; i < getMaxCompany(); i++) {
+	for (int i = 0; i < this->getMaxCompany(); i++) {
 		if (coy[i].getInfectedStatus() == 0) {
-			this->setFightStrength(i, coy[i].getNetworkSize() / (25.0f * getMaxCompany()));
+			this->setFightStrength(i, coy[i].getNetworkSize() / (25.0f * this->getMaxCompany()));
 		}
 		else if (coy[i].getInfectedStatus() == 1) {
-			this->setFightStrength(i, (coy[i].getNetworkSize() - coy[i].getNoOfInfectedComputers()) / (38.0f * getMaxCompany()));
+			this->setFightStrength(i, (coy[i].getNetworkSize() - coy[i].getNoOfInfectedComputers()) / (38.0f * this->getMaxCompany()));
 		}
 		else {
 			this->setFightStrength(i, 0.0f);
