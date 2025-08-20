@@ -7,7 +7,6 @@ Player::Player() {
 	}
 	hackingPoints = 0;
 	companyChoice = 0;
-	maxCompany = 0;
 	playerVirus = nullptr;
 }
 Player::~Player() {
