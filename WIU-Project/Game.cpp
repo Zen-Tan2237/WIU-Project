@@ -33,16 +33,22 @@ void Game::initGame()
             temp = rand() % 50;
         } while (companyNames[temp] == "none");
         
-        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 501) - 250), securityLevel[temp] + (rand() % 11) / 10 - 0.5f);
+        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 501) - 250), securityLevel[temp] + (rand() % 11) / 10 - 0.5f, maxCompany);
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
     
 
     //random events init
-    //for (int i = 0; i < 5; 1++)
+    //for (int i = 0; i < 5; i++)
     //{
-    //    rand() % 5
+    //    int A = rand() % 5;
+    //    int B;
+    //    bool BNotA = false;
+    //    while (BNotA)
+    //    {
+    //        B = rand() % 5;
+    //    }
     //}
     
 }
