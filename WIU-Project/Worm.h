@@ -5,7 +5,7 @@ class Worm : public Virus
 public:
 
 	Worm();
-	Worm(int speed, int stealth, int payload, int resilience);
+	Worm(float speed, float stealth, float payload, float resilience);
 	~Worm();
 };
 
