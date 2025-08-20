@@ -127,6 +127,7 @@
     <ClCompile Include="CyberSecurity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="News.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Upgrades.cpp" />
     <ClCompile Include="Virus.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Company.h" />
     <ClInclude Include="CyberSecurity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="News.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Upgrades.h" />
     <ClInclude Include="Virus.h" />
