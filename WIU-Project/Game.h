@@ -16,6 +16,8 @@ private:
 	int tickInterval;
 	bool isGameRunning;
 	int maxCompany = 5;
+    int companyA;
+    int companyB;
 
 	std::string companyNames[50] = {
         // Tech
@@ -46,7 +48,7 @@ private:
 
         // Hardware / Electronics
         9, 8, 6, 7, 7,
-        7, 4, 4, 3, 2,
+        7, 4, 3, 3, 2,
 
         // Food & Beverage
         10, 8, 7, 9, 9,
@@ -83,7 +85,11 @@ private:
         10, 8, 5, 8,
     };
 
-    std::string randomEvents[5];
+    //std::string randomEvents[5]{
+    //    "is having a international collaboration to learn from each other",
+
+    //};
+
 	Player player;                      // the hacker/player
 	Company* companies[5];     // list of all target companies
 
@@ -99,5 +105,6 @@ public:
     void doTurn();
     void printInterface();
     void randomEvent();
+    void randomEventCompanyGenerator();
 };
 

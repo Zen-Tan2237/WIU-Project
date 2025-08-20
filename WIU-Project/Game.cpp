@@ -37,20 +37,6 @@ void Game::initGame()
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
-    
-
-    //random events init
-    //for (int i = 0; i < 5; i++)
-    //{
-    //    int A = rand() % 5;
-    //    int B;
-    //    bool BNotA = false;
-    //    while (BNotA)
-    //    {
-    //        B = rand() % 5;
-    //    }
-    //}
-    
 }
 
 int Game::getCurrentTick() const
@@ -93,6 +79,7 @@ void Game::printInterface()
         std::cout << i + 1 << ". " << companies[i]->getName() << std::endl
             << "Network Size: " << companies[i]->getNetworkSize() << std::endl
             << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
+            << "Security Level: " << companies[i]->getSecurityLevel() << std::endl
             << std::endl;
         std::cout << std::endl;
     }
@@ -101,4 +88,18 @@ void Game::printInterface()
 void Game::randomEvent()
 {
         
+}
+
+void Game::randomEventCompanyGenerator()
+{
+    companyA = rand() % 5;
+    bool BNotA = false;
+    while (BNotA)
+    {
+        companyB = rand() % 5;
+        if (companyA != companyB)
+        {
+            BNotA = true;
+        }
+    }
 }
