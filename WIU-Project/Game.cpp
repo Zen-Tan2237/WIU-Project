@@ -64,7 +64,7 @@ void Game::doTurn()
     // update company infectivity
     for (int i = 0; i < tickInterval; i++) {
         for (int j = 0; j < maxCompany;  j++) {
-            companies[j]->update();
+            companies[j]->update(*companies);
         }
         currentTick++;
     }
