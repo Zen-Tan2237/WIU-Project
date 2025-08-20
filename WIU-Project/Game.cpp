@@ -77,13 +77,13 @@ void Game::printInterface()
 {
     system("cls ");
     for (int i = 0; i < maxCompany; i++) {
-        std::cout << "---------------" << std::endl
+        std::cout << "-----------------------" << std::endl
             << i + 1 << ". " << companies[i]->getName() << std::endl
             << "Network Size: " << companies[i]->getNetworkSize() << std::endl
-            << "Security Level: " << companies[i]->getSecurityLevel() << std::endl
+            << "Security Level: " << companies[i]->getSecurityLevel() << "/10" << std::endl
             << std::endl
             << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
-            << "Percentage Infected: " << companies[i]->getInfectedStatus() * 100 
+            << "Percentage Infected: " << companies[i]->getInfectedStatus() * 100.0f << "%"
             << std::endl;
         std::cout << std::endl; 
     }
@@ -94,19 +94,19 @@ void Game::randomEventGenerator()
     eventTrigger = rand() % 100;
         if (eventTrigger >= 90)
         {
-            companyA = rand() % 50;
-            bool BNotA = false;
-            while (BNotA)
-            {
-                companyB = rand() % 50;
-                if (companyA != companyB)
-                {
-                    BNotA = true;
-                }
-            }
+            //companyA = rand() % 50;
+            //bool BNotA = false;
+            //while (BNotA)
+            //{
+            //    companyB = rand() % 50;
+            //    if (companyA != companyB)
+            //    {
+            //        BNotA = true;
+            //    }
+            //}
             
             // print out chosen companies chosen and their event
-            std::cout << companyNames[companyA] << " and " << companyNames[companyB] << randomEvents[rand() % 5] << std::endl;
+            //std::cout << companyNames[companyA] << " and " << companyNames[companyB] << randomEvents[rand() % 5] << std::endl;
             
             // add code to increase virus spread stuff here
         }
