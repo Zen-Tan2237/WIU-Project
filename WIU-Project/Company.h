@@ -1,4 +1,4 @@
-// V1.1.4
+// V1.1.5
 #pragma once
 #include <iostream>
 #include "Virus.h"
@@ -24,5 +24,6 @@ public:
 	int getNoOfInfectedComputers() const;
 	std::string getName() const;
 	int getNetworkSize() const;
+	
 };
 

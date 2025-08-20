@@ -19,15 +19,15 @@ private:
 
 	std::string companyNames[50] = {
         // Tech
-        "Microhard", "Pear", "Googol", "Amazin", "FaceLook",
-        "Twiddler", "Netflicks", "SnapCat", "TickTock", "DisCorded",
+        "Dihhard", "Pear", "Googly", "Amazin", "FaceLock",
+        "Twaddler", "Netflicks", "SnapChan", "TockTock", "DisCunt",
 
         // Hardware / Electronics
         "Samflung", "Sonii", "Dellusional", "Lenova", "Asuspect",
         "HPee", "Acern’t", "Intell", "AMDazed", "Nvidiugh",
 
-        // Food & Drink
-        "MacRonalds", "Bugger King", "PizzHut", "KFG", "Starbucksie",
+        // Food & Beverage
+        "MacRonalds", "Bugger King", "PieHut", "KFG", "Starbucksie",
         "Dunkin’ Dullnuts", "Substandard", "Taco Hell", "Dominosh", "Wendooz",
 
         // Auto / Transport
@@ -41,25 +41,52 @@ private:
 
     int networkSize[50] = {
         // Tech
-        9, 9, 10, 10, 10,
-        8, 8, 7, 7, 7,
+        10, 10, 10, 9, 7,
+        6, 4, 5, 3, 3,
 
         // Hardware / Electronics
         9, 8, 6, 7, 7,
-        7, 6, 9, 8, 9,
+        7, 4, 4, 3, 2,
 
-        // Food & Drink
+        // Food & Beverage
         10, 8, 7, 9, 9,
-        8, 7, 7, 8, 7,
+        8, 7, 5, 3, 1,
 
         // Auto / Transport
-        9, 8, 8, 9, 9,
-        9, 8, 8, 7, 7,
+        9, 8, 8, 9, 7,
+        6, 6, 5, 3, 3,
 
         // Finance / Retail
-        10, 9, 8, 9, 9,
-        9, 9, 8, 8, 9
+        10, 10, 9, 7, 6,
+        6, 4, 3, 2, 5
     };
+
+    float securityLevel[50] = {
+        // Tech
+        10, 10, 10, 8, 7,
+        4, 2, 5, 7, 1,
+
+        // Hardware / Electronics
+        9, 9, 1, 5, 7,
+        3, 3, 6, 8, 9,
+
+        // Food & Beverage
+        6, 6, 5, 7, 1,
+        5, 6, 7, 3, 1,
+
+        // Auto / Transport
+        8, 7, 4, 7, 4,
+        7, 5, 7, 1, 1,
+
+        // Finance / Retail
+        5, 5 ,3, 7, 10,
+        10, 8, 5, 8,
+    };
+
+    //std::string randomEvents[20]
+    //{
+    //    
+    //};
 
 	Player player;                      // the hacker/player
 	Company* companies[5];     // list of all target companies
@@ -75,5 +102,6 @@ public:
 
     void doTurn();
     void printInterface();
+    void randomEvent();
 };
 

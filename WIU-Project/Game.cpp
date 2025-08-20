@@ -33,7 +33,7 @@ void Game::initGame()
             temp = rand() % 50;
         } while (companyNames[temp] == "none");
         
-        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 1001) - 500), rand() % 11);
+        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 501) - 250), securityLevel[temp] + (rand() % 11) / 10 - 0.5f);
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
@@ -82,4 +82,9 @@ void Game::printInterface()
             << std::endl;
         std::cout << std::endl;
     }
+}
+
+void Game::randomEvent()
+{
+        
 }
