@@ -3,7 +3,7 @@
 
 int main() {
 
-	srand(time(0));
+	srand((unsigned)time(0));
 
 	Game* game = new Game;
 

@@ -19,26 +19,23 @@ Player::~Player() {
 	playerVirus = nullptr;
 }
 
-void Player:: setHackingPoints(int hackingPoints) {
+void Player::setHackingPoints(int hackingPoints) {
 	this->hackingPoints = hackingPoints;
 }
 
-int Player :: getHackingPoints()const {
+int Player::getHackingPoints() const {
 	return hackingPoints;
 }
 
-int Player::getCompanyChoice() const
-{
+int Player::getCompanyChoice() const {
 	return companyChoice;
 }
 
-void Player::setCompanyChoice(int choice)
-{
+void Player::setCompanyChoice(int choice){
 	this->companyChoice = choice;
 }
 
-void Player::setMaxCompany(int maxCompany)
-{
+void Player::setMaxCompany(int maxCompany){
 	this->maxCompany = maxCompany;
 }
 
@@ -47,7 +44,7 @@ Virus* Player::getPlayerVirus() const {
 }
 
 
-void Player :: earnPoints(int points) {
+void Player::earnPoints(int points) {
 	hackingPoints += points;
 }
 void Player::spendPoints(int cost) {
@@ -57,8 +54,7 @@ void Player::spendPoints(int cost) {
 
 }
 
-void Player::setInitials(Company* companyList[])
-{
+void Player::setInitials(Company* companyList[]){
 	int type;
 	do {
 		std::cout << "Enter your virus (1 - Worm): ";
@@ -105,7 +101,7 @@ void Player::parseUpgrades() {
 		parserIndex2 += 5;
 	}
 }
-void Player::update(){
+void Player::update() {
 	std::string upgrade;
 	std::cout << "Enter to continue, U to open Upgrade Menu \n";
 	do {
