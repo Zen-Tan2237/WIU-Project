@@ -16,7 +16,7 @@ private:
 	int currentTick;
 	int tickInterval;
 	bool isGameRunning;
-	static const int maxCompany = 5;
+	const static int maxCompany = 5;
     int companyA;
     int companyB;
     int eventTrigger;
