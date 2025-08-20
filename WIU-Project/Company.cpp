@@ -122,8 +122,11 @@ void Company::calculateSpread(Company* companies[])
 			attempts++;
 		} while (companies[temp]->getInfectedStatus() != 0 && attempts < 100);
 
+		
+
 		if (companies[temp]->getNoOfInfectedComputers() == 0) {
-			float advantage = companies[temp]->securityLevel - virus->getComplexity();
+			float advantage = companies[temp]->getSecurityLevel() - virus->getComplexity();
+			std::cout << "ALERT: " << advantage << std::endl;
 
 			float probability = 0.0f;
 
@@ -134,7 +137,6 @@ void Company::calculateSpread(Company* companies[])
 				probability = 1.0f / std::pow(1.5f, advantage + 2);
 			}
 
-			std::cout << companies[temp]->getName() << " | " << probability << std::endl;
 			triggers = (rand() % 100) < (int)(probability * 100.0);
 
 			if (triggers) {

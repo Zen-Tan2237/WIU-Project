@@ -26,10 +26,10 @@ void Virus::evolve(Upgrades* toUpgrade) {
 }
 
 void Virus::setAll10() {
-	speed = 10;
-	complexity = 10;
-	payload = 10;
-	resilience = 10;
+	speed += 10;
+	complexity += 10;
+	payload += 10;
+	resilience += 10;
 }
 
 void Virus::displayStats() {
