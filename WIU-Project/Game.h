@@ -83,11 +83,7 @@ private:
         10, 8, 5, 8,
     };
 
-    //std::string randomEvents[20]
-    //{
-    //    
-    //};
-
+    std::string randomEvents[5];
 	Player player;                      // the hacker/player
 	Company* companies[5];     // list of all target companies
 

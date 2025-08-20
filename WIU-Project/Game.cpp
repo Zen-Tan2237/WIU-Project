@@ -37,6 +37,14 @@ void Game::initGame()
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
+    
+
+    //random events init
+    //for (int i = 0; i < 5; 1++)
+    //{
+    //    rand() % 5
+    //}
+    
 }
 
 int Game::getCurrentTick() const
@@ -64,7 +72,7 @@ void Game::doTurn()
     // update company infectivity
     for (int i = 0; i < tickInterval; i++) {
         for (int j = 0; j < maxCompany;  j++) {
-            companies[j]->update(*companies);
+            companies[j]->update(companies);
         }
         currentTick++;
     }
