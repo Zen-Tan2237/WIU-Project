@@ -11,6 +11,7 @@ private:
 
 	int detectionLevel;
 	float* fightStrength;
+	int maxCompany;
 
 	/*
 	enum events {
@@ -24,21 +25,22 @@ private:
 
 public:
 	void triggerEvent(const Company&);
-	void advanceCure(int, const Company*, const Virus&);
-	void cureProgressSpeed(int, float, const Virus&);
+	void cureProgressSpeed(float, const Virus&);
+	void advanceCure(const Company*, const Virus&);
 	bool isCureComplete();
 	void displayStatus() const;
 
 	float getGlobalCureProgress() const;
 	int getDetectionLevel() const;
 	float getFightStrength(int) const;
+	int getMaxCompany() const;
 
 	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
 	void setFightStrength(int, float);
 
-	CyberSecurity(const Company*);
-	//CyberSecurity(int, float, const Company*);
+	CyberSecurity(int);
+	//CyberSecurity(int, int, float);
 	~CyberSecurity();
 };
 
