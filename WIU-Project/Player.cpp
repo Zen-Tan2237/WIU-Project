@@ -2,12 +2,21 @@
 #include "Worm.h"
 
 Player::Player() {
+	for (int i = 0; i < NUM_UPGRADES; i++) {
+		upgradesArray[i] = nullptr;
+	}
 	hackingPoints = 0;
 	companyChoice = 0;
+	maxCompany = 0;
 	playerVirus = nullptr;
 }
 Player::~Player() {
-
+	for (int i = 0; i < NUM_UPGRADES; i++) {
+		delete upgradesArray[i];
+		upgradesArray[i] = nullptr;
+	}
+	delete playerVirus;
+	playerVirus = nullptr;
 }
 
 void Player:: setHackingPoints(int hackingPoints) {
@@ -71,6 +80,30 @@ void Player::setInitials(Company* companyList[])
 
 	companyList[companyChoice - 1]->setNoOfInfectedComputers(1);
 
+	parseUpgrades();
+}
+
+//**************241199A**************
+// Written by Zen
+// Name: parseUpgrades
+// Description: Parses the array of data in player.h
+// 
+//**************241199A**************
+void Player::parseUpgrades() {
+	int parserIndex1 = 0;
+	int parserIndex2 = 0;
+	for (int i = 0; i < NUM_UPGRADES; i++) {
+		upgradesArray[i] = new Upgrades(nameUpgrade[parserIndex1], 
+				nameUpgrade[parserIndex1 + 1], 
+				statsUpgrade[parserIndex2], 
+				statsUpgrade[parserIndex2 + 1], 
+				statsUpgrade[parserIndex2 + 2], 
+				statsUpgrade[parserIndex2 + 3],
+				statsUpgrade[parserIndex2 + 4]
+		);
+		parserIndex1 += 2;
+		parserIndex2 += 5;
+	}
 }
 void Player::update(){
 	std::string upgrade;
@@ -78,5 +111,25 @@ void Player::update(){
 	do {
 		getline(std::cin, upgrade);
 	} while (!(upgrade == "" || upgrade == "U"));
+	if (upgrade == "U") {
+		displayUpgrades();
+	}
 }
-
+void Player::displayUpgrades() {
+	std::cout << "Available Upgrades: " << std::endl;
+	int choice;
+	do {
+		std::cout << "Enter the number of the upgrade you want to purchase: ";
+		for (int i = 0; i < NUM_UPGRADES; i++) {
+			if (upgradesArray[i] != nullptr) {
+				std::cout << i + 1 << ". " << upgradesArray[i]->getName() << std::endl;
+			}
+		}
+			std::cin >> choice;
+	}
+	while (choice < 1 || choice > NUM_UPGRADES && upgradesArray[choice-1]!=nullptr);
+	playerVirus->evolve(upgradesArray[choice - 1]);
+	std::cout << "You have purchased the upgrade: " << upgradesArray[choice - 1]->getName() << std::endl;
+	delete upgradesArray[choice - 1];
+	upgradesArray[choice - 1] = nullptr;
+}

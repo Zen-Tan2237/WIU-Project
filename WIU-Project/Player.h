@@ -54,33 +54,33 @@ private:
 		"Code Refactor III", "The code was rewritten. Sets cures progress back",
 	};
 
-	float statsUpgrade[NUM_UPGRADES * 4]{
+	float statsUpgrade[NUM_UPGRADES * 5]{
 		// Polymorphic Engine
-		0.5, 0.3, 0, 0,
+		0.5, 0.3, 0, 0, 0,
 		// Botnet Boost
-		0.3, 0, 0, 0,
+		0.3, 0, 0, 0, 0,
 		// Email Worm Boost
-		1, 0, 0, 0,
+		1, 0, 0, 0, 0,
 		// Encryption Layer
-		0, 0.3, 0, 0.5,
+		0, 0.3, 0, 0.5, 0,
 		// Rootkit Injection
-		0, 0.5, 0.6, 0,
+		0, 0.5, 0.6, 0, 0,
 		// Bricking Routine
-		0, 0.6, 2, 0,
+		0, 0.6, 2, 0, 0,
 		// Data Wiper
-		0, 0.7, 4, 0,
+		0, 0.7, 4, 0, 0,
 		// Antivirus Bypass
-		0, 1, 0.2, 0,
+		0, 1, 0.2, 0, 0,
 		// Code Obfuscation I
-		0, 0, 0, 1,
+		0, 0, 0, 1, 0,
 		// Code Obfuscation II
-		0, 0, 0, 2,
+		0, 0, 0, 2, 0,
 		// Code Refactor I
-		0, 0, 0, 2,
+		0, 0, 0, 2, 0,
 		// Code Refactor II
-		0, 0, 0, 2.5,
+		0, 0, 0, 2.5, 0,
 		// Code Refactor III
-		0, 0, 0, 3
+		0, 0, 0, 3, 0,
 	};
 
 public:
@@ -92,6 +92,9 @@ public:
 
 	void setInitials(Company* companyList[]);
 	void update();
+	void displayUpgrades();
+
+	void parseUpgrades();
 
 	// Getters and Setters
 	int getHackingPoints() const;
