@@ -15,10 +15,10 @@ Company::Company()
 	networkSize = 1;
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
-	maxCompany = 0;
+	maxCompany = 1;
 }
 
-Company::Company(std::string Name, int size, int startingSecurityLevel)
+Company::Company(std::string Name, int size, float startingSecurityLevel, int maxCompany)
 {
 	companyName = Name;
 	networkSize = size;
@@ -27,7 +27,7 @@ Company::Company(std::string Name, int size, int startingSecurityLevel)
 	securityLevel = startingSecurityLevel;
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
-	maxCompany = 0;
+	this->maxCompany = maxCompany;
 }
 
 Company::~Company()
@@ -52,7 +52,7 @@ void Company::update(Company* companies[])
 			infectedStatus = 0;
 		}
 		else if (noOfInfectedComputers < networkSize) {
-			infectedStatus = noOfInfectedComputers / networkSize;
+			infectedStatus = (float)noOfInfectedComputers / (float)networkSize;
 		}
 		else {
 			infectedStatus = 1;
@@ -94,32 +94,45 @@ int Company::calculateInfected()
 	return 0;
 }
 
-float Company::calculateSpread(Company* companies[])
+void Company::calculateSpread(Company* companies[])
 {
-	for (int i = 0; i < maxCompany; i++) {
-		if (companies[i] != this) {
-			float speedMult = 1.0 + 0.15 * (virus->getSpeed() - 1);
-			float advantage = virus->getComplexity() - securityLevel;
-			float advMult = 1.0 + 0.10 * advantage;
-			float networkSizeMult = 1.0 + 0.05 * networkSize;
+	float speedMult = 1.0 + 0.02 * (virus->getSpeed() - 1);
+	float advantage = virus->getComplexity() - securityLevel;
+	float advMult = 1.0 + 0.01 * advantage;
+	float networkSizeMult = 1.0 + 0.02 * networkSize;
 
 
-			// probability calculation
-			float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
+	// probability calculation
+	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
 
-			float probability = 0.05 * speedMult * advMult * (infectedFrac * 100.0) * networkSizeMult;
+	float probability = 0.01 * speedMult * advMult * infectedFrac * networkSizeMult;
 
-			if (probability < 0.01f) probability = 0.01f; // always at least 1% chance
-			if (probability > 0.05f) probability = 0.05f;  // cap at 5%
+	if (probability < 0.0f) probability = 0.0f; // always at least 1% chance
+	if (probability > 0.01f) probability = 0.01f;  // cap at 1%
 
-			// roll probability with rand()
-			bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
+	// roll probability with rand()
+	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
 
-			if (triggers) {
-				companies[i]->setNoOfInfectedComputers(1);
+	if (triggers) {
+		int temp;
+		int attempts = 0;
 
-				break;
-			}
+		do {
+			temp = rand() % maxCompany;
+			attempts++;
+		} while (companies[temp]->getInfectedStatus() != 0 && attempts < 100);
+
+		if (companies[temp]->getNoOfInfectedComputers() == 0) {
+			companies[temp]->setNoOfInfectedComputers(1);
+		}
+		else {
+			int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers
+			int current = companies[temp]->getNoOfInfectedComputers();
+			int maxSize = companies[temp]->getNetworkSize();
+
+			companies[temp]->setNoOfInfectedComputers(
+				std::min(current + spreadAmount, maxSize)
+			);
 		}
 	}
 }
@@ -152,5 +165,10 @@ std::string Company::getName() const
 int Company::getNetworkSize() const
 {
 	return networkSize;
+}
+
+float Company::getSecurityLevel() const
+{
+	return securityLevel;
 }
 

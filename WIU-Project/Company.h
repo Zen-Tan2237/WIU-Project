@@ -17,7 +17,7 @@ private:
 public:
 	// Cons and Dest
 	Company();
-	Company(std::string Name, int size, int startingSecurityLevel); //overloaded
+	Company(std::string Name, int size, float startingSecurityLevel, int maxCompany); //overloaded
 	~Company();
 
 	// Getters and Setters
@@ -25,6 +25,7 @@ public:
 	int getNoOfInfectedComputers() const;
 	std::string getName() const;
 	int getNetworkSize() const;
+	float getSecurityLevel() const;
 
 	void setVirus(Virus* Virus);
 	void setNoOfInfectedComputers(int noOfInfectedComputers);
@@ -32,6 +33,6 @@ public:
 	// Functions
 	void update(Company* companies[]);
 	int calculateInfected();
-	float calculateSpread(Company* companies[]);
+	void calculateSpread(Company* companies[]);
 };
 
