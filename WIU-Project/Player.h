@@ -93,6 +93,8 @@ public:
 	void setInitials(Company* companyList[]);
 	void update();
 
+	void parseUpgrades();
+
 	// Getters and Setters
 	int getHackingPoints() const;
 	int getCompanyChoice() const;

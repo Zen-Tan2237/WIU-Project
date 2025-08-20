@@ -71,6 +71,29 @@ void Player::setInitials(Company* companyList[])
 
 	companyList[companyChoice - 1]->setNoOfInfectedComputers(1);
 
+	parseUpgrades();
+}
+
+//**************241199A**************
+// Written by Zen
+// Name: parseUpgrades
+// Description: Parses the array of data in player.h
+// 
+//**************241199A**************
+void Player::parseUpgrades() {
+	int parserIndex1 = 0;
+	int parserIndex2 = 0;
+	for (int i = 0; i < NUM_UPGRADES; i++) {
+		upgradesArray[i] = new Upgrades(nameUpgrade[parserIndex1], 
+				nameUpgrade[parserIndex1 + 1], 
+				statsUpgrade[parserIndex2], 
+				statsUpgrade[parserIndex2 + 1], 
+				statsUpgrade[parserIndex2 + 2], 
+				statsUpgrade[parserIndex2 + 3]
+		);
+		parserIndex1 += 2;
+		parserIndex2 += 4;
+	}
 }
 void Player::update(){
 	std::string upgrade;
