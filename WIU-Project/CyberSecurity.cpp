@@ -20,7 +20,7 @@ void CyberSecurity::cureProgressSpeed(int coyAmt, float speed, const Virus& viru
 }
 void CyberSecurity::advanceCure(const Company* coy, const Virus& virus) {
 	int coyArraySize_Byte = sizeof(coy);
-	int coyArraySize = coyArraySize_Byte / sizeof(coy[0]);
+	int coyArraySize = coyArraySize_Byte / (sizeof(coy[0])/2);
 	
 	// sets fighting strength of each company, change scale variables via float values - in light green.
 	for (int i = 0; i < coyArraySize; i++) {
