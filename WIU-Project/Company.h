@@ -7,22 +7,31 @@ class Company
 private:
 	std::string companyName;
 	int networkSize; // how big the company is 
-	int securityLevel; // defence against virus
+	float securityLevel; // defence against virus
 	float noOfInfectedComputers; // company infection based off networkSize
-	int infectedStatus; // 0 = not infected, 1 = partially infected, 2 = fully infected/company dead
+	float infectedStatus; // 0 = not infected, 0-1 = partially infected, 1 = fully infected/company dead
 	Virus* virus;
+	bool isEmailTransmissionEnabled;
+	int maxCompany;
 
 public:
+	// Cons and Dest
 	Company();
 	Company(std::string Name, int size, int startingSecurityLevel); //overloaded
 	~Company();
 
-	void update();
+	// Getters and Setters
 	int getInfectedStatus() const;
-	void setVirus(Virus* Virus);
-	void setNoOfInfectedComputers(int noOfInfectedComputers);
 	int getNoOfInfectedComputers() const;
 	std::string getName() const;
 	int getNetworkSize() const;
+
+	void setVirus(Virus* Virus);
+	void setNoOfInfectedComputers(int noOfInfectedComputers);
+
+	// Functions
+	void update(Company* companies[]);
+	int calculateInfected();
+	float calculateSpread(Company* companies[]);
 };
 
