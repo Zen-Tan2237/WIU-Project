@@ -16,7 +16,7 @@ private:
 	int currentTick;
 	int tickInterval;
 	bool isGameRunning;
-	int maxCompany = 5;
+	static const int maxCompany = 5;
     int companyA;
     int companyB;
     int eventTrigger;
@@ -91,7 +91,7 @@ private:
 
 
 	Player player; // the hacker/player
-	Company* companies[5]; // list of all target companies
+	Company* companies[maxCompany]; // list of all target companies
 
 public:
 	Game();
