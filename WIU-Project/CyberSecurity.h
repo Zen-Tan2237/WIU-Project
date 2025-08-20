@@ -24,7 +24,7 @@ private:
 
 public:
 	void triggerEvent(const Company&);
-	void advanceCure(const Company*, const Virus&);
+	void advanceCure(int, const Company*, const Virus&);
 	void cureProgressSpeed(int, float, const Virus&);
 	bool isCureComplete();
 	void displayStatus() const;
