@@ -1,8 +1,7 @@
 #pragma once
 
-#include <string>
-#include <random>
 #include "Company.h"
+#include "Virus.h"
 
 
 class CyberSecurity {
@@ -11,36 +10,35 @@ private:
 	bool cureComplete;
 
 	int detectionLevel;
-	float fightStrength;
-
+	float* fightStrength;
 
 	/*
 	enum events {
-		fireWall,
-		antiVirus,
-		itLockdowns,
+		firewall,
+		antivirus,
+		ITLockdowns,
 
-		eventsAmount
+		eventAmt
 	};
 	*/
 
 public:
 	void triggerEvent(const Company&);
-	void advanceCure(const Virus&, const Company*);
-	float cureProgressSpeed(float, const Virus&) const;
+	void advanceCure(const Company*, const Virus&);
+	void cureProgressSpeed(int, float, const Virus&);
 	bool isCureComplete();
 	void displayStatus() const;
 
 	float getGlobalCureProgress() const;
 	int getDetectionLevel() const;
-	float getFightStrength() const;
+	float getFightStrength(int) const;
 
 	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
-	void setFightStrength(float);
+	void setFightStrength(int, float);
 
-	CyberSecurity();
-	//CyberSecurity(float, int);
+	CyberSecurity(const Company*);
+	//CyberSecurity(int, float, const Company*);
 	~CyberSecurity();
 };
 
