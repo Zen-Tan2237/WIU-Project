@@ -95,52 +95,51 @@ private:
 
 	float statsUpgrade[NUM_UPGRADES * 5]{
 		// Polymorphic Engine 0
-		0.5f, 0.3f, 0, 0, 0,
+		0.5f, 0.3f, 0, 0, 1,
 		// LAN Scanner 1
-		0.4f, 0.1f, 0, 0, 0,
+		0.4f, 0.1f, 0, 0, 2,
 		// SMB Exploit 2
-		0.7f, 0, 0, 0, 0,
+		0.7f, 0, 0, 0, 3,
 		// USB Propagation 3
-		1.f, 0, 0, 0, 0,
+		1.f, 0, 0, 0, 4,
 		// Botnet Boost 4
-		0.3f, 0, 0, 0, 0,
+		0.3f, 0, 0, 0, 5,
 		// Email Worm Boost 5
-		1.f, 0, 0, 0, 0,
+		1.f, 0, 0, 0, 1,
 		// Encryption Layer 6
-		0, 0.3f, 0, 0.5f, 0,
+		0, 0.3f, 0, 0.5f, 1,
 		// Keylogger Module 7
-		0, 0.2f, 0.1f, 0, 0,
+		0, 0.2f, 0.1f, 0, 1,
 		// Rootkit Injection 8
-		0, 0.5f, 0.6f, 0, 0,
+		0, 0.5f, 0.6f, 0, 4,
 		// Bricking Routine 9
-		0, 0.6f, 2.f, 0, 0,
+		0, 0.6f, 2.f, 0, 5,
 		// Data Wiper 10
-		0, 0.7f, 4.f, 0, 0,
+		0, 0.7f, 4.f, 0, 20,
 		// Antivirus Bypass 11
-		0, 1.f, 0.2f, 0, 0,
+		0, 1.f, 0.2f, 0, 10,
 		// Code Obfuscation I 12
-		0, 0, 0, 1.f, 0,
+		0, 0, 0, 1.f, 4,
 		// Code Obfuscation II 13
-		0, 0, 0, 2.f, 0,
+		0, 0, 0, 2.f, 8,
 		// Code Refactor I 14
-		0, 0, 0, 2.f, 0,
+		0, 0, 0, 2.f, 4,
 		// Code Refactor II 15
-		0, 0, 0, 2.5f, 0,
+		0, 0, 0, 2.5f, 8,
 		// Code Refactor III 16
-		0, 0, 0, 3.f, 0,
+		0, 0, 0, 3.f, 16,
 		// Kill Switch 17
-		0, 0, 0, 2.3f, 0,
+		0, 0, 0, 2.3f, 50,
 		// Signature Mutation 18
-		0, 0, 0, 2.8f, 0,
+		0, 0, 0, 2.8f, 100,
 		// Virtual Machine Detection 19
-		0, 0, 0, 3.4f, 0
+		0, 0, 0, 3.4f, 50
 	};
 
 public:
 	Player();
 	~Player();
 
-	void earnPoints(int points);
 	void spendPoints(int cost);
 
 	void setInitials(Company* companyList[]);
