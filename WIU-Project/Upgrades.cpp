@@ -44,3 +44,7 @@ float Upgrades::getResilience() const {
 std::string Upgrades::getDesc() const {
 	return desc;
 }
+
+float Upgrades::getCost() const {
+	return cost;
+}
