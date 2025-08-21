@@ -41,6 +41,28 @@ private:
 		NUM_UPGRADES,
 	};
 
+	int dependentIndices[NUM_UPGRADES + 6]{
+		//Dependency chain 1
+		0, 1, 2, 4, -1,
+		//Depenency Chain 2
+		0, 3, 5, -1,
+		//Dependency Chain 3
+		6, 8, 11, -1,
+		//Dependency Chain 4
+		7, 10, 9, -1,
+		//Dependency Chain 5
+		14, 15, 16, 18, -1,
+		//Dependency Chain 6
+		17, -1,
+		//Dependency Chain 7
+		19, -1
+	};
+
+	int** dependencyChain;
+	int noOfChains;
+	int* lengthOfArray;
+	int* currentUpgradeIndices;
+
 	std::string nameUpgrade[NUM_UPGRADES * 2] = { // First string is Name, After that is the description
 		// SPEED UPGRADES
 		"Polymorphic Engine", "The virus rewrites its code everytime it spreads to a new computer, harder to detect. Speed and complexity increase slightly",
@@ -69,33 +91,49 @@ private:
 		"Virtual Machine Detection", "The virus does not run in Virtual Machines, mutually exclusive to Virtual Machine Leak",
 	};
 
+
+
 	float statsUpgrade[NUM_UPGRADES * 5]{
-		// Polymorphic Engine
+		// Polymorphic Engine 0
 		0.5f, 0.3f, 0, 0, 0,
-		// Botnet Boost
-		0.3f, 0, 0, 0, 0,
-		// Email Worm Boost
+		// LAN Scanner 1
+		0.4f, 0.1f, 0, 0, 0,
+		// SMB Exploit 2
+		0.7f, 0, 0, 0, 0,
+		// USB Propagation 3
 		1.f, 0, 0, 0, 0,
-		// Encryption Layer
+		// Botnet Boost 4
+		0.3f, 0, 0, 0, 0,
+		// Email Worm Boost 5
+		1.f, 0, 0, 0, 0,
+		// Encryption Layer 6
 		0, 0.3f, 0, 0.5f, 0,
-		// Rootkit Injection
+		// Keylogger Module 7
+		0, 0.2f, 0.1f, 0, 0,
+		// Rootkit Injection 8
 		0, 0.5f, 0.6f, 0, 0,
-		// Bricking Routine
+		// Bricking Routine 9
 		0, 0.6f, 2.f, 0, 0,
-		// Data Wiper
+		// Data Wiper 10
 		0, 0.7f, 4.f, 0, 0,
-		// Antivirus Bypass
+		// Antivirus Bypass 11
 		0, 1.f, 0.2f, 0, 0,
-		// Code Obfuscation I
+		// Code Obfuscation I 12
 		0, 0, 0, 1.f, 0,
-		// Code Obfuscation II
+		// Code Obfuscation II 13
 		0, 0, 0, 2.f, 0,
-		// Code Refactor I
+		// Code Refactor I 14
 		0, 0, 0, 2.f, 0,
-		// Code Refactor II
+		// Code Refactor II 15
 		0, 0, 0, 2.5f, 0,
-		// Code Refactor III
+		// Code Refactor III 16
 		0, 0, 0, 3.f, 0,
+		// Kill Switch 17
+		0, 0, 0, 2.3f, 0,
+		// Signature Mutation 18
+		0, 0, 0, 2.8f, 0,
+		// Virtual Machine Detection 19
+		0, 0, 0, 3.4f, 0
 	};
 
 public:
@@ -109,7 +147,11 @@ public:
 	void update(int noOfInfectedComputers , int networkSize);
 	void displayUpgrades(bool& menuing);
 
+	void blockUpgrade();
+	void printArrays();
+
 	void parseUpgrades();
+	void parseDependencies();
 
 	// Getters and Setters
 	int getHackingPoints() const;
