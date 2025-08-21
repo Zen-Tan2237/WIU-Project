@@ -12,15 +12,15 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 	/* sets fighting strength of each company */
 	for (int i = 0; i < maxCompany; i++) {
 		bool commonization = 1;
-		float researchEfficiency = (((float)coy[i]->getNetworkSize() - (float)coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize()) * 100.0f; // percentage of uninfected computers
+		float researchEfficiency = ((float)coy[i]->getNetworkSize() - (float)coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
 		
-		if (researchEfficiency > 20.0f && isVirusDetected(*coy[i], virus)) {
+		if (isVirusDetected(*coy[i], virus)) {
 			if (coy[i]->getInfectedStatus() == 0.0f) {
-				fightStrength[i] = coy[i]->getNetworkSize() / (25.0f * maxCompany);
+				fightStrength[i] = (coy[i]->getNetworkSize() / (25.0f * maxCompany)) * researchEfficiency;
 				commonization = 0;
 			}
 			else if (coy[i]->getInfectedStatus() < 1.0f) {
-				fightStrength[i] = (coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / (25.0f * maxCompany);
+				fightStrength[i] = ((coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / (25.0f * maxCompany)) * researchEfficiency;
 				 commonization = 0;
 			}
 		}
