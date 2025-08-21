@@ -14,8 +14,8 @@ void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 		sets cure progression base on the fighting strength, virus resilience & virus complexity.
 		- Progress Result = Current Progress + speed, affected by virus resilience * fighting strength-of-each-company.
 	*/
-	if (virus.getResilience() > 0) { // ---Should virus complexcity affect the cure progress?---
-		globalCureProgress += (speed / virus.getResilience()) * totalFightStrength;
+	if (virus.getResilience() > 0 && virus.getComplexity() > 0) {
+		globalCureProgress += (speed / (virus.getResilience() * virus.getComplexity())) * totalFightStrength;
 	}
 	if (globalCureProgress > 100.0f) {
 		globalCureProgress = 100.0f;
