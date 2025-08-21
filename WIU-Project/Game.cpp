@@ -12,6 +12,9 @@ Game::Game()
     currentTick = 0;
     tickInterval = 10; // 10 = 1 day
     isGameRunning = true;
+    
+    companyA = NULL;
+    companyB = NULL;
 
     for (int i = 0; i < maxCompany; i++) {
         companies[i] = nullptr;
@@ -27,8 +30,7 @@ Game::~Game()
 }
 
 void Game::initGame()
-{
-    
+{   
     int temp;
     for (int i = 0; i < maxCompany; i++) {
         do {
@@ -61,6 +63,11 @@ void Game::doTurn()
             companies[j]->setVirus(player.getPlayerVirus());
         }
         //cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
+    }
+
+    if (currentTick % 50)
+    {
+        randomCollabGenerator();
     }
 
     // update company infectivity
@@ -98,25 +105,26 @@ void Game::printInterface()
     cyberSecurity->displayStatus();
 }
 
-void Game::randomEventGenerator()
+void Game::randomCollabGenerator()
 {
-    eventTrigger = rand() % 100;
-        if (eventTrigger >= 90)
+    //bool eventTrigger = rand() % 100;
+    //if (eventTrigger >= 95)
+    //{
+        companyA = rand() % 5;
+        // check make sure companyB is not A
+        bool BNotA = false;
+        while (BNotA)
         {
-            //companyA = rand() % 50;
-            //bool BNotA = false;
-            //while (BNotA)
-            //{
-            //    companyB = rand() % 50;
-            //    if (companyA != companyB)
-            //    {
-            //        BNotA = true;
-            //    }
-            //}
-            
-            // print out chosen companies chosen and their event
-            //std::cout << companyNames[companyA] << " and " << companyNames[companyB] << randomEvents[rand() % 5] << std::endl;
-            
-            // add code to increase virus spread stuff here
+            companyB = rand() % 5;
+            if (companyA != companyB)
+            {
+                BNotA = true;
+            }
         }
+        newZ.companyCollabNews(companyA, companyB);
+        int rand1 = rand() % 5;
+        int rand2 = rand() % 5;
+        companies[companyA]->setCollabSpreadWeightIndex(rand1, companyA);
+        companies[companyB]->setCollabSpreadWeightIndex(rand2, companyB);
+        //}
 }
