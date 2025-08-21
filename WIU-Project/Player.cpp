@@ -260,6 +260,8 @@ void Player::blockUpgrade() {
 //
 //	delete upgradesArray[choice];
 //	upgradesArray[choice] = nullptr;
+// 
+// I kinda put this thing here lol
 //}
 
 
