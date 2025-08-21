@@ -22,7 +22,7 @@ private:
 		eventAmt
 	};
 	*/
-	void detectionLevelCheck(const Company&);
+	void detectionLevelCheck();
 	bool isVirusDetected(const Company&, const Virus&) const;
 	void cureProgressSpeed(float, const Virus&);
 
