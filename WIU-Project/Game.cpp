@@ -35,7 +35,7 @@ void Game::initGame()
             temp = rand() % 50;
         } while (companyNames[temp] == "none");
         
-        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 500 + 1) - 250), securityLevel[temp] - ((rand() % 5 + 1) / 10.0f), maxCompany);
+        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 500 + 1) - 250), securityLevel[temp] - ((rand() % 5 + 1) / 10.0f), maxCompany, temp);
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }

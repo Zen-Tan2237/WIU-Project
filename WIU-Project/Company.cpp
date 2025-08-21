@@ -11,6 +11,8 @@ int Company::totalNoOfInfectedComputers = 0;
 
 Company::Company()
 {
+	this->companyIndex = 0;
+
 	infectedStatus = 0;
 	companyName = "We sell 100% halalpork";
 	securityLevel = 1;
@@ -19,12 +21,24 @@ Company::Company()
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
 	maxCompany = 1;
+	collabSpreadWeight = new float[maxCompany];
 
 	totalNetworkSize += networkSize;
+
+	for (int i = 0; i < maxCompany; i++) {
+		if (i == this->companyIndex) {
+			collabSpreadWeight[i] = 0.0f;
+		}
+		else {
+			collabSpreadWeight[i] = 1.0f;
+		}
+	}
 }
 
-Company::Company(std::string Name, int size, float startingSecurityLevel, int maxCompany)
+Company::Company(std::string Name, int size, float startingSecurityLevel, int maxCompany, int companyIndex)
 {
+	this->companyIndex = companyIndex;
+
 	companyName = Name;
 	networkSize = size;
 	infectedStatus = 0;
@@ -33,8 +47,18 @@ Company::Company(std::string Name, int size, float startingSecurityLevel, int ma
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
 	this->maxCompany = maxCompany;
+	collabSpreadWeight = new float[maxCompany];
 
 	totalNetworkSize += networkSize;
+
+	for (int i = 0; i < maxCompany; i++) {
+		if (i == this->companyIndex) {
+			collabSpreadWeight[i] = 0.0f;
+		}
+		else {
+			collabSpreadWeight[i] = 1.0f;
+		}
+	}
 }
 
 Company::~Company()
@@ -121,20 +145,50 @@ void Company::calculateSpread(Company* companies[])
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
+	int chosenSpreadCompany = -1;
 
 	if (triggers) {
-		int temp;
-		int attempts = 0;
+		//int attempts = 0;
 
-		do {
-			temp = rand() % maxCompany;
+		//new choose company spread code
+
+		int total = 0;
+		for (int i = 0; i < maxCompany; i++) {
+			total += collabSpreadWeight[i];
+		}
+
+		if (total > 0) { // has valid target
+			int r = rand() % total;
+			std::cout << "Chosen Weight: " << r << std::endl;
+
+			// find which company gets picked
+			int cumulative = 0;
+			for (int i = 0; i < maxCompany; i++) {
+				cumulative += collabSpreadWeight[i];
+				if (r < cumulative) {
+					chosenSpreadCompany = i;
+				}
+			}
+		}
+		else {
+			chosenSpreadCompany = -1;
+		}
+
+		for (int i = 0; i < maxCompany; i++) {
+			std::cout << collabSpreadWeight[i] << ", ";
+		}
+		std::cout << std::endl;
+
+		/*do {
+			chosenSpreadCompany = rand() % maxCompany;
 			attempts++;
-		} while (companies[temp]->getInfectedStatus() != 0 && attempts < 100);
+		} while (companies[chosenSpreadCompany]->getInfectedStatus() != 0 && attempts < 100);*/
 
 		
 
-		if (companies[temp]->getNoOfInfectedComputers() == 0) {
-			float advantage = companies[temp]->getSecurityLevel() - virus->getComplexity();
+		//if (companies[chosenSpreadCompany]->getNoOfInfectedComputers() == 0) {
+		if (chosenSpreadCompany != -1) {
+			float advantage = companies[chosenSpreadCompany]->getSecurityLevel() - virus->getComplexity();
 
 			float probability = 0.0f;
 
@@ -148,16 +202,16 @@ void Company::calculateSpread(Company* companies[])
 			triggers = (rand() % 100) < (int)(probability * 100.0);
 
 			if (triggers) {
-				std::cout << "Virus managed to spread to " << companies[temp]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
-				companies[temp]->setNoOfInfectedComputers(1);
+				std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
+				companies[chosenSpreadCompany]->setNoOfInfectedComputers(1);
 			}
 		}
 		else {
-			int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers
-			int current = companies[temp]->getNoOfInfectedComputers();
-			int maxSize = companies[temp]->getNetworkSize();
+			int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers if already infected there
+			int current = companies[chosenSpreadCompany]->getNoOfInfectedComputers();
+			int maxSize = companies[chosenSpreadCompany]->getNetworkSize();
 
-			companies[temp]->setNoOfInfectedComputers(
+			companies[chosenSpreadCompany]->setNoOfInfectedComputers(
 				std::min(current + spreadAmount, maxSize)
 			);
 		}
@@ -179,6 +233,11 @@ void Company::setNoOfInfectedComputers(int noOfInfectedComputers)
 	totalNoOfInfectedComputers -= this->noOfInfectedComputers;
 	this->noOfInfectedComputers = noOfInfectedComputers;
 	totalNoOfInfectedComputers += this->noOfInfectedComputers;
+}
+
+void Company::setCollabSpreadWeightIndex(int spreadWeight, int companyIndex)
+{
+	collabSpreadWeight[companyIndex] = spreadWeight;
 }
 
 int Company::getNoOfInfectedComputers() const
@@ -216,4 +275,6 @@ int Company::getTotalNoOfInfectedComputers()
 {
 	return totalNoOfInfectedComputers;
 }
+
+
 

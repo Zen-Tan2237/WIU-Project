@@ -16,11 +16,14 @@ private:
 	Virus* virus;
 	bool isEmailTransmissionEnabled;
 	int maxCompany;
+	float* collabSpreadWeight;
+
+	int companyIndex;
 
 public:
 	// Cons and Dest
 	Company();
-	Company(std::string Name, int size, float startingSecurityLevel, int maxCompany); //overloaded
+	Company(std::string Name, int size, float startingSecurityLevel, int maxCompany, int companyIndex); //overloaded
 	~Company();
 
 	// Getters and Setters
@@ -35,6 +38,7 @@ public:
 
 	void setVirus(Virus* Virus);
 	void setNoOfInfectedComputers(int noOfInfectedComputers);
+	void setCollabSpreadWeightIndex(int spreadWeight, int companyIndex);
 
 	// Functions
 	void update(Company* companies[]);
