@@ -4,7 +4,10 @@
 /* Function Members */
 void CyberSecurity::triggerEvent(const Company& coy) {}
 
-/* deadComputers/brickedIn <- If this is a thing, where can I find it? */
+/* 
+deadComputers/brickedIn <- If this is a thing, where can I find it?
+Detection level has to increase, if not it won't work. | current 1-3;
+*/
 void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 	/* sets fighting strength of each company */
 	for (int i = 0; i < maxCompany; i++) {
