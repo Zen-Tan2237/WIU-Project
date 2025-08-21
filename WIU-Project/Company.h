@@ -5,6 +5,9 @@
 class Company
 {
 private:
+	static int totalNetworkSize;
+	static int totalNoOfInfectedComputers;
+
 	std::string companyName;
 	int networkSize; // how big the company is 
 	float securityLevel; // defence against virus
@@ -26,6 +29,9 @@ public:
 	std::string getName() const;
 	int getNetworkSize() const;
 	float getSecurityLevel() const;
+	static void getTotalStuff();
+	static int getTotalNetworkSize();
+	static int getTotalNoOfInfectedComputers();
 
 	void setVirus(Virus* Virus);
 	void setNoOfInfectedComputers(int noOfInfectedComputers);

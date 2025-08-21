@@ -6,6 +6,9 @@
 #include "Company.h"
 #include "Virus.h"
 
+int Company::totalNetworkSize = 0;
+int Company::totalNoOfInfectedComputers = 0;
+
 Company::Company()
 {
 	infectedStatus = 0;
@@ -16,6 +19,8 @@ Company::Company()
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
 	maxCompany = 1;
+
+	totalNetworkSize += networkSize;
 }
 
 Company::Company(std::string Name, int size, float startingSecurityLevel, int maxCompany)
@@ -28,6 +33,8 @@ Company::Company(std::string Name, int size, float startingSecurityLevel, int ma
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
 	this->maxCompany = maxCompany;
+
+	totalNetworkSize += networkSize;
 }
 
 Company::~Company()
@@ -39,7 +46,9 @@ void Company::update(Company* companies[])
 	if (infectedStatus < 1) {
 		// logic for infection level in the company
 		if (noOfInfectedComputers > 0 && noOfInfectedComputers < networkSize) {
-			noOfInfectedComputers += calculateInfected();
+			int temp = calculateInfected();
+			noOfInfectedComputers += temp;
+			totalNoOfInfectedComputers += temp;
 		}
 
 		// get infection status
@@ -71,7 +80,7 @@ int Company::calculateInfected()
 	// probability calculation
 	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
 
-	float probability = 0.05 * speedMult * advMult * (infectedFrac * 100.0);
+	float probability = 0.05 * speedMult * advMult * (infectedFrac * 1000.0);
 
 	if (probability < 0.01f) probability = 0.01f; // always at least 1% chance
 	if (probability > 0.1f) probability = 0.1f;  // cap at 10%
@@ -107,8 +116,8 @@ void Company::calculateSpread(Company* companies[])
 
 	float probability = 0.01 * speedMult * advMult * infectedFrac * networkSizeMult;
 
-	if (probability < 0.0f) probability = 0.0f; // always at least 1% chance
-	if (probability > 0.02f) probability = 0.02f;  // cap at 1%
+	if (probability < 0.001f) probability = 0.001f; // always at least 0.1% chance
+	if (probability > 0.03f) probability = 0.03f;  // cap at 3%
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
@@ -126,7 +135,6 @@ void Company::calculateSpread(Company* companies[])
 
 		if (companies[temp]->getNoOfInfectedComputers() == 0) {
 			float advantage = companies[temp]->getSecurityLevel() - virus->getComplexity();
-			std::cout << "ALERT: " << advantage << std::endl;
 
 			float probability = 0.0f;
 
@@ -134,7 +142,7 @@ void Company::calculateSpread(Company* companies[])
 				probability = 1.0f; // guaranteed
 			}
 			else {
-				probability = 1.0f / std::pow(2.0f, advantage + 2);
+				probability = 1.0f / std::pow(1.5f, advantage + 2);
 			}
 
 			triggers = (rand() % 100) < (int)(probability * 100.0);
@@ -168,7 +176,9 @@ void Company::setVirus(Virus* Virus)
 
 void Company::setNoOfInfectedComputers(int noOfInfectedComputers)
 {
+	totalNoOfInfectedComputers -= this->noOfInfectedComputers;
 	this->noOfInfectedComputers = noOfInfectedComputers;
+	totalNoOfInfectedComputers += this->noOfInfectedComputers;
 }
 
 int Company::getNoOfInfectedComputers() const
@@ -189,5 +199,21 @@ int Company::getNetworkSize() const
 float Company::getSecurityLevel() const
 {
 	return securityLevel;
+}
+
+void Company::getTotalStuff()
+{
+	std::cout << "Total Network Size: " << totalNetworkSize << std::endl
+		<< "Total Number Of Infected Computers: " << totalNoOfInfectedComputers << std::endl;
+}
+
+int Company::getTotalNetworkSize()
+{
+	return totalNetworkSize;
+}
+
+int Company::getTotalNoOfInfectedComputers()
+{
+	return totalNoOfInfectedComputers;
 }
 
