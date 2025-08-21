@@ -164,7 +164,7 @@ void Player::printArrays() {
 	}
 }
 
-void Player::update() {
+void Player::update(int noOfInfectedComputers, int networkSize) {
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0) {
 			int probability = (rand() % 10);
