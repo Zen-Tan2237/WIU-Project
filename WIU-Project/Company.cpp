@@ -42,11 +42,6 @@ void Company::update(Company* companies[])
 			noOfInfectedComputers += calculateInfected();
 		}
 
-		// logic for spreading between companies
-		if (isEmailTransmissionEnabled) {
-			calculateSpread(companies);
-		}
-
 		// get infection status
 		if (noOfInfectedComputers == 0) {
 			infectedStatus = 0;
@@ -58,6 +53,11 @@ void Company::update(Company* companies[])
 			infectedStatus = 1;
 			noOfInfectedComputers = networkSize;
 		}
+	}
+
+	// logic for spreading between companies
+	if (isEmailTransmissionEnabled) {
+		calculateSpread(companies);
 	}
 }
 
@@ -134,7 +134,7 @@ void Company::calculateSpread(Company* companies[])
 				probability = 1.0f; // guaranteed
 			}
 			else {
-				probability = 1.0f / std::pow(1.5f, advantage + 2);
+				probability = 1.0f / std::pow(2.0f, advantage + 2);
 			}
 
 			triggers = (rand() % 100) < (int)(probability * 100.0);

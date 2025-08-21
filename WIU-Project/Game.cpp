@@ -87,6 +87,10 @@ void Game::printInterface()
             << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%"
             << std::endl;
         std::cout << std::endl; 
+
+        if (player.getPlayerVirus() != nullptr) {
+            std::cout << "Debug (Advantage Count): " << companies[i]->getSecurityLevel() - player.getPlayerVirus()->getComplexity() << std::endl;
+        }
     }
 }
 
