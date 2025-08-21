@@ -9,6 +9,7 @@
 #include "Company.h"
 #include "Player.h"
 #include "CyberSecurity.h"
+#include "News.h"
 
 class Game
 {
@@ -19,8 +20,6 @@ private:
 	const static int maxCompany = 5;
     int companyA;
     int companyB;
-    int eventTrigger;
-    int randomEventChosen;
 
 	std::string companyNames[50] = {
         // Tech
@@ -93,6 +92,7 @@ private:
 	Player player; // the hacker/player
     CyberSecurity* cyberSecurity;
 	Company* companies[maxCompany]; // list of all target companies
+    News newZ;
 
 public:
 	Game();
@@ -105,6 +105,6 @@ public:
 
     void doTurn();
     void printInterface();
-    void randomEventGenerator();
+    void randomCollabGenerator();
 };
 
