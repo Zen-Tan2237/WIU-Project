@@ -18,6 +18,7 @@ Game::Game()
     }
 
     std::cout << "Game instantiated" << std::endl;
+    cyberSecurity = new CyberSecurity(maxCompany);
 }
 
 Game::~Game()
@@ -34,7 +35,7 @@ void Game::initGame()
             temp = rand() % 50;
         } while (companyNames[temp] == "none");
         
-        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 501) - 250), securityLevel[temp] + (((rand() % 11) / 10) - 0.5f), maxCompany);
+        companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 500 + 1) - 250), securityLevel[temp] - ((rand() % 5 + 1) / 10.0f), maxCompany);
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
@@ -56,10 +57,10 @@ void Game::doTurn()
     if (currentTick == 0) {
         player.setMaxCompany(maxCompany);
         player.setInitials(companies);
-
         for (int j = 0; j < maxCompany; j++) {
             companies[j]->setVirus(player.getPlayerVirus());
         }
+        //cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
     }
 
     // update company infectivity
@@ -92,6 +93,7 @@ void Game::printInterface()
             std::cout << "Debug (Advantage Count): " << companies[i]->getSecurityLevel() - player.getPlayerVirus()->getComplexity() << std::endl;
         }
     }
+    cyberSecurity->displayStatus();
 }
 
 void Game::randomEventGenerator()

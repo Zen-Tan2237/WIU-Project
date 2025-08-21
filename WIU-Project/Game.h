@@ -91,6 +91,7 @@ private:
 
 
 	Player player; // the hacker/player
+    CyberSecurity* cyberSecurity;
 	Company* companies[maxCompany]; // list of all target companies
 
 public:
