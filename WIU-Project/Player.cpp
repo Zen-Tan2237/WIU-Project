@@ -4,9 +4,10 @@ Player::Player() {
 	for (int i = 0; i < NUM_UPGRADES; i++) {
 		upgradesArray[i] = nullptr;
 	}
-	hackingPoints = 0;
+	hackingPoints = 5;
 	companyChoice = 0;
 	maxCompany = 0;
+	infectedComputersPrevious = 0;
 	playerVirus = nullptr;
 }
 Player::~Player() {
@@ -103,10 +104,26 @@ void Player::parseUpgrades() {
 void Player::update(int noOfInfectedComputers , int networkSize) {
 	srand( time(0));
 	std::string upgrade;
+	if (noOfInfectedComputers - infectedComputersPrevious > 0) {
+			int probability = (rand() % 10);
+			if (probability > 4) {
+				if (noOfInfectedComputers < networkSize/(maxCompany*100)) {
+					hackingPoints += rand() % 2;
+				}
+				else if(noOfInfectedComputers < networkSize / (maxCompany * 10)) {
+					hackingPoints += rand()% 2 + 1 ;
+				}
+				else {
+					hackingPoints += rand() % 4 + 1;
+				}
+
+			}
+	}
+	infectedComputersPrevious = noOfInfectedComputers;
+	std::cout << "Hacker Points: " << hackingPoints << std::endl;
 	std::cout << "Enter to continue, U to open Upgrade Menu \n";
 	do {
 		getline(std::cin, upgrade);
-		std::cout << "Hacker Points: " << hackingPoints << std::endl;
 	} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
 	bool menuing = true;
 	while (menuing == true) {
