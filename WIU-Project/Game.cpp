@@ -71,8 +71,10 @@ void Game::doTurn()
         currentTick++;
     }
 
+    Company::getTotalStuff();
+
     // update player chioces
-    player.update();
+    player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize());
 }
 
 void Game::printInterface()

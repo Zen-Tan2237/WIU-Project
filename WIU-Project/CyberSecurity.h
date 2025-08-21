@@ -25,8 +25,14 @@ private:
 
 public:
 	void triggerEvent(const Company&);
+
+	int detectionThreshold_individual(const Company&) const;
+	int detectionThreshold_global(const Company&) const;
+
+	bool isVirusDetected(const Company&, const Virus&) const;
 	void cureProgressSpeed(float, const Virus&);
-	void advanceCure(const Company*, const Virus&);
+	void advanceCure(const Company*[], const Virus&);
+
 	bool isCureComplete();
 	void displayStatus() const;
 
