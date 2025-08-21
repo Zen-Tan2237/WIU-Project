@@ -1,10 +1,10 @@
 #pragma once
-
 #include <iostream>
 #include <string>
 #include<sstream>
 #include "Virus.h"
 #include "Company.h"
+#include "Worm.h"
 
 class Player
 {
@@ -13,7 +13,6 @@ private:
 	int companyChoice;
 	int maxCompany;
 	Virus* playerVirus; 
-
 	enum UPGRADES {
 		// SPEED UPGRADES
 		POLYMORHPIC_ENGINE,
@@ -106,7 +105,7 @@ public:
 	void spendPoints(int cost);
 
 	void setInitials(Company* companyList[]);
-	void update();
+	void update(Company* noOfInfectedComputers);
 	void displayUpgrades(bool& menuing);
 
 	void parseUpgrades();

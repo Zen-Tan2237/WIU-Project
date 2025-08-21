@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "Worm.h"
 
 Player::Player() {
 	for (int i = 0; i < NUM_UPGRADES; i++) {
@@ -101,11 +100,13 @@ void Player::parseUpgrades() {
 		parserIndex2 += 5;
 	}
 }
-void Player::update() {
+void Player::update(Company* noOfInfectedComputers) {
+	srand( time(0));
 	std::string upgrade;
 	std::cout << "Enter to continue, U to open Upgrade Menu \n";
 	do {
 		getline(std::cin, upgrade);
+		std::cout << "Hacker Points: " << hackingPoints << std::endl;
 	} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
 	bool menuing = true;
 	while (menuing == true) {
