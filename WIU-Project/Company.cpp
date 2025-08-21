@@ -185,35 +185,35 @@ void Company::calculateSpread(Company* companies[])
 		} while (companies[chosenSpreadCompany]->getInfectedStatus() != 0 && attempts < 100);*/
 
 		
-
-		//if (companies[chosenSpreadCompany]->getNoOfInfectedComputers() == 0) {
 		if (chosenSpreadCompany != -1) {
-			float advantage = companies[chosenSpreadCompany]->getSecurityLevel() - virus->getComplexity();
+			if (companies[chosenSpreadCompany]->getNoOfInfectedComputers() == 0) {
+				float advantage = companies[chosenSpreadCompany]->getSecurityLevel() - virus->getComplexity();
 
-			float probability = 0.0f;
+				float probability = 0.0f;
 
-			if (advantage < -2) {
-				probability = 1.0f; // guaranteed
+				if (advantage < -2) {
+					probability = 1.0f; // guaranteed
+				}
+				else {
+					probability = 1.0f / std::pow(1.5f, advantage + 2);
+				}
+
+				triggers = (rand() % 100) < (int)(probability * 100.0);
+
+				if (triggers) {
+					std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
+					companies[chosenSpreadCompany]->setNoOfInfectedComputers(1);
+				}
 			}
 			else {
-				probability = 1.0f / std::pow(1.5f, advantage + 2);
+				int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers if already infected there
+				int current = companies[chosenSpreadCompany]->getNoOfInfectedComputers();
+				int maxSize = companies[chosenSpreadCompany]->getNetworkSize();
+
+				companies[chosenSpreadCompany]->setNoOfInfectedComputers(
+					std::min(current + spreadAmount, maxSize)
+				);
 			}
-
-			triggers = (rand() % 100) < (int)(probability * 100.0);
-
-			if (triggers) {
-				std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
-				companies[chosenSpreadCompany]->setNoOfInfectedComputers(1);
-			}
-		}
-		else {
-			int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers if already infected there
-			int current = companies[chosenSpreadCompany]->getNoOfInfectedComputers();
-			int maxSize = companies[chosenSpreadCompany]->getNetworkSize();
-
-			companies[chosenSpreadCompany]->setNoOfInfectedComputers(
-				std::min(current + spreadAmount, maxSize)
-			);
 		}
 	}
 }
