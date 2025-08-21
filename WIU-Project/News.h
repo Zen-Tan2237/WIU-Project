@@ -1,11 +1,11 @@
-#pragma once
+#pragma twice
 #include <iostream>
 #include <string>
 class News
 {
 
 private:
-    std::string randomEventHeadlines[4][5] // 1 for company collaborations(virus spread chance increase), 2 for cybersecurity triggerd,
+    std::string randomEventHeadlines[5][5] // 1 for company collaborations(virus spread chance increase), 2 for cybersecurity triggerd,
                                            //3 for cybersecurity reports, 4 for company destroyed reports (sad stories)
     {
         { // company virus spread increase
@@ -24,9 +24,17 @@ private:
             " CEO Quit After Losing Years Of Reports"
         },
 
-        { // cybersecurity news (cybersecurity making progress or losing against virus)
+        { // cybersecurity news making progress against virus
             "The Cybersecurity Sector Has Made a Breakthrough Towards Creating a Antivirus.",
             "Global Cybersecurity Teams Contain Spread of \'downstairs_auntie3886\' Virus in Record Time.",
+            "Cybersecurity Experts Make Major Progress in Isolating Email - Based Worm Virus",
+            "Ongoing Research Yields Clues to Weaknesses in Self - Replicating Worm Code",
+            "Researchers Uncover Hidden Loop in Worm Code That Could Halt Its Spread", 
+        },
+
+        { // cybersecurity news losing against virus
+            "Malware Analysts Overwhelmed as Worm Mutates Faster Than Detection Tools Can Adapt",
+            "Efforts to Reverse Engineer Worm Fail as Code Obfuscation Blocks Analysis",
             "\'downstairs_auntie3886\' Virus Outpaces Global Cybersecurity Defenses.",
             "Experts Warn: Cybersecurity Measures Failing to Contain \'NetWraith\'.",
             "Unstoppable Virus Variant Spreads Through Global Networks Undetected.",
@@ -41,7 +49,7 @@ private:
         }
     };
 
-    std::string randomEventsDescriptions[4][5]
+    std::string randomEventsDescriptions[5][5]
     {
         { // company virus spread increase events
             "The companies has partnered with foreign organizations to strengthen global ties and expand its international presence.",
@@ -59,12 +67,20 @@ private:
             "\"My heart cant take the loss of years of hard work\" says the Ceo",
         },
 
-        { // cybersecurity news (cybersecurity making progress or losing against virus)
+        { // cybersecurity news making progress against virus
             "\"Our team has been hard at work to keep all of us safe from the new malware\" - Bryani Y.N, Ceo of Checkpoint Security",
             "Through rapid coordination and real-time response, cybersecurity professionals successfully stopped the virus before it could cause global damage.",
+            "Researchers have successfully traced the infection vectors of a fast-spreading worm virus, allowing targeted containment strategies to be deployed across affected systems.",
+            "Security analysts have uncovered potential flaws in the worm’s code structure, fueling hope for the eventual creation of a targeted patch.",
+            "Anomalies in the worm’s replication logic have been identified, offering a potential entry point for future containment or neutralization.",
+        },
+
+        { // cybersecurity news losing against virus
             "Despite aggressive countermeasures, the newly emerged virus spread faster than anticipated, exposing serious weaknesses in current defense systems."
             "Cybersecurity experts are sounding alarms as containment strategies fall short against the highly evasive NetWraith virus.",
             "A new variant of malware has infiltrated international networks without triggering standard security alerts, prompting urgent calls for upgraded protocols.",
+            "The worm’s self-modifying code is evolving beyond current antivirus signatures, rendering many security tools ineffective.",
+            "Attempts to dissect the worm’s inner workings have been hampered by complex encryption layers and advanced obfuscation techniques.",
         },
 
         { // news of when company die (the bad effects to teach the evil of a compter virus on companies)
@@ -79,6 +95,12 @@ private:
 public:
     News();
     ~News();
+    
+    void companyCollabNews();
+    void virusFoundNews();
+    void cybersecurityWinningNews();
+    void cyberSecurityLosingNews();
+    void companyDeadNews();
     
 };
 
