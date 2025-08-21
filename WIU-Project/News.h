@@ -84,11 +84,11 @@ private:
         },
 
         { // news of when company die (the bad effects to teach the evil of a compter virus on companies)
-            " Employees were seen embracing in the parking lot after learning that years of digital records, finances, and projects had been completely wiped out, forcing immediate closure.",
-            " emplyee said\"It was so sudden when when our computers all got destroyed at the same time by the virus\""
-            " Collapses After Computer Virus Destroys Payroll and Client Files",
-            " Without access to systems, shipments, or communications, the company had no choice but to shut its doors indefinitely.",
-            " With months of business lost and no records to rebuild from, the CEO said continuing would be \"financially and emotionally impossible\"."
+            "Employees were seen embracing in the parking lot after learning that years of digital records, finances, and projects had been completely wiped out, forcing immediate closure.",
+            "Emplyee said\"It was so sudden when when our computers all got destroyed at the same time by the virus\""
+            "Many left jobless after the incident with no where to go.",
+            "Without access to systems, shipments, or communications, the company had no choice but to shut its doors indefinitely.",
+            "With months of business lost and no records to rebuild from, the CEO said continuing would be \"financially and emotionally impossible\"."
         }
     };
 
@@ -96,11 +96,11 @@ public:
     News();
     ~News();
     
-    void companyCollabNews() const;
-    void virusFoundNews() const;
+    void companyCollabNews(char companyA, char companyB) const;
+    void virusFoundNews(char company) const;
     void cybersecurityWinningNews() const;
     void cyberSecurityLosingNews() const;
-    void companyDeadNews() const;
+    void companyDeadNews(char company) const;
     
 };
 
