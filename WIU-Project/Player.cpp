@@ -100,7 +100,7 @@ void Player::parseUpgrades() {
 		parserIndex2 += 5;
 	}
 }
-void Player::update(Company* noOfInfectedComputers) {
+void Player::update(int noOfInfectedComputers , int networkSize) {
 	srand( time(0));
 	std::string upgrade;
 	std::cout << "Enter to continue, U to open Upgrade Menu \n";
