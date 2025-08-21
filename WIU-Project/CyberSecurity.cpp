@@ -4,15 +4,13 @@
 /* Function Members */
 void CyberSecurity::triggerEvent(const Company& coy) {}
 
-int CyberSecurity::detectionThreshold_individual(const Company* coy) const {
-	for (int i = 0; i < maxCompany; i++) {
-		float value = coy[i].getSecurityLevel() / 0.5f;
-		return static_cast<int>((20 - value) * 5) + 5;
-	}
-	return 100;
+int CyberSecurity::detectionThreshold_individual(const Company& coy) const {
+	float value = coy.getSecurityLevel() / 0.5f;
+	return static_cast<int>((20 - value) * 5) + 5;
 }
-int CyberSecurity::detectionThreshold_global(const Company* coy) const {
-	return 1000;
+int CyberSecurity::detectionThreshold_global(const Company& coy) const {
+	float value = coy.getSecurityLevel() / 0.5f;
+	return static_cast<int>((((20 - value) * 5) + 5) * 10);
 }
 
 bool CyberSecurity::isVirusDetected(const Company& coy, const Virus& virus) const {
