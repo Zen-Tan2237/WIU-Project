@@ -72,7 +72,7 @@ void Game::doTurn()
     }
 
     // update player chioces
-    player.update();
+    player.update(companies);
 }
 
 void Game::printInterface()
