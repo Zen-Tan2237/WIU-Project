@@ -105,7 +105,7 @@ public:
 	void spendPoints(int cost);
 
 	void setInitials(Company* companyList[]);
-	void update(Company* noOfInfectedComputers);
+	void update(int noOfInfectedComputers , int networkSize);
 	void displayUpgrades(bool& menuing);
 
 	void parseUpgrades();
