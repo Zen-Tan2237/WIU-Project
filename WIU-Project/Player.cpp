@@ -139,9 +139,6 @@ void Player::parseDependencies() {
 			start = i + 1;
 		}
 	}
-
-
-
 }
 
 void Player::printArrays() {
@@ -306,6 +303,7 @@ void Player::displayUpgrades(bool& menuing) {
 
 			// Map user input to actual upgrade index
 			int upgradeIdx = currentUpgradeIndices[choice - 1];
+
 			if (upgradeIdx == -1 || upgradesArray[upgradeIdx] == nullptr) {
 				std::cout << "Upgrade unavailable. Try again.\n";
 				ignoreApplyUpgrade = true;

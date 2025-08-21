@@ -16,7 +16,7 @@ private:
 	Virus* virus;
 	bool isEmailTransmissionEnabled;
 	int maxCompany;
-	float* collabSpreadWeight;
+	int* collabSpreadWeight;
 
 	int companyIndex;
 

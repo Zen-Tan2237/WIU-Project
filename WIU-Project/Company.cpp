@@ -21,16 +21,16 @@ Company::Company()
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
 	maxCompany = 1;
-	collabSpreadWeight = new float[maxCompany];
+	collabSpreadWeight = new int[maxCompany];
 
 	totalNetworkSize += networkSize;
 
 	for (int i = 0; i < maxCompany; i++) {
 		if (i == this->companyIndex) {
-			collabSpreadWeight[i] = 0.0f;
+			collabSpreadWeight[i] = 0;
 		}
 		else {
-			collabSpreadWeight[i] = 1.0f;
+			collabSpreadWeight[i] = 1;
 		}
 	}
 }
@@ -47,22 +47,23 @@ Company::Company(std::string Name, int size, float startingSecurityLevel, int ma
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
 	this->maxCompany = maxCompany;
-	collabSpreadWeight = new float[maxCompany];
+	collabSpreadWeight = new int[maxCompany];
 
 	totalNetworkSize += networkSize;
 
 	for (int i = 0; i < maxCompany; i++) {
 		if (i == this->companyIndex) {
-			collabSpreadWeight[i] = 0.0f;
+			collabSpreadWeight[i] = 0;
 		}
 		else {
-			collabSpreadWeight[i] = 1.0f;
+			collabSpreadWeight[i] = 1;
 		}
 	}
 }
 
 Company::~Company()
 {
+	delete[] collabSpreadWeight;
 }
 
 void Company::update(Company* companies[])
@@ -167,6 +168,7 @@ void Company::calculateSpread(Company* companies[])
 				cumulative += collabSpreadWeight[i];
 				if (r < cumulative) {
 					chosenSpreadCompany = i;
+					break;
 				}
 			}
 		}
