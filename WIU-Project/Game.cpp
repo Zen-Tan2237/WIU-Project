@@ -64,15 +64,20 @@ void Game::doTurn()
     }
 
     // update company infectivity
+    int totalNoOfInfectedComputers = 0;
+    int totalNetworkSize = 0;
+
     for (int i = 0; i < tickInterval; i++) {
         for (int j = 0; j < maxCompany;  j++) {
             companies[j]->update(companies);
+            totalNoOfInfectedComputers += companies[j]->getNoOfInfectedComputers();
+            totalNetworkSize += companies[j]->getNetworkSize();
         }
         currentTick++;
     }
 
     // update player chioces
-    player.update(companies);
+    player.update(totalNoOfInfectedComputers, totalNetworkSize);
 }
 
 void Game::printInterface()
