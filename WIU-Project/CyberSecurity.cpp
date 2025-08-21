@@ -14,6 +14,8 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 		bool commonization = 1;
 		float researchEfficiency = static_cast<float>((coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / coy[i]->getNetworkSize()) * 100.0f; // percentage of uninfected computers
 
+		this->detectionLevelCheck(*coy[i]);
+
 		if (this->isVirusDetected(*coy[i], virus) && researchEfficiency < 80.0f) {
 			if (coy[i]->getInfectedStatus() == 0) {
 				fightStrength[i] = coy[i]->getNetworkSize() / (25.0f * maxCompany);
@@ -43,8 +45,27 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 		this->cureProgressSpeed(0.1f, virus);
 		break;
 
+	case 4:
+		this->cureProgressSpeed(0.18f, virus);
+		break;
+
 	default:
 		break;
+	}
+}
+void CyberSecurity::detectionLevelCheck(const Company& coy) {
+	float percentInfected = static_cast<float>(coy.getTotalNoOfInfectedComputers() / coy.getTotalNetworkSize()) * 100.0f;
+	if (percentInfected >= 65.0f) {
+		detectionLevel = 4;
+	}
+	else if (percentInfected >= 45.0f) {
+		detectionLevel = 3;
+	}
+	else if (percentInfected >= 25.0f) {
+		detectionLevel = 2;
+	}
+	else if (percentInfected >= 5.0f) {
+		detectionLevel = 1;
 	}
 }
 bool CyberSecurity::isVirusDetected(const Company& coy, const Virus& virus) const {
