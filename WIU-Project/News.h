@@ -96,11 +96,11 @@ public:
     News();
     ~News();
     
-    void companyCollabNews();
-    void virusFoundNews();
-    void cybersecurityWinningNews();
-    void cyberSecurityLosingNews();
-    void companyDeadNews();
+    void companyCollabNews() const;
+    void virusFoundNews() const;
+    void cybersecurityWinningNews() const;
+    void cyberSecurityLosingNews() const;
+    void companyDeadNews() const;
     
 };
 
