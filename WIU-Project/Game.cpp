@@ -65,7 +65,7 @@ void Game::doTurn()
         //cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
     }
 
-    if (currentTick % 50)
+    if (currentTick % 50 == 0)
     {
         randomCollabGenerator();
     }
@@ -105,26 +105,60 @@ void Game::printInterface()
         }
     }
     cyberSecurity->displayStatus();
+    std::cout << "Total Bricked: " << Company::getTotalNoOfBrickedComputers() << std::endl;
 }
 
 void Game::randomCollabGenerator()
 {
-    //bool eventTrigger = rand() % 100;
-    //if (eventTrigger >= 95)
-    //{
-        companyA = rand() % 5;
-        // check make sure companyB is not A
-        bool BequalA = true;
-        while (BequalA)
+    int eventTrigger = rand() % 100;
+    if (eventTrigger >= 80)
+    {
+        // check howw many companies can collab
+        int companyCanCollab = 0;
+        for (int i = 0; i < 5; i++)
         {
-            companyB = rand() % 5;
-            if (companyA != companyB)
+            if (companies[i]->getInfectedStatus() < 0.7f)
             {
-                BequalA = false;
+                companyCanCollab++;
             }
         }
-        newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
-        companies[companyA]->setCollabSpreadWeightIndex(rand() % 5, companyA);
-        companies[companyB]->setCollabSpreadWeightIndex(rand() % 5, companyB);
-        //}
+
+        // collabing only runs if 2 or more companies can collab
+        if (companyCanCollab > 1)
+        {
+            bool companyACan = false;
+            while (!companyACan)
+            {
+                companyA = rand() % 5;
+                if (companies[companyA]->getInfectedStatus() < 0.7f)
+                {
+                    bool companyBCan = false;
+                    bool BequalA = true;
+                    while (!companyBCan)
+                    {
+                        // check make sure companyB is not A
+                        while (BequalA)
+                        {
+                            companyB = rand() % 5;
+                            if (companies[companyB]->getInfectedStatus() < 0.7f)
+                            {
+                                if (companyA != companyB)
+                                {
+                                    BequalA = false;
+                                    companyBCan = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // print out and set the finalised companies collabing spread
+                    newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
+                    companies[companyA]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyB);
+                    companies[companyB]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyA);
+
+                    companyACan = true;
+                }
+            }
+        }
+    }
 }
