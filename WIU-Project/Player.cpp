@@ -198,20 +198,28 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 	}
 	infectedComputersPrevious = noOfInfectedComputers;
 	brickedComputersPrevious = noOfBrickedComputers;
-	std::cout << "Hacker Points: " << hackingPoints << std::endl;
-	std::cout << "Enter to continue, U to open Upgrade Menu \n";
-	do {
-		getline(std::cin, upgrade);
-	} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
+	bool next = true;
 	bool menuing = true;
-	while (menuing == true) {
-		if (upgrade == "U" || upgrade == "u") {
-			displayUpgrades(menuing);
+	do {
+		std::cout << "Hacker Points: " << hackingPoints << std::endl;
+		std::cout << "Enter to continue, U to open Upgrade Menu \n";
+		if (menuing == false) {
+			next = true;
 		}
-		else {
-			menuing = false;
+		do {
+			getline(std::cin, upgrade);
+		} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
+		menuing = true;
+		while (menuing == true) {
+			if (upgrade == "U" || upgrade == "u") {
+				next = false;
+				displayUpgrades(menuing);
+			}
+			else {
+				menuing = false;
+			}
 		}
-	}
+	} while (next == false);
 }
 
 void Player::blockUpgrade() {
@@ -238,6 +246,7 @@ void Player::displayUpgrades(bool& menuing) {
 	std::string input;
 	while (menuing) {
 		std::cout << "\nAvailable Upgrades:\n";
+		std::cout << "Hacker Points: " << hackingPoints << std::endl;
 		for (int i = 0; i < noOfChains; i++) {
 			if (currentUpgradeIndices[i] != -1) {
 				int idx = currentUpgradeIndices[i];
