@@ -13,16 +13,13 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 	for (int i = 0; i < maxCompany; i++) {
 		bool commonization = 1;
 		float researchEfficiency = ((float)coy[i]->getNetworkSize() - (float)coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
-		
-		if (isVirusDetected(*coy[i], virus)) {
+		float undeadRate = (float)((coy[i]->getNetworkSize() /* - getter_brickedIn */) / coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
+
+		if (isVirusDetected(undeadRate, *coy[i], virus)) {
 			this->detectionLevelCheck(15.0f, 45.0f, 70.0f, 90.0f);
-			if (coy[i]->getInfectedStatus() == 0.0f) {
+			if (coy[i]->getInfectedStatus() == 0.0f && undeadRate > 20.0f) {
 				fightStrength[i] = (coy[i]->getNetworkSize() / (25.0f * maxCompany)) * researchEfficiency;
 				commonization = 0;
-			}
-			else if (coy[i]->getInfectedStatus() < 1.0f) {
-				fightStrength[i] = ((coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / (30.0f * maxCompany)) * researchEfficiency;
-				 commonization = 0;
 			}
 		}
 
@@ -69,27 +66,12 @@ void CyberSecurity::detectionLevelCheck(float threshold1, float threshold2, floa
 		detectionLevel = 1;
 	}
 }
-bool CyberSecurity::isVirusDetected(const Company& coy, const Virus& virus) const {
-	float undeadRate = static_cast<float>((coy.getNetworkSize() /* - getter_brickedIn */) / coy.getNetworkSize()) * 100.0f; // percentage of undead computers
+bool CyberSecurity::isVirusDetected(float ur, const Company& coy, const Virus& virus) const {
 	bool defaulted = false;
 
-	if (undeadRate > 20.0f) {
-		if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f /* && getter_brickedIn >= this->getDetectThreshold_individual()*/)) {}
-		else if (/* getter_totalBrickedIn >= this->getDetectThreshold_global() */defaulted) {}
-		else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (undeadRate > 20.0f)) {}
-		else {
-			return 0;
-		}
-		/* if brickedIn means infected */
-		/*
-			if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f && coy.getNoOfInfectedComputers() >= this->getDetectThreshold_individual(coy))) {}
-			else if (coy.getTotalNoOfInfectedComputers() >= this->getDetectThreshold_global(coy)) {}
-			else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (undeadRate > 20.0f)) {}
-			else {
-				return 0;
-			}
-		*/
-	}
+	if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f /* && getter_brickedIn >= this->getDetectThreshold_individual()*/)) {}
+	else if (/* getter_totalBrickedIn >= this->getDetectThreshold_global() */defaulted) {}
+	else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (ur > 20.0f)) {}
 	else {
 		return 0;
 	}

@@ -23,7 +23,7 @@ private:
 	};
 	*/
 	void detectionLevelCheck(float, float, float, float);
-	bool isVirusDetected(const Company&, const Virus&) const;
+	bool isVirusDetected(float, const Company&, const Virus&) const;
 	void cureProgressSpeed(float, const Virus&);
 
 	int getDetectThreshold_individual(const Company&) const;
