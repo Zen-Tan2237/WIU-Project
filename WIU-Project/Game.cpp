@@ -149,7 +149,7 @@ void Game::CheckCompanyDead()
 {
     for (int i = 0; i < 5; i++)
     {
-        if (companies[i]->getInfectedStatus())
+        if (companies[i]->getBrickedStatus() == 1)
         { 
             newZ->companyDeadNews(companies[i]->getName());
         }
