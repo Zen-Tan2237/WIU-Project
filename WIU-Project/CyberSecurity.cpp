@@ -100,12 +100,11 @@ void CyberSecurity::displayStatus() const {
 /* Losing Condition */
 bool CyberSecurity::isCureComplete() {
 	if (globalCureProgress == 100.0f) {
-		cureComplete = 1;
+		return cureComplete = 1;
 	}
 	else {
-		cureComplete = 0;
+		return cureComplete = 0;
 	}
-	return cureComplete;
 }
 
 /* Getters */
