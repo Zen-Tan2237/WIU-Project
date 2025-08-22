@@ -143,7 +143,7 @@ public:
 	void spendPoints(float cost);
 
 	void setInitials(Company* companyList[]);
-	void update(int noOfInfectedComputers , int networkSize);
+	void update(int noOfInfectedComputers , int networkSize, int noOfBrickedComputers);
 	void displayUpgrades(bool& menuing);
 
 	void blockUpgrade();
