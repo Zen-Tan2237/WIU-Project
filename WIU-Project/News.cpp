@@ -11,7 +11,7 @@ News::~News()
 {
 }
 
-void News::companyCollabNews(char companyA, char companyB) const
+void News::companyCollabNews(std::string companyA, std::string companyB) const
 {
 	srand(time(0));
 	int i = rand() % 5;
@@ -19,7 +19,7 @@ void News::companyCollabNews(char companyA, char companyB) const
 			  << randomEventsDescriptions[0][i] << std::endl;	
 }
 
-void News::virusFoundNews(char company) const
+void News::virusFoundNews(std::string company) const
 {
 	srand(time(0));
 	int i = rand() % 5;
@@ -43,7 +43,7 @@ void News::cyberSecurityLosingNews() const
 			  << randomEventsDescriptions[3][i] << std::endl;
 }
 
-void News::companyDeadNews(char company) const
+void News::companyDeadNews(std::string company) const
 {
 	srand(time(0));
 	int i = rand() % 5;

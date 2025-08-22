@@ -94,7 +94,9 @@ void Game::printInterface()
             << "Security Level: " << std::fixed << std::setprecision(1) << companies[i]->getSecurityLevel() << "/10" << std::endl
             << std::endl
             << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
-            << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%"
+            << "Bricked: " << companies[i]->getNoOfBrickedComputers() << std::endl
+            << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%" << std::endl
+            << "Percentage Bricked: " << std::fixed << std::setprecision(2) << companies[i]->getBrickedStatus() * 100.0f << "%"
             << std::endl;
         std::cout << std::endl; 
 
@@ -121,10 +123,8 @@ void Game::randomCollabGenerator()
                 BNotA = true;
             }
         }
-        newZ.companyCollabNews(companyA, companyB);
-        int rand1 = rand() % 5;
-        int rand2 = rand() % 5;
-        companies[companyA]->setCollabSpreadWeightIndex(rand1, companyA);
-        companies[companyB]->setCollabSpreadWeightIndex(rand2, companyB);
+        newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
+        companies[companyA]->setCollabSpreadWeightIndex(rand() % 5, companyA);
+        companies[companyB]->setCollabSpreadWeightIndex(rand() % 5, companyB);
         //}
 }

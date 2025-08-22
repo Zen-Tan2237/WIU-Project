@@ -96,11 +96,11 @@ public:
     News();
     ~News();
     
-    void companyCollabNews(char companyA, char companyB) const;
-    void virusFoundNews(char company) const;
+    void companyCollabNews(std::string companyA, std::string companyB) const;
+    void virusFoundNews(std::string company) const;
     void cybersecurityWinningNews() const;
     void cyberSecurityLosingNews() const;
-    void companyDeadNews(char company) const;
+    void companyDeadNews(std::string company) const;
     
 };
 
