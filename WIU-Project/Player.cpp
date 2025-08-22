@@ -9,6 +9,10 @@ Player::Player() {
 	maxCompany = 0;
 	infectedComputersPrevious = 0;
 	playerVirus = nullptr;
+	noOfChains = 0;
+	lengthOfArray = nullptr;
+	dependencyChain = nullptr;
+	currentUpgradeIndices = nullptr;
 }
 Player::~Player() {
 	for (int i = 0; i < NUM_UPGRADES; i++) {
@@ -48,7 +52,7 @@ Virus* Player::getPlayerVirus() const {
 	return playerVirus;
 }
 
-void Player::spendPoints(int cost) {
+void Player::spendPoints(float cost) {
 	if (cost <= hackingPoints) {
 		hackingPoints -= cost;
 		std::cout << "You have spent " << cost << " hacking points." << std::endl;
@@ -161,19 +165,18 @@ void Player::printArrays() {
 void Player::update(int noOfInfectedComputers, int networkSize) {
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0) {
-			int probability = (rand() % 10);
-			if (probability > 4) {
-				if (noOfInfectedComputers < networkSize/(maxCompany*100)) {
-					hackingPoints += rand() % 2;
-				}
-				else if(noOfInfectedComputers < networkSize / (maxCompany * 10)) {
-					hackingPoints += rand()% 2 + 1 ;
-				}
-				else {
-					hackingPoints += rand() % 4 + 1;
-				}
-
+		int probability = (rand() % 10);
+		if (probability > 4) {
+			if (noOfInfectedComputers < networkSize/(maxCompany*100)) {
+				hackingPoints += rand() % 2;
 			}
+			else if(noOfInfectedComputers < networkSize / (maxCompany * 10)) {
+				hackingPoints += (rand()% 2) + 1;
+			}
+			else {
+				hackingPoints += (rand() % 4) + 1;
+			}
+		}
 	}
 	infectedComputersPrevious = noOfInfectedComputers;
 	std::cout << "Hacker Points: " << hackingPoints << std::endl;
@@ -269,10 +272,11 @@ void Player::displayUpgrades(bool& menuing) {
 		for (int i = 0; i < noOfChains; i++) {
 			if (currentUpgradeIndices[i] != -1) {
 				int idx = currentUpgradeIndices[i];
-				std::cout << i + 1 << ". " << upgradesArray[idx]->getName() << std::endl;
+				if (upgradesArray[idx] != nullptr) {
+					std::cout << i + 1 << ". " << upgradesArray[idx]->getName() << " Costs: " << static_cast<int>(upgradesArray[idx]->getCost()) << std::endl;
+				}
 			}
 		}
-
 		std::cout << "Enter number to purchase, 'E' to exit:";
 		std::cin >> input;
 
@@ -296,12 +300,12 @@ void Player::displayUpgrades(bool& menuing) {
 			if (!(iss >> choice) || choice <= 0 || choice > noOfChains) {
 				std::cout << "Invalid input. Try again.\n";
 				ignoreApplyUpgrade = true;
+				continue;
 			}
-
 			// Map user input to actual upgrade index
 			int upgradeIdx = currentUpgradeIndices[choice - 1];
 
-			if (upgradeIdx == -1 || upgradesArray[upgradeIdx] == nullptr) {
+			if ((upgradeIdx == -1 || upgradesArray[upgradeIdx] == nullptr)) {
 				std::cout << "Upgrade unavailable. Try again.\n";
 				ignoreApplyUpgrade = true;
 			}
