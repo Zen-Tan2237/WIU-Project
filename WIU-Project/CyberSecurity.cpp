@@ -18,7 +18,7 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 		if (isVirusDetected(undeadRate, *coy[i], virus)) {
 			this->detectionLevelCheck(15.0f, 45.0f, 70.0f, 90.0f);
 			if (coy[i]->getInfectedStatus() == 0.0f && undeadRate > 20.0f) {
-				fightStrength[i] = (coy[i]->getNetworkSize() / (25.0f * maxCompany)) * researchEfficiency;
+				fightStrength[i] = ((coy[i]->getNetworkSize() - coy[i]->getInfectedStatus()) / (25.0f * maxCompany)) * researchEfficiency;
 				commonization = 0;
 			}
 		}
