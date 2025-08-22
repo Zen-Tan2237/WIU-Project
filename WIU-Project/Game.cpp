@@ -112,19 +112,19 @@ void Game::randomCollabGenerator()
     //bool eventTrigger = rand() % 100;
     //if (eventTrigger >= 95)
     //{
-        companyA = rand() % 5;
-        // check make sure companyB is not A
-        bool BNotA = false;
-        while (BNotA)
-        {
-            companyB = rand() % 5;
-            if (companyA != companyB)
-            {
-                BNotA = true;
-            }
-        }
-        newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
-        companies[companyA]->setCollabSpreadWeightIndex(rand() % 5, companyA);
-        companies[companyB]->setCollabSpreadWeightIndex(rand() % 5, companyB);
+        //companyA = rand() % 5;
+        //// check make sure companyB is not A
+        //bool BNotA = false;
+        //while (BNotA)
+        //{
+        //    companyB = rand() % 5;
+        //    if (companyA != companyB)
+        //    {
+        //        BNotA = true;
+        //    }
         //}
+        //newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
+        //companies[companyA]->setCollabSpreadWeightIndex(rand() % 5, companyA);
+        //companies[companyB]->setCollabSpreadWeightIndex(rand() % 5, companyB);
+        ////}
 }

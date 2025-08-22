@@ -15,6 +15,7 @@ Company::Company()
 	this->companyIndex = 0;
 
 	infectedStatus = 0;
+	brickedStatus = 0;
 	companyName = "We sell 100% halalpork";
 	securityLevel = 1;
 	noOfInfectedComputers = 0;
@@ -44,6 +45,7 @@ Company::Company(std::string Name, int size, float startingSecurityLevel, int ma
 	companyName = Name;
 	networkSize = size;
 	infectedStatus = 0;
+	brickedStatus = 0;
 	noOfInfectedComputers = 0;
 	noOfBrickedComputers = 0;
 	securityLevel = startingSecurityLevel;
@@ -78,18 +80,6 @@ void Company::update(Company* companies[])
 			noOfInfectedComputers += temp;
 			totalNoOfInfectedComputers += temp;
 		}
-
-		// get infection status
-		if (noOfInfectedComputers == 0) {
-			infectedStatus = 0;
-		}
-		else if (noOfInfectedComputers < networkSize) {
-			infectedStatus = (float)noOfInfectedComputers / (float)networkSize;
-		}
-		else {
-			infectedStatus = 1;
-			noOfInfectedComputers = networkSize;
-		}
 	}
 
 	if (brickedStatus < 1) {
@@ -98,19 +88,31 @@ void Company::update(Company* companies[])
 			int temp2 = calculateBricked();
 			noOfBrickedComputers += temp2;
 			totalNoOfBrickedComputers += temp2;
-
-			// get bricked status
-			if (noOfBrickedComputers == 0) {
-				brickedStatus = 0;
-			}
-			else if (noOfBrickedComputers < networkSize) {
-				brickedStatus = (float)noOfBrickedComputers / (float)networkSize;
-			}
-			else {
-				brickedStatus = 1;
-				noOfBrickedComputers = networkSize;
-			}
 		}
+	}
+
+	// get infection status
+	if (noOfInfectedComputers == 0) {
+		infectedStatus = 0;
+	}
+	else if (noOfInfectedComputers < networkSize) {
+		infectedStatus = (float)noOfInfectedComputers / (float)networkSize;
+	}
+	else {
+		infectedStatus = 1;
+		noOfInfectedComputers = networkSize;
+	}
+
+	// get bricked status
+	if (noOfBrickedComputers == 0) {
+		brickedStatus = 0;
+	}
+	else if (noOfBrickedComputers < networkSize) {
+		brickedStatus = (float)noOfBrickedComputers / (float)networkSize;
+	}
+	else {
+		brickedStatus = 1;
+		noOfBrickedComputers = networkSize;
 	}
 
 	// logic for spreading between companies
@@ -129,7 +131,7 @@ int Company::calculateInfected()
 	// probability calculation
 	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
 
-	float probability = 0.05 * speedMult * advMult * (infectedFrac * 1000.0);
+	float probability = 0.05 * speedMult * advMult * (infectedFrac * 10.0f);
 
 	if (probability < 0.01f) probability = 0.01f; // always at least 1% chance
 	if (probability > 0.1f) probability = 0.1f;  // cap at 10%
@@ -154,30 +156,33 @@ int Company::calculateInfected()
 
 int Company::calculateBricked()
 {
-	float payloadMult = 1.0 + 0.25 * (virus->getPayload() - 1);
+	float payloadMult = 0.25 * (virus->getPayload() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
 	float advMult = 1.0 + 0.10 * advantage;
 
 
 	// probability calculation
-	float infectedFrac = (float)noOfBrickedComputers / (float)noOfInfectedComputers;
+	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
+	float brickedFrac = (float)noOfBrickedComputers / (float)networkSize;
 
-	float probability = 0.05 * payloadMult * advMult * (infectedFrac * 1000.0);
+	float probability = 0.05 * payloadMult * advMult * (infectedFrac);
 
-	if (probability < 0.01f) probability = 0.01f; // always at least 1% chance
-	if (probability > 0.05f) probability = 0.05f;  // cap at 5%
+	if (probability < 0.00f) probability = 0.00f; // yes 
+	if (probability > 0.03f) probability = 0.03f;  // cap at 3%
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
 
 	if (triggers) {
-		int add = (int)std::floor(noOfBrickedComputers * 0.10 * payloadMult * advMult * (1.0 - infectedFrac));
+		int add = (int)std::floor(noOfBrickedComputers * 0.10 * payloadMult * advMult * (1.0 - brickedFrac));
 		if (add < 1) {
 			add = 1;
 		}
 		if (add > (noOfInfectedComputers - noOfBrickedComputers)) {
 			add = noOfInfectedComputers - noOfBrickedComputers;
 		}
+
+		std::cout << "DEBUG: (ADD): " << add << std::endl;
 
 		return add;
 	}
@@ -269,9 +274,7 @@ void Company::calculateSpread(Company* companies[])
 				int current = companies[chosenSpreadCompany]->getNoOfInfectedComputers();
 				int maxSize = companies[chosenSpreadCompany]->getNetworkSize();
 
-				companies[chosenSpreadCompany]->setNoOfInfectedComputers(
-					std::min(current + spreadAmount, maxSize)
-				);
+				companies[chosenSpreadCompany]->setNoOfInfectedComputers(companies[chosenSpreadCompany]->getNoOfInfectedComputers() + std::min(current + spreadAmount, maxSize));
 			}
 		}
 	}
@@ -295,8 +298,23 @@ void Company::setVirus(Virus* Virus)
 void Company::setNoOfInfectedComputers(int noOfInfectedComputers)
 {
 	totalNoOfInfectedComputers -= this->noOfInfectedComputers;
-	this->noOfInfectedComputers = noOfInfectedComputers;
+
+	if (noOfInfectedComputers < networkSize) {
+		this->noOfInfectedComputers = noOfInfectedComputers;
+	}
+	else {
+		this->noOfInfectedComputers = networkSize;
+	}
+
 	totalNoOfInfectedComputers += this->noOfInfectedComputers;
+
+	if (this->noOfInfectedComputers < networkSize) {
+		infectedStatus = (float)this->noOfInfectedComputers / (float)networkSize;
+	}
+	else {
+		infectedStatus = 1;
+		this->noOfInfectedComputers = networkSize;
+	}
 }
 
 void Company::setCollabSpreadWeightIndex(int spreadWeight, int companyIndex)
