@@ -213,7 +213,7 @@ void Company::calculateSpread(Company* companies[]) // BALANCED
 	float probability = 0.01 * speedMult * advMult * infectedFrac * networkSizeMult;
 
 	if (probability < 0.001f) probability = 0.001f; // always at least 0.1% chance
-	if (probability > 0.05f) probability = 0.05f;  // cap at 5%
+	if (probability > (0.05f + (0.05 * (virus->getSpeed() - 1)))) probability = 0.05f;  // cap at 5-20% (dynamically)
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
