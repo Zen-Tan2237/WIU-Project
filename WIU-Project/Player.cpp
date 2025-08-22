@@ -4,7 +4,7 @@ Player::Player() {
 	for (int i = 0; i < NUM_UPGRADES; i++) {
 		upgradesArray[i] = nullptr;
 	}
-	hackingPoints = 1000;
+	hackingPoints = 5;
 	companyChoice = 0;
 	maxCompany = 0;
 	infectedComputersPrevious = 0;
