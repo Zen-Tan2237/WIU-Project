@@ -4,32 +4,34 @@
 /* Function Members */
 void CyberSecurity::triggerEvent(const Company& coy) {}
 
-/* 
+/*
 deadComputers/brickedIn <- If this is a thing, where can I find it?
 Detection level has to increase, if not it won't work. | current 1-3;
 */
+/* Start */
 void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
-	/* sets fighting strength of each company */
-	for (int i = 0; i < maxCompany; i++) {
+	for (int i = 0; i < maxCompany; i++) { // determines if fighting strength is 0 or a value.
 		bool commonization = 1;
 		float researchEfficiency = ((float)coy[i]->getNetworkSize() - (float)coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
-		float undeadRate = (float)((coy[i]->getNetworkSize() /* - getter_brickedIn */) / coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
+		float undeadRate = (float)((coy[i]->getNetworkSize() - coy[i]->getBrickedStatus()) / coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
 
-		if (isVirusDetected(undeadRate, *coy[i], virus)) {
-			this->detectionLevelCheck(15.0f, 45.0f, 70.0f, 90.0f);
+		/* 1 */
+		if (/*a*/isVirusDetected(undeadRate, *coy[i], virus)) { // can the company detect the virus.
+			/*b*/this->detectionLevelCheck(15.0f, 45.0f, 70.0f, 90.0f); // values are thresholds, smallest-to-largest percentage of infected computers.
+			/*c*/
 			if (coy[i]->getInfectedStatus() == 0.0f && undeadRate > 20.0f) {
 				fightStrength[i] = ((coy[i]->getNetworkSize() - coy[i]->getInfectedStatus()) / (25.0f * maxCompany)) * researchEfficiency;
 				commonization = 0;
 			}
 		}
 
-		if (commonization) {
+		if (commonization) { // communized code if the conditions are not met.
 			fightStrength[i] = 0.0f;
 		}
 	}
 
-	// sets progress speed based on detection level | detection level is set to 0 on initialization.
-	switch (detectionLevel) {
+	/*d*/
+	switch (detectionLevel) { // sets progress speed based on detection level | detection level is set to 0 on initialization.
 	case 1:
 		this->cureProgressSpeed(0.016f, virus);
 		break;
@@ -50,9 +52,20 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 		break;
 	}
 }
+/*a*/
+bool CyberSecurity::isVirusDetected(float ur, const Company& coy, const Virus& virus) const {
+	if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f && coy.getBrickedStatus() >= this->getDetectThreshold_individual(coy))) {}
+	else if (Company::getTotalNoOfBrickedComputers() >= this->getDetectThreshold_global(coy)) {}
+	else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (ur > 20.0f)) {}
+	else {
+		return 0;
+	}
+	return 1;
+}
+/*b*/
 void CyberSecurity::detectionLevelCheck(float threshold1, float threshold2, float threshold3, float threshold4) {
 	float percentInfected = (float)Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize() * 100.0f;
-	
+
 	if (percentInfected >= threshold4) {
 		detectionLevel = 4;
 	}
@@ -66,34 +79,25 @@ void CyberSecurity::detectionLevelCheck(float threshold1, float threshold2, floa
 		detectionLevel = 1;
 	}
 }
-bool CyberSecurity::isVirusDetected(float ur, const Company& coy, const Virus& virus) const {
-	bool defaulted = false;
-
-	if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f /* && getter_brickedIn >= this->getDetectThreshold_individual()*/)) {}
-	else if (/* getter_totalBrickedIn >= this->getDetectThreshold_global() */defaulted) {}
-	else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (ur > 20.0f)) {}
-	else {
-		return 0;
-	}
-	return 1;
-}
+/*d*/
 void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 	float totalFightStrength = 0.0f;
 
 	for (int i = 0; i < maxCompany; i++) {
-		totalFightStrength += fightStrength[i];
+		totalFightStrength += fightStrength[i]; // Sets total fight strength.
 	}
 
 	// sets cure progression base on the fighting strength, virus resilience & virus complexity.
 	if (virus.getResilience() > 0 && virus.getComplexity() > 0) {
 		this->globalCureProgress += (speed / (virus.getResilience() * virus.getComplexity())) * totalFightStrength;
-		
+
 		if (this->globalCureProgress > 100.0f) {
 			this->globalCureProgress = 100.0f;
 		}
 	}
 }
 
+/* Losing Condition */
 bool CyberSecurity::isCureComplete() {
 	if (globalCureProgress == 100.0f) {
 		cureComplete = 1;
@@ -108,7 +112,7 @@ void CyberSecurity::displayStatus() const {
 }
 
 /* Getters */
-float CyberSecurity::getGlobalCureProgress() const{
+float CyberSecurity::getGlobalCureProgress() const {
 	return this->globalCureProgress;
 }
 int CyberSecurity::getDetectionLevel() const {
@@ -144,18 +148,18 @@ void CyberSecurity::setCureComplete(bool cc) {
 /* Constructors / Destructors */
 CyberSecurity::CyberSecurity(int coyamt) {
 	maxCompany = coyamt;
-	fightStrength = new float[coyamt];
 	globalCureProgress = 0.0f;
 	cureComplete = 0;
 	detectionLevel = 0;
+	fightStrength = new float[coyamt];
 }
 /*
 CyberSecurity::CyberSecurity(int coyAmt, int dl, float gcp) {
 	maxCompany = coyAmt;
-	fightStrength = new float[coyAmt];
 	globalCureProgress = gcp;
 	cureComplete = 0;
 	detectionLevel = dl;
+	fightStrength = new float[coyAmt];
 }
 */
 CyberSecurity::~CyberSecurity() {

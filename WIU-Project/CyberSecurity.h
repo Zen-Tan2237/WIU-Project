@@ -3,15 +3,15 @@
 #include "Company.h"
 #include "Virus.h"
 
-
 class CyberSecurity {
 private:
+	int maxCompany;
+
 	float globalCureProgress;
 	bool cureComplete;
 
 	int detectionLevel;
 	float* fightStrength;
-	int maxCompany;
 
 	/*
 	enum events {
@@ -22,8 +22,8 @@ private:
 		eventAmt
 	};
 	*/
-	void detectionLevelCheck(float, float, float, float);
 	bool isVirusDetected(float, const Company&, const Virus&) const;
+	void detectionLevelCheck(float, float, float, float);
 	void cureProgressSpeed(float, const Virus&);
 
 	int getDetectThreshold_individual(const Company&) const;
@@ -33,10 +33,10 @@ private:
 public:
 	void triggerEvent(const Company&);
 
-	void advanceCure(Company*[], const Virus&);
-	
+	void advanceCure(Company* [], const Virus&);
+
 	bool isCureComplete();
-	
+
 	void displayStatus() const;
 
 
