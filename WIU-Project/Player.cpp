@@ -170,23 +170,23 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
 		int probability = (rand() % 10);
-		if (probability > 3) {
+		if (probability > 1) {
 			if (noOfBrickedComputers < networkSize/(maxCompany*500)) {
 				if (noOfInfectedComputers - infectedComputersPrevious < networkSize/(maxCompany*100)) {
-					hackingPoints += rand() % 2;
+					hackingPoints += 1;
 				}
-				else if(noOfInfectedComputers - infectedComputersPrevious < networkSize / (maxCompany * 10)){
-					hackingPoints += (rand() % 2)+ 1;
+				else if(noOfInfectedComputers - infectedComputersPrevious < networkSize / (maxCompany * 50)){
+					hackingPoints += (rand() % 2) + 1;
 				}
 				else {
-					hackingPoints += (rand() % 3) + 1;
+					hackingPoints += (rand() % 4) + 1;
 				}
 			}
 			else if(noOfBrickedComputers < networkSize / (maxCompany * 100)) {
-				hackingPoints += (rand()% 3) + 1;
+				hackingPoints += (rand()% 3) + 2;
 			}
 			else {
-				hackingPoints += (rand() % 5) + 1;
+				hackingPoints += (rand() % 5) + 2;
 			}
 		}
 	}
