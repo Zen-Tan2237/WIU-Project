@@ -22,7 +22,8 @@ private:
 		eventAmt
 	};
 	*/
-	bool isVirusDetected(const Company&, const Virus&) const;
+	void detectionLevelCheck(float, float, float, float);
+	bool isVirusDetected(float, const Company&, const Virus&) const;
 	void cureProgressSpeed(float, const Virus&);
 
 	int getDetectThreshold_individual(const Company&) const;
@@ -33,8 +34,11 @@ public:
 	void triggerEvent(const Company&);
 
 	void advanceCure(Company*[], const Virus&);
+	
 	bool isCureComplete();
+	
 	void displayStatus() const;
+
 
 	float getGlobalCureProgress() const;
 	int getDetectionLevel() const;

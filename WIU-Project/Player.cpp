@@ -48,13 +48,10 @@ Virus* Player::getPlayerVirus() const {
 	return playerVirus;
 }
 
-
-void Player::earnPoints(int points) {
-	hackingPoints += points;
-}
 void Player::spendPoints(int cost) {
 	if (cost <= hackingPoints) {
 		hackingPoints -= cost;
+		std::cout << "You have spent " << cost << " hacking points." << std::endl;
 	} 
 
 }
@@ -139,9 +136,6 @@ void Player::parseDependencies() {
 			start = i + 1;
 		}
 	}
-
-
-
 }
 
 void Player::printArrays() {
@@ -306,15 +300,20 @@ void Player::displayUpgrades(bool& menuing) {
 
 			// Map user input to actual upgrade index
 			int upgradeIdx = currentUpgradeIndices[choice - 1];
+
 			if (upgradeIdx == -1 || upgradesArray[upgradeIdx] == nullptr) {
 				std::cout << "Upgrade unavailable. Try again.\n";
+				ignoreApplyUpgrade = true;
+			}
+			if (upgradesArray[upgradeIdx]->getCost() > hackingPoints) {
+				std::cout << "Not enough hacking points to purchase this upgrade.\n";
 				ignoreApplyUpgrade = true;
 			}
 			if (ignoreApplyUpgrade == false) {
 				// Apply upgrade
 				playerVirus->evolve(upgradesArray[upgradeIdx]);
+				spendPoints(upgradesArray[upgradeIdx]->getCost());
 				std::cout << "Purchased: " << upgradesArray[upgradeIdx]->getName() << std::endl;
-
 				// Delete upgrade to mark as purchased
 				delete upgradesArray[upgradeIdx];
 				upgradesArray[upgradeIdx] = nullptr;

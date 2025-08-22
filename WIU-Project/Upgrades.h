@@ -19,6 +19,7 @@ public:
 	float getComplexity() const;
 	float getPayload() const;
 	float getResilience() const;
+	float getCost() const;
 	std::string getDesc() const;
 
 	Upgrades();
