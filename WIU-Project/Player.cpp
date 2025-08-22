@@ -172,20 +172,26 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 		int probability = (rand() % 10);
 		if (probability > 1) {
 			if (noOfBrickedComputers < networkSize/(maxCompany*500)) {
+				// If bricked computers are less than 2% of the network size , play this set of rules
 				if (noOfInfectedComputers - infectedComputersPrevious < networkSize/(maxCompany*100)) {
+					// If infected computers are less than 10% of the network size, add 1 point
 					hackingPoints += 1;
 				}
 				else if(noOfInfectedComputers - infectedComputersPrevious < networkSize / (maxCompany * 50)){
+					// If infected computers are less than 50% of the network size, add 1-2 points
 					hackingPoints += (rand() % 2) + 1;
 				}
 				else {
+					// If infected computers are more than 50% of the network size, add 1-4 points
 					hackingPoints += (rand() % 4) + 1;
 				}
 			}
 			else if(noOfBrickedComputers < networkSize / (maxCompany * 100)) {
+				// If bricked computers are less than 10% of the network size, add 2-4 points
 				hackingPoints += (rand()% 3) + 2;
 			}
 			else {
+				// If bricked computers are more than 10% of the network size, add 2-6 points
 				hackingPoints += (rand() % 5) + 2;
 			}
 		}
