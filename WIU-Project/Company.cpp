@@ -2,6 +2,9 @@
 #include <random>
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
+#include <limits>
+#include <numbers>
 
 #include "Company.h"
 #include "Virus.h"
@@ -116,31 +119,34 @@ void Company::update(Company* companies[])
 	}
 
 	// logic for spreading between companies
-	if (isEmailTransmissionEnabled) {
+	if (noOfInfectedComputers > 0 && isEmailTransmissionEnabled) {
 		calculateSpread(companies);
 	}
 }
 
-int Company::calculateInfected()
+int Company::calculateInfected() // BALANCED
 {
 	float speedMult = 1.0 + 0.25 * (virus->getSpeed() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
-	float advMult = 1.0 + 0.10 * advantage;
+	if (advantage <= 0) {
+		advantage = 0;
+	}
+	float advMult = 1.0 + (0.25 * advantage);
 
 
 	// probability calculation
 	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
 
-	float probability = 0.05 * speedMult * advMult * (infectedFrac * 10.0f);
+	float probability = 0.03f + 0.02f * speedMult * advMult * (1.0f + (infectedFrac * 100.0f) * 0.4f);
 
-	if (probability < 0.01f) probability = 0.01f; // always at least 1% chance
-	if (probability > 0.1f) probability = 0.1f;  // cap at 10%
+	if (probability < 0.05f) probability = 0.05f; // always at least 1% chance
+	if (probability > 0.5f) probability = 0.5f;  // cap at 50%
 
 	// roll probability with rand()
-	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
+	bool triggers = (rand() % 1000) < (int)(probability * 1000.0f);
 
 	if (triggers) {
-		int add = (int)std::floor(noOfInfectedComputers * 0.10 * speedMult * advMult * (1.0 - infectedFrac));
+		int add = (int)std::floor(noOfInfectedComputers * 0.02 * speedMult * advMult * (1.0 - infectedFrac));
 		if (add < 1) {
 			add = 1;
 		}
@@ -154,27 +160,31 @@ int Company::calculateInfected()
 	return 0;
 }
 
-int Company::calculateBricked()
+int Company::calculateBricked() // BALANCED
 {
-	float payloadMult = 0.25 * (virus->getPayload() - 1);
+	float payloadMult = 0 + 0.25 * (virus->getPayload() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
-	float advMult = 1.0 + 0.10 * advantage;
+	if (advantage <= 0) {
+		advantage = 0;
+	}
+	float advMult = 1.0 + (0.25 * advantage);
 
 
 	// probability calculation
 	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
 	float brickedFrac = (float)noOfBrickedComputers / (float)networkSize;
 
-	float probability = 0.05 * payloadMult * advMult * (infectedFrac);
+	float probability = 0.01f * payloadMult * advMult * (1.0f + (infectedFrac * 100.0f) * 0.4f);
+
 
 	if (probability < 0.00f) probability = 0.00f; // yes 
-	if (probability > 0.03f) probability = 0.03f;  // cap at 3%
+	if (probability > 0.2f) probability = 0.2f;  // cap at 30%
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
 
 	if (triggers) {
-		int add = (int)std::floor(noOfBrickedComputers * 0.10 * payloadMult * advMult * (1.0 - brickedFrac));
+		int add = (int)std::floor(noOfBrickedComputers * 0.02 * payloadMult * advMult * (1.0 - brickedFrac));
 		if (add < 1) {
 			add = 1;
 		}
@@ -182,15 +192,13 @@ int Company::calculateBricked()
 			add = noOfInfectedComputers - noOfBrickedComputers;
 		}
 
-		std::cout << "DEBUG: (ADD): " << add << std::endl;
-
 		return add;
 	}
 
 	return 0;
 }
 
-void Company::calculateSpread(Company* companies[])
+void Company::calculateSpread(Company* companies[]) //
 {
 	float speedMult = 1.0 + 0.01 * (virus->getSpeed() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
@@ -201,10 +209,12 @@ void Company::calculateSpread(Company* companies[])
 	// probability calculation
 	float infectedFrac = (float)noOfInfectedComputers / (float)networkSize;
 
+
 	float probability = 0.01 * speedMult * advMult * infectedFrac * networkSizeMult;
 
 	if (probability < 0.001f) probability = 0.001f; // always at least 0.1% chance
-	if (probability > 0.03f) probability = 0.03f;  // cap at 3%
+	if (probability > 0.05f) probability = 0.05f;  // cap at 5%
+
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
 	int chosenSpreadCompany = -1;
@@ -261,19 +271,18 @@ void Company::calculateSpread(Company* companies[])
 					probability = 1.0f / std::pow(1.5f, advantage + 2);
 				}
 
-				triggers = (rand() % 100) < (int)(probability * 100.0);
+				triggers = (rand() % 1000) < (int)(probability * 1000.0);
 
 				if (triggers) {
 					std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
 					companies[chosenSpreadCompany]->setNoOfInfectedComputers(1);
 				}
+				else {
+					std::cout << "Virus failed: Security Too High" << std::endl;
+				}
 			}
 			else {
-				int spreadAmount = 1 + (rand() % 3); // infect 1–3 new computers if already infected there
-				int current = companies[chosenSpreadCompany]->getNoOfInfectedComputers();
-				int maxSize = companies[chosenSpreadCompany]->getNetworkSize();
-
-				companies[chosenSpreadCompany]->setNoOfInfectedComputers(companies[chosenSpreadCompany]->getNoOfInfectedComputers() + std::min(current + spreadAmount, maxSize));
+				companies[chosenSpreadCompany]->setNoOfInfectedComputers(companies[chosenSpreadCompany]->getNoOfInfectedComputers() + rand() % 3 + 1);
 			}
 		}
 	}
