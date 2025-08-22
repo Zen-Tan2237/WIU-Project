@@ -8,6 +8,7 @@ Player::Player() {
 	companyChoice = 0;
 	maxCompany = 0;
 	infectedComputersPrevious = 0;
+	brickedComputersPrevious = 0;
 	playerVirus = nullptr;
 	noOfChains = 0;
 	lengthOfArray = nullptr;
@@ -164,21 +165,30 @@ void Player::printArrays() {
 
 void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedComputers) {
 	std::string upgrade;
-	if (noOfInfectedComputers - infectedComputersPrevious > 0) {
+	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
 		int probability = (rand() % 10);
-		if (probability > 4) {
-			if (noOfInfectedComputers < networkSize/(maxCompany*100)) {
-				hackingPoints += rand() % 2;
+		if (probability > 3) {
+			if (noOfBrickedComputers < networkSize/(maxCompany*500)) {
+				if (noOfInfectedComputers - infectedComputersPrevious < networkSize/(maxCompany*100)) {
+					hackingPoints += rand() % 2;
+				}
+				else if(noOfInfectedComputers - infectedComputersPrevious < networkSize / (maxCompany * 10)){
+					hackingPoints += (rand() % 2)+ 1;
+				}
+				else {
+					hackingPoints += (rand() % 3) + 1;
+				}
 			}
-			else if(noOfInfectedComputers < networkSize / (maxCompany * 10)) {
-				hackingPoints += (rand()% 2) + 1;
+			else if(noOfBrickedComputers < networkSize / (maxCompany * 100)) {
+				hackingPoints += (rand()% 3) + 1;
 			}
 			else {
-				hackingPoints += (rand() % 4) + 1;
+				hackingPoints += (rand() % 5) + 1;
 			}
 		}
 	}
 	infectedComputersPrevious = noOfInfectedComputers;
+	brickedComputersPrevious = noOfBrickedComputers;
 	std::cout << "Hacker Points: " << hackingPoints << std::endl;
 	std::cout << "Enter to continue, U to open Upgrade Menu \n";
 	do {
@@ -198,7 +208,6 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 void Player::blockUpgrade() {
 	for (int i = 0; i < noOfChains; i++) {
 		currentUpgradeIndices[i] = dependencyChain[i][0];
-
 		for (int j = 0; dependencyChain[i][j] != -1; j++) {
 
 			if (upgradesArray[dependencyChain[i][j]] == nullptr) {

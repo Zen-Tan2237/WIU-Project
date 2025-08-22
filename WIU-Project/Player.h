@@ -13,6 +13,7 @@ private:
 	int companyChoice;
 	int maxCompany;
 	int infectedComputersPrevious;
+	int brickedComputersPrevious;
 	Virus* playerVirus; 
 	enum UPGRADES {
 		// SPEED UPGRADES
