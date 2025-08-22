@@ -12,8 +12,8 @@ Detection level has to increase, if not it won't work. | current 1-3;
 void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 	for (int i = 0; i < maxCompany; i++) { // determines if fighting strength is 0 or a value.
 		bool commonization = 1;
-		float researchEfficiency = ((float)coy[i]->getNetworkSize() - (float)coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
-		float undeadRate = (float)((coy[i]->getNetworkSize() - coy[i]->getBrickedStatus()) / coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
+		float researchEfficiency = (coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
+		float undeadRate = ((coy[i]->getNetworkSize() - coy[i]->getBrickedStatus()) / (float)coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
 
 		/* 1 */
 		if (/*a*/isVirusDetected(undeadRate, *coy[i], virus)) { // can the company detect the virus.
@@ -64,7 +64,7 @@ bool CyberSecurity::isVirusDetected(float ur, const Company& coy, const Virus& v
 }
 /*b*/
 void CyberSecurity::detectionLevelCheck(float threshold1, float threshold2, float threshold3, float threshold4) {
-	float percentInfected = (float)Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize() * 100.0f;
+	float percentInfected = (Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize()) * 100.0f;
 
 	if (percentInfected >= threshold4) {
 		detectionLevel = 4;
@@ -87,8 +87,7 @@ void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 		totalFightStrength += fightStrength[i]; // Sets total fight strength.
 	}
 
-	// sets cure progression base on the fighting strength, virus resilience & virus complexity.
-	if (virus.getResilience() > 0 && virus.getComplexity() > 0) {
+	if (virus.getResilience() > 0 && virus.getComplexity() > 0) { // sets cure progression
 		this->globalCureProgress += (speed / (virus.getResilience() * virus.getComplexity())) * totalFightStrength;
 
 		if (this->globalCureProgress > 100.0f) {
@@ -107,6 +106,7 @@ bool CyberSecurity::isCureComplete() {
 	}
 	return cureComplete;
 }
+/* Display Status */
 void CyberSecurity::displayStatus() const {
 	std::cout << "Cure Status " << globalCureProgress << "%\n";
 }
