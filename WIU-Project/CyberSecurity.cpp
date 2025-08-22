@@ -2,7 +2,29 @@
 #include <iostream>
 
 /* Function Members */
-void CyberSecurity::triggerEvent(const Company& coy) {}
+void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus, const News& news) const{
+	int coyChoice1 = whichCompanyIsPossible(coy);
+	int coyChoice2;
+	if (coyChoice1 != -1) {
+		do {
+			coyChoice2 = whichCompanyIsPossible(coy);
+		} while (coyChoice1 == coyChoice2);
+
+		// Code for news and changing of cure status.
+	}
+}
+int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
+	int coyChoice = -1;
+	bool breakLoop = 0;
+	do {
+		coyChoice = rand() % maxCompany;
+		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
+			breakLoop = 1;
+			coyChoice = -1;
+		}
+	} while ((coy[coyChoice]->getNoOfBrickedComputers() != coy[coyChoice]->getNetworkSize()) || breakLoop);
+	return coyChoice;
+}
 
 /*
 deadComputers/brickedIn <- If this is a thing, where can I find it?
@@ -12,15 +34,15 @@ Detection level has to increase, if not it won't work. | current 1-3;
 void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 	for (int i = 0; i < maxCompany; i++) { // determines if fighting strength is 0 or a value.
 		bool commonization = 1;
-		float researchEfficiency = (coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
-		float undeadRate = ((coy[i]->getNetworkSize() - coy[i]->getNoOfBrickedComputers()) / (float)coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
+		this->setResearchEfficiency(i, coy);
+		this->setUndeadRate(i, coy);
 
 		/* 1 */
-		if (/*a*/isVirusDetected(undeadRate, *coy[i], virus)) { // can the company detect the virus.
+		if (/*a*/isVirusDetected(undeadRate[i], *coy[i], virus)) { // can the company detect the virus.
 			/*b*/this->detectionLevelCheck(15.0f, 45.0f, 70.0f, 90.0f); // values are thresholds, smallest-to-largest percentage of infected computers.
 			/*c*/
-			if (coy[i]->getInfectedStatus() == 0.0f && undeadRate > 20.0f) {
-				fightStrength[i] = ((coy[i]->getNetworkSize() - coy[i]->getInfectedStatus()) / (25.0f * maxCompany)) * researchEfficiency;
+			if (coy[i]->getInfectedStatus() == 0.0f && undeadRate[i] > 20.0f) {
+				fightStrength[i] = ((coy[i]->getNetworkSize() - coy[i]->getInfectedStatus()) / (25.0f * maxCompany)) * researchEfficiency[i];
 				commonization = 0;
 			}
 		}
@@ -32,24 +54,25 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 
 	/*d*/
 	switch (detectionLevel) { // sets progress speed based on detection level | detection level is set to 0 on initialization.
-	case 1:
+	case 1: {
 		this->cureProgressSpeed(0.016f, virus);
 		break;
-
-	case 2:
+	}
+	case 2: {
 		this->cureProgressSpeed(0.036f, virus);
 		break;
-
-	case 3:
+	}
+	case 3: {
 		this->cureProgressSpeed(0.049f, virus);
 		break;
-
-	case 4:
+	}
+	case 4: {
 		this->cureProgressSpeed(0.093f, virus);
 		break;
-
-	default:
+	}
+	default: {
 		break;
+	}
 	}
 }
 	bool CyberSecurity::isVirusDetected(float udr, const Company& coy, const Virus& virus) const {
@@ -95,7 +118,9 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 
 /* Display Status */
 void CyberSecurity::displayStatus() const {
-	std::cout << "Cure Status " << globalCureProgress << "%\n";
+	std::cout 
+		<< "Cure Status " << globalCureProgress << "%\n" 
+		<< "Detection Level " << detectionLevel << '\n';
 }
 /* Losing Condition */
 bool CyberSecurity::isCureComplete() {
@@ -140,7 +165,12 @@ void CyberSecurity::setFightStrength(int type, float fs) {
 void CyberSecurity::setCureComplete(bool cc) {
 	this->cureComplete = cc;
 }
-
+void CyberSecurity::setUndeadRate(int type, Company* coy[]) {
+	this->undeadRate[type] = ((coy[type]->getNetworkSize() - coy[type]->getNoOfBrickedComputers()) / (float)coy[type]->getNetworkSize()) * 100.0f; // percentage of undead computers
+}
+void CyberSecurity::setResearchEfficiency(int type, Company* coy[]) {
+	this->researchEfficiency[type] = (coy[type]->getNetworkSize() - coy[type]->getNoOfInfectedComputers()) / (float)coy[type]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
+}
 /* Constructors / Destructors */
 CyberSecurity::CyberSecurity(int coyamt) {
 	maxCompany = coyamt;
@@ -148,6 +178,8 @@ CyberSecurity::CyberSecurity(int coyamt) {
 	cureComplete = 0;
 	detectionLevel = 0;
 	fightStrength = new float[coyamt];
+	undeadRate = new float[coyamt];
+	researchEfficiency = new float[coyamt];
 }
 /*
 CyberSecurity::CyberSecurity(int coyAmt, int dl, float gcp) {
@@ -159,6 +191,10 @@ CyberSecurity::CyberSecurity(int coyAmt, int dl, float gcp) {
 }
 */
 CyberSecurity::~CyberSecurity() {
-	delete[] fightStrength;
-	fightStrength = nullptr;
+	delete[] 
+		fightStrength, 
+		undeadRate,
+		researchEfficiency
+		;
+	researchEfficiency = undeadRate = fightStrength = nullptr;
 }

@@ -2,6 +2,7 @@
 
 #include "Company.h"
 #include "Virus.h"
+#include "News.h"
 
 class CyberSecurity {
 private:
@@ -12,16 +13,19 @@ private:
 
 	int detectionLevel;
 	float* fightStrength;
+	float* undeadRate;
+	float* researchEfficiency;
 
 	/*
 	enum events {
-		firewall,
-		antivirus,
+		coyCollabs
+		,
 		ITLockdowns,
 
 		eventAmt
 	};
 	*/
+
 	bool isVirusDetected(float, const Company&, const Virus&) const;
 	void detectionLevelCheck(float, float, float, float);
 	void cureProgressSpeed(float, const Virus&);
@@ -31,7 +35,8 @@ private:
 	void setCureComplete(bool);
 
 public:
-	void triggerEvent(const Company&); // Not used
+	void triggerEvent(Company* [], const Virus&, const News&) const; // Not used yet
+	int whichCompanyIsPossible(Company* []) const;
 
 	void advanceCure(Company* [], const Virus&);
 
@@ -47,6 +52,8 @@ public:
 	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
 	void setFightStrength(int, float);
+	void setUndeadRate(int, Company* []);
+	void setResearchEfficiency(int, Company* []);
 
 	CyberSecurity(int);
 	//CyberSecurity(int, int, float);
