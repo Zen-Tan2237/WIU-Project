@@ -126,7 +126,7 @@ void Company::update(Company* companies[])
 
 int Company::calculateInfected() // BALANCED
 {
-	float speedMult = 1.0 + 0.25 * (virus->getSpeed() - 1);
+	float speedMult = 1.0 + 0.5 * (virus->getSpeed() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
 	if (advantage <= 0) {
 		advantage = 0;
@@ -162,7 +162,7 @@ int Company::calculateInfected() // BALANCED
 
 int Company::calculateBricked() // BALANCED
 {
-	float payloadMult = 0 + 0.25 * (virus->getPayload() - 1);
+	float payloadMult = 0 + 0.5 * (virus->getPayload() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
 	if (advantage <= 0) {
 		advantage = 0;
@@ -198,7 +198,7 @@ int Company::calculateBricked() // BALANCED
 	return 0;
 }
 
-void Company::calculateSpread(Company* companies[]) //
+void Company::calculateSpread(Company* companies[]) // BALANCED
 {
 	float speedMult = 1.0 + 0.01 * (virus->getSpeed() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
@@ -213,7 +213,7 @@ void Company::calculateSpread(Company* companies[]) //
 	float probability = 0.01 * speedMult * advMult * infectedFrac * networkSizeMult;
 
 	if (probability < 0.001f) probability = 0.001f; // always at least 0.1% chance
-	if (probability > 0.05f) probability = 0.05f;  // cap at 5%
+	if (probability > (0.05f + (0.05 * (virus->getSpeed() - 1)))) probability = 0.05f;  // cap at 5-20% (dynamically)
 
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
