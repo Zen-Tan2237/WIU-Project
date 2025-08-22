@@ -106,5 +106,6 @@ public:
     void doTurn();
     void printInterface();
     void randomCollabGenerator();
+    void CheckCompanyDead();
 };
 

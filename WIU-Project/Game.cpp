@@ -81,7 +81,9 @@ void Game::doTurn()
     Company::getTotalStuff();
 
     // update player chioces
-    player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize());
+    player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
+
+    CheckCompanyDead();
 }
 
 void Game::printInterface()
@@ -159,6 +161,17 @@ void Game::randomCollabGenerator()
                     companyACan = true;
                 }
             }
+        }
+    }
+}
+
+void Game::CheckCompanyDead()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (companies[i]->getInfectedStatus())
+        { 
+            newZ.companyDeadNews(companies[i]->getName());
         }
     }
 }
