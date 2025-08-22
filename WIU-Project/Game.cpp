@@ -114,13 +114,13 @@ void Game::randomCollabGenerator()
     //{
         companyA = rand() % 5;
         // check make sure companyB is not A
-        bool BNotA = false;
-        while (BNotA)
+        bool BequalA = true;
+        while (BequalA)
         {
             companyB = rand() % 5;
             if (companyA != companyB)
             {
-                BNotA = true;
+                BequalA = false;
             }
         }
         newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
