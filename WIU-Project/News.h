@@ -1,12 +1,13 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "Virus.h"
 class News
 {
 
 private:
-    std::string randomEventHeadlines[5][5] // 1 for company collaborations(virus spread chance increase), 2 for cybersecurity triggerd,
-                                           //3 for cybersecurity reports, 4 for company destroyed reports (sad stories)
+    std::string randomEventHeadlines[5][5] // 0 for company collaborations(virus spread chance increase), 1 for cybersecurity triggerd,
+                                           //2 for cybersecurity making progress against virus, 3 for cybersecurity losing against virus, 4 for company destroyed reports (sad stories)
     {
         { // company virus spread increase
             " is having a international collaboration as a way to increase relations.",
@@ -26,8 +27,8 @@ private:
 
         { // cybersecurity news making progress against virus
             "The Cybersecurity Sector Has Made a Breakthrough Towards Creating a Antivirus.",
-            "Global Cybersecurity Teams Contain Spread of \'downstairs_auntie3886\' Virus in Record Time.",
-            "Cybersecurity Experts Make Major Progress in Isolating Email - Based Worm Virus",
+            "Global Cybersecurity Teams Contain Spread of //virus name here// Virus in Record Time.",
+            "Cybersecurity Experts Make Major Progress in Isolating Email - Based Worm Malware",
             "Ongoing Research Yields Clues to Weaknesses in Self - Replicating Worm Code",
             "Researchers Uncover Hidden Loop in Worm Code That Could Halt Its Spread", 
         },
@@ -35,12 +36,12 @@ private:
         { // cybersecurity news losing against virus
             "Malware Analysts Overwhelmed as Worm Mutates Faster Than Detection Tools Can Adapt",
             "Efforts to Reverse Engineer Worm Fail as Code Obfuscation Blocks Analysis",
-            "\'downstairs_auntie3886\' Virus Outpaces Global Cybersecurity Defenses.",
+            "//virus name here// Virus Outpaces Global Cybersecurity Defenses.",
             "Experts Warn: Cybersecurity Measures Failing to Contain \'NetWraith\'.",
             "Unstoppable Virus Variant Spreads Through Global Networks Undetected.",
         },
 
-        { // news of when company die (the bad effects to teach the evil of a compter virus on companies)
+        { // news of when company die (the bad effects to teach the evil of a computer virus on companies)
              " Shuts Down Overnight After Devastating Cyber Attack.",
              " employees were seen crying together after losing their jobs from a computer virus.",
              " Collapses After Computer Virus Destroys Payroll and Client Files.",
@@ -85,22 +86,53 @@ private:
 
         { // news of when company die (the bad effects to teach the evil of a compter virus on companies)
             "Employees were seen embracing in the parking lot after learning that years of digital records, finances, and projects had been completely wiped out, forcing immediate closure.",
-            "Emplyee said\"It was so sudden when when our computers all got destroyed at the same time by the virus\""
+            "Employee said\"It was so sudden when when our computers all got destroyed at the same time by //virus name here//\""
             "Many left jobless after the incident with no where to go.",
             "Without access to systems, shipments, or communications, the company had no choice but to shut its doors indefinitely.",
             "With months of business lost and no records to rebuild from, the CEO said continuing would be \"financially and emotionally impossible\"."
         }
     };
 
+    std::string WinOrLoseNewsHeadlines[2][2] //0 for player wins, 1 for player loses
+    {
+        {
+            "The Worlds Economy Has Taken A Big Hit After Major Companies Have Been Destroyed from //virus name here//",
+            "Malware Meltdown: Corporate Titans Collapse in Wake of Digital Sabotage",
+        },
+
+        {
+            "Coordinated Cyber Shield Deflects Major Malware Attack on Corporations",
+            "Global Malware Scare Pushes Corporate Defenses to Breaking Point",
+        }
+    };
+
+
+    std::string WinOrLoseNewsDescriptions[2][2] //0 for player wins, 1 for player loses
+    {
+        {
+            "Security analysts warn of long-term economic repercussions as malware dismantles IT networks, corrupts backups, and leaks sensitive data from multiple conglomerates.",
+            "Major players across the global economy are facing ruin after a destructive malware variant bypassed conventional defenses and triggered mass outages.",
+
+        },
+
+        {
+            "An attempted digital blitz aimed at crippling global business was neutralized days before crippling infastructers.",
+            "Cybersecurity infrastructures bent under pressure during a widespread malware blitz. Only through rapid-response units and drastic internal measures did companies manage to hold the line.",
+        }
+    };
+
 public:
     News();
     ~News();
+    News(std::string VirusName);
     
     void companyCollabNews(std::string companyA, std::string companyB) const;
     void virusFoundNews(std::string company) const;
     void cybersecurityWinningNews() const;
     void cyberSecurityLosingNews() const;
     void companyDeadNews(std::string company) const;
+    void PlayerWinNews() const;
+    void PlayerLoseNews() const;
     
 };
 

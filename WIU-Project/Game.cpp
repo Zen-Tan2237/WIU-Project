@@ -13,6 +13,7 @@ Game::Game()
     tickInterval = 10; // 10 = 1 day
     isGameRunning = true;
     
+    newZ = nullptr;
     companyA = NULL;
     companyB = NULL;
 
@@ -59,6 +60,7 @@ void Game::doTurn()
     if (currentTick == 0) {
         player.setMaxCompany(maxCompany);
         player.setInitials(companies);
+        newZ = new News(player.getPlayerVirus()->getName());
         for (int j = 0; j < maxCompany; j++) {
             companies[j]->setVirus(player.getPlayerVirus());
         }
@@ -66,8 +68,6 @@ void Game::doTurn()
 
     if (currentTick % 50 == 0)
     {
-
-        //cyberSecurity->triggerEvent(companies, *(player.getPlayerVirus()), newZ);
         randomCollabGenerator();
     }
 
@@ -156,7 +156,7 @@ void Game::randomCollabGenerator()
                     }
 
                     // print out and set the finalised companies collabing spread
-                    newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
+                    newZ->companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
                     companies[companyA]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyB);
                     companies[companyB]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyA);
 
@@ -173,7 +173,7 @@ void Game::CheckCompanyDead()
     {
         if (companies[i]->getInfectedStatus())
         { 
-            newZ.companyDeadNews(companies[i]->getName());
+            newZ->companyDeadNews(companies[i]->getName());
         }
     }
 }
