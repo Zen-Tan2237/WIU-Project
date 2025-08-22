@@ -96,19 +96,19 @@ private:
 
 	float statsUpgrade[NUM_UPGRADES * 5]{
 		// Polymorphic Engine 0
-		0.5f, 0.3f, 0, 0, 10,
+		0.3f, 0.2f, 0, 0, 10,
 		// LAN Scanner 1
-		0.4f, 0.1f, 0, 0, 10,
+		0.5f, 0.2f, 0, 0, 15,
 		// SMB Exploit 2
-		0.7f, 0, 0, 0, 13,
+		0.6f, 0, 0, 0, 18,
 		// USB Propagation 3
-		1.f, 0, 0, 0, 14,
+		0.4f, 0, 0, 0, 14,
 		// Botnet Boost 4
-		0.3f, 0, 0, 0, 13,
+		0.7f, 0, 0, 0, 23,
 		// Email Worm Boost 5
-		1.f, 0, 0, 0, 24,
+		0.8f, 0.1f, 0, 0, 27,
 		// Encryption Layer 6
-		0, 0.3f, 0, 0.5f, 9,
+		0, 0.1f, 0, 0.3f, 9,
 		// Keylogger Module 7
 		0, 0.2f, 0.1f, 0, 14,
 		// Rootkit Injection 8
@@ -116,25 +116,25 @@ private:
 		// Bricking Routine 9
 		0, 0.6f, 2.f, 0, 18,
 		// Data Wiper 10
-		0, 0.7f, 4.f, 0, 20,
+		0, 0.7f, 3.f, 0, 40,
 		// Antivirus Bypass 11
-		0, 1.f, 0.2f, 0, 15,
+		0, 1.f, 0.3f, 0, 15,
 		// Code Obfuscation I 12
-		0, 0, 0, 1.f, 10,
+		0, 0, 0, 0.5f, 10,
 		// Code Obfuscation II 13
-		0, 0, 0, 2.f, 15,
+		0, 0, 0, 0.7f, 15,
 		// Code Refactor I 14
-		0, 0, 0, 2.f, 13,
+		0, 0, 0, 0.5f, 13,
 		// Code Refactor II 15
-		0, 0, 0, 2.5f, 19,
+		0, 0, 0, 0.6f, 19,
 		// Code Refactor III 16
-		0, 0, 0, 3.f, 25,
+		0, 0, 0, 0.7f, 25,
 		// Kill Switch 17
-		0, 0, 0, 2.3f, 24,
+		-0.5f, -1.f, 0, 1.5f, 24,
 		// Signature Mutation 18
-		0, 0, 0, 2.8f, 100,
+		0, 1.f, 1.f, 2.8f, 60,
 		// Virtual Machine Detection 19
-		0, 0, 0, 3.4f, 20
+		0, 0, 0.5f, 1.4f, 25
 	};
 
 public:
