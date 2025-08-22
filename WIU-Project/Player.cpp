@@ -4,7 +4,7 @@ Player::Player() {
 	for (int i = 0; i < NUM_UPGRADES; i++) {
 		upgradesArray[i] = nullptr;
 	}
-	hackingPoints = 5;
+	hackingPoints = 1000;
 	companyChoice = 0;
 	maxCompany = 0;
 	infectedComputersPrevious = 0;
@@ -115,8 +115,11 @@ void Player::parseDependencies() {
 
 	// Count chains first
 	noOfChains = 0;
-	for (int i = 0; i < numberOfElements; i++)
-		if (dependentIndices[i] == -1) noOfChains++;
+	for (int i = 0; i < numberOfElements; i++) {
+		if (dependentIndices[i] == -1) {
+			noOfChains++;
+		}
+	}
 
 	dependencyChain = new int* [noOfChains];
 	lengthOfArray = new int[noOfChains];
@@ -224,58 +227,9 @@ void Player::blockUpgrade() {
 		std::cout << "Current Array Index " << i + 1 << ": " << currentUpgradeIndices[i] << std::endl;
 	}
 }
-
-
-//void Player::displayUpgrades(bool& menuing) {
-//	std::cout << "Available Upgrades: " << std::endl;
-//	std::string input = "";
-//	int choice = -1;
-//	do {
-//		std::cout << "Enter the number of the upgrade you want to purchase(or E to exit): \n" << std::endl;
-//		for (int i = 0; i < NUM_UPGRADES; i++) {
-//			if (upgradesArray[i] != nullptr) {
-//				std::cout << i + 1 << ". " << upgradesArray[i]->getName() << std::endl;
-//			}
-//		}
-//		std::cin >> input;
-//		if (input == "E" || input == "e") {
-//			menuing = false;
-//			return;
-//		}
-//		else if (input == "P" || input == "p") {
-//			playerVirus->setAll10();
-//		}
-//		else if (input == "S" || input == "s") {
-//			playerVirus->displayStats();
-//		}
-//		else {
-//			std::istringstream iss(input);
-//			if (!(iss >> choice)) {
-//				std::cout << "Invalid input. Please enter a number or 'E' to exit." << std::endl;
-//				choice = -1;
-//			}
-//			else {
-//				choice -= 1;
-//			}
-//		}
-//	} while (choice < 0 || choice >= NUM_UPGRADES || upgradesArray[choice] == nullptr);
-//
-//	playerVirus->evolve(upgradesArray[choice]);
-//	std::cout << "You have purchased the upgrade:\n "
-//		<< upgradesArray[choice]->getName() << std::endl;
-//
-//	delete upgradesArray[choice];
-//	upgradesArray[choice] = nullptr;
-// 
-// I kinda put this thing here lol
-//}
-
-
 void Player::displayUpgrades(bool& menuing) {
 	blockUpgrade(); // update current available upgrades
 	std::string input;
-	bool ignoreTryingParseNo = false;
-	bool ignoreApplyUpgrade = false;
 	while (menuing) {
 		std::cout << "\nAvailable Upgrades:\n";
 		for (int i = 0; i < noOfChains; i++) {
@@ -295,20 +249,16 @@ void Player::displayUpgrades(bool& menuing) {
 		}
 		else if (input == "S" || input == "s") {
 			playerVirus->displayStats();
-			ignoreTryingParseNo = true;
 		}
 		else if (input == "P" || input == "p") {
 			playerVirus->setAll10();
-			ignoreTryingParseNo = true;
 		}
-
-		if (ignoreTryingParseNo == false) {
+		else {
 			// Try to parse number
 			int choice = -1;
 			std::istringstream iss(input);
 			if (!(iss >> choice) || choice <= 0 || choice > noOfChains) {
 				std::cout << "Invalid input. Try again.\n";
-				ignoreApplyUpgrade = true;
 				continue;
 			}
 			// Map user input to actual upgrade index
@@ -316,13 +266,11 @@ void Player::displayUpgrades(bool& menuing) {
 
 			if ((upgradeIdx == -1 || upgradesArray[upgradeIdx] == nullptr)) {
 				std::cout << "Upgrade unavailable. Try again.\n";
-				ignoreApplyUpgrade = true;
 			}
-			if (upgradesArray[upgradeIdx]->getCost() > hackingPoints) {
+			else if (upgradesArray[upgradeIdx]->getCost() > hackingPoints) {
 				std::cout << "Not enough hacking points to purchase this upgrade.\n";
-				ignoreApplyUpgrade = true;
 			}
-			if (ignoreApplyUpgrade == false) {
+			else{
 				// Apply upgrade
 				playerVirus->evolve(upgradesArray[upgradeIdx]);
 				spendPoints(upgradesArray[upgradeIdx]->getCost());
