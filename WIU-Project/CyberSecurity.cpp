@@ -13,7 +13,7 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 	for (int i = 0; i < maxCompany; i++) { // determines if fighting strength is 0 or a value.
 		bool commonization = 1;
 		float researchEfficiency = (coy[i]->getNetworkSize() - coy[i]->getNoOfInfectedComputers()) / (float)coy[i]->getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
-		float undeadRate = ((coy[i]->getNetworkSize() - coy[i]->getBrickedStatus()) / (float)coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
+		float undeadRate = ((coy[i]->getNetworkSize() - coy[i]->getNoOfBrickedComputers()) / (float)coy[i]->getNetworkSize()) * 100.0f; // percentage of undead computers
 
 		/* 1 */
 		if (/*a*/isVirusDetected(undeadRate, *coy[i], virus)) { // can the company detect the virus.
@@ -52,9 +52,8 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 		break;
 	}
 }
-/*a*/
 bool CyberSecurity::isVirusDetected(float ur, const Company& coy, const Virus& virus) const {
-	if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f && coy.getBrickedStatus() >= this->getDetectThreshold_individual(coy))) {}
+	if (virus.getPayload() > 1.4f || (coy.getSecurityLevel() >= 9.0f && coy.getNoOfBrickedComputers() >= this->getDetectThreshold_individual(coy))) {}
 	else if (Company::getTotalNoOfBrickedComputers() >= this->getDetectThreshold_global(coy)) {}
 	else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (ur > 20.0f)) {}
 	else {
@@ -62,7 +61,6 @@ bool CyberSecurity::isVirusDetected(float ur, const Company& coy, const Virus& v
 	}
 	return 1;
 }
-/*b*/
 void CyberSecurity::detectionLevelCheck(float threshold1, float threshold2, float threshold3, float threshold4) {
 	float percentInfected = (Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize()) * 100.0f;
 
@@ -79,7 +77,6 @@ void CyberSecurity::detectionLevelCheck(float threshold1, float threshold2, floa
 		detectionLevel = 1;
 	}
 }
-/*d*/
 void CyberSecurity::cureProgressSpeed(float speed, const Virus& virus) {
 	float totalFightStrength = 0.0f;
 
