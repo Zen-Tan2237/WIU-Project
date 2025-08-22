@@ -90,7 +90,7 @@ void Player::setInitials(Company* companyList[]){
 // Written by Zen
 // Name: parseUpgrades
 // Description: Parses the array of data in player.h
-// obama have dih 
+// Coding is my passion ahh font :sob:
 //**************241199A**************
 void Player::parseUpgrades() {
 	int parserIndex1 = 0;
