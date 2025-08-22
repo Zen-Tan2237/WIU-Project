@@ -31,13 +31,12 @@ private:
 	void setCureComplete(bool);
 
 public:
-	void triggerEvent(const Company&);
+	void triggerEvent(const Company&); // Not used
 
 	void advanceCure(Company* [], const Virus&);
 
-	bool isCureComplete();
-
 	void displayStatus() const;
+	bool isCureComplete();
 
 
 	float getGlobalCureProgress() const;
