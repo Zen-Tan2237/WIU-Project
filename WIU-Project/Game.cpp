@@ -64,11 +64,10 @@ void Game::doTurn()
         }
     }
 
-    cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
     if (currentTick % 50 == 0)
     {
 
-        cyberSecurity->triggerEvent(companies, *(player.getPlayerVirus()), newZ);
+        //cyberSecurity->triggerEvent(companies, *(player.getPlayerVirus()), newZ);
         randomCollabGenerator();
     }
 
@@ -77,6 +76,7 @@ void Game::doTurn()
         for (int j = 0; j < maxCompany;  j++) {
             companies[j]->update(companies);
         }
+        cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
         currentTick++;
     }
 
