@@ -205,7 +205,6 @@ void Company::calculateSpread(Company* companies[])
 
 	if (probability < 0.001f) probability = 0.001f; // always at least 0.1% chance
 	if (probability > 0.03f) probability = 0.03f;  // cap at 3%
-
 	// roll probability with rand()
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
 	int chosenSpreadCompany = -1;
