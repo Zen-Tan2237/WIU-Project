@@ -8,6 +8,7 @@
 
 int Company::totalNetworkSize = 0;
 int Company::totalNoOfInfectedComputers = 0;
+int Company::totalNoOfBrickedComputers = 0;
 
 Company::Company()
 {
@@ -17,6 +18,7 @@ Company::Company()
 	companyName = "We sell 100% halalpork";
 	securityLevel = 1;
 	noOfInfectedComputers = 0;
+	noOfBrickedComputers = 0;
 	networkSize = 1;
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
@@ -43,6 +45,7 @@ Company::Company(std::string Name, int size, float startingSecurityLevel, int ma
 	networkSize = size;
 	infectedStatus = 0;
 	noOfInfectedComputers = 0;
+	noOfBrickedComputers = 0;
 	securityLevel = startingSecurityLevel;
 	virus = nullptr;
 	isEmailTransmissionEnabled = true;
@@ -89,6 +92,27 @@ void Company::update(Company* companies[])
 		}
 	}
 
+	if (brickedStatus < 1) {
+		// logic for bricked level in the company
+		if (noOfInfectedComputers > 0 && noOfBrickedComputers < noOfInfectedComputers) {
+			int temp2 = calculateBricked();
+			noOfBrickedComputers += temp2;
+			totalNoOfBrickedComputers += temp2;
+
+			// get bricked status
+			if (noOfBrickedComputers == 0) {
+				brickedStatus = 0;
+			}
+			else if (noOfBrickedComputers < networkSize) {
+				brickedStatus = (float)noOfBrickedComputers / (float)networkSize;
+			}
+			else {
+				brickedStatus = 1;
+				noOfBrickedComputers = networkSize;
+			}
+		}
+	}
+
 	// logic for spreading between companies
 	if (isEmailTransmissionEnabled) {
 		calculateSpread(companies);
@@ -120,6 +144,39 @@ int Company::calculateInfected()
 		}
 		if (add > (networkSize - noOfInfectedComputers)) {
 			add = networkSize - noOfInfectedComputers;
+		}
+
+		return add;
+	}
+
+	return 0;
+}
+
+int Company::calculateBricked()
+{
+	float payloadMult = 1.0 + 0.25 * (virus->getPayload() - 1);
+	float advantage = virus->getComplexity() - securityLevel;
+	float advMult = 1.0 + 0.10 * advantage;
+
+
+	// probability calculation
+	float infectedFrac = (float)noOfBrickedComputers / (float)noOfInfectedComputers;
+
+	float probability = 0.05 * payloadMult * advMult * (infectedFrac * 1000.0);
+
+	if (probability < 0.01f) probability = 0.01f; // always at least 1% chance
+	if (probability > 0.05f) probability = 0.05f;  // cap at 5%
+
+	// roll probability with rand()
+	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
+
+	if (triggers) {
+		int add = (int)std::floor(noOfBrickedComputers * 0.10 * payloadMult * advMult * (1.0 - infectedFrac));
+		if (add < 1) {
+			add = 1;
+		}
+		if (add > (noOfInfectedComputers - noOfBrickedComputers)) {
+			add = noOfInfectedComputers - noOfBrickedComputers;
 		}
 
 		return add;
@@ -225,6 +282,11 @@ float Company::getInfectedStatus() const
 	return infectedStatus;
 }
 
+float Company::getBrickedStatus() const
+{
+	return brickedStatus;
+}
+
 void Company::setVirus(Virus* Virus)
 {
 	virus = Virus;
@@ -245,6 +307,11 @@ void Company::setCollabSpreadWeightIndex(int spreadWeight, int companyIndex)
 int Company::getNoOfInfectedComputers() const
 {
 	return noOfInfectedComputers;
+}
+
+int Company::getNoOfBrickedComputers() const
+{
+	return noOfBrickedComputers;
 }
 
 std::string Company::getName() const
@@ -276,6 +343,11 @@ int Company::getTotalNetworkSize()
 int Company::getTotalNoOfInfectedComputers()
 {
 	return totalNoOfInfectedComputers;
+}
+
+int Company::getTotalNoOfBrickedComputers()
+{
+	return totalNoOfBrickedComputers;
 }
 
 
