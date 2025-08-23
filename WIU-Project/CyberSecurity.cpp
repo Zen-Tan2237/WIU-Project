@@ -13,7 +13,6 @@ int CyberSecurity::cyberNewsCount[2] = { 0, 0 };
 float CyberSecurity::infectThreshold[4] = { 3.0f, 15.0f, 39.0f, 75.0f };
 float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f };
 
-
 /* +++++++++++++++++++++++++++++++++++++++++++++ */
 /* Function Members */
 
@@ -90,8 +89,7 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 			this->detectionLevelCheck();
 			if (doResearch(i, 20.0f)) {
 				isResearching[i] = 1;
-				fightStrength[i] = (
-					(coy[i]->getNetworkSize() - coy[i]->getNoOfBrickedComputers()) / ((Company::getTotalNetworkSize() - (coy[i]->getNetworkSize() * (maxCompany / 2.0f))) / coy[i]->getSecurityLevel())) * researchEfficiency[i];
+				this->setFightStrength(i, *coy[i]);
 				commonization = 0;
 			}
 		}
@@ -187,7 +185,7 @@ void CyberSecurity::displayStatus() const {
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
-	/**/
+	/*
 	SetConsoleTextAttribute(hConsole, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
@@ -257,9 +255,8 @@ void CyberSecurity::setGlobalCureProgress(float gcp) {
 void CyberSecurity::setDetectionLevel(int dl) {
 	this->detectionLevel = dl;
 }
-void CyberSecurity::setFightStrength(int type, float fs) {
-	this->fightStrength[type] = fs;
-}
+
+/* Private */
 void CyberSecurity::setUndeadRate(int type, const Company& coy) {
 	this->undeadRate[type] = ((coy.getNetworkSize() - coy.getNoOfBrickedComputers()) / (float)coy.getNetworkSize()) * 100.0f; // percentage of undead computers
 }
@@ -270,7 +267,10 @@ void CyberSecurity::setResearchEfficiency(int type, const Company& coy) {
 	}
 }
 void CyberSecurity::setInfectedRate_global() {
-	this->infectedRate_global = (Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize()) * 100.0f;
+	infectedRate_global = (Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize()) * 100.0f;
+}
+void CyberSecurity::setFightStrength(int type, const Company& coy) {
+	this->fightStrength[type] = ((coy.getNetworkSize() - coy.getNoOfBrickedComputers()) / ((Company::getTotalNetworkSize() - (coy.getNetworkSize() * (maxCompany / 2.0f))) / coy.getSecurityLevel())) * researchEfficiency[type];;
 }
 
 /* Constructors / Destructors */

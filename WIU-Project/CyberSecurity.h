@@ -32,6 +32,11 @@ private:
 	int getDetectThreshold_individual(const Company&) const;
 	int getDetectThreshold_global(const Company&) const;
 
+	void setUndeadRate(int, const Company&);
+	void setResearchEfficiency(int, const Company&);
+	void setInfectedRate_global();
+	void setFightStrength(int, const Company&);
+
 public:
 	void triggerEvent(Company* [], const Virus&, const News&);
 	int whichCompanyIsPossible(Company* []) const;
@@ -51,10 +56,6 @@ public:
 
 	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
-	void setFightStrength(int, float);
-	void setUndeadRate(int, const Company&);
-	void setResearchEfficiency(int, const Company&);
-	void setInfectedRate_global();
 
 	CyberSecurity(int);
 	~CyberSecurity();
