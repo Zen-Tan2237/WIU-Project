@@ -7,22 +7,25 @@
 class CyberSecurity {
 private:
 	int maxCompany;
+	int detectionLevel;
 
-	static float globalCureProgress;
 	static bool cureComplete;
-	static int detectionLevel;
+	static int cyberNewsCount[2];
+	static float globalCureProgress;
 	static float infectedRate_global;
 
-	static int cyberNewsCount[2]; 
-	static float infectThreshold[4]; // non-static if not needed else where
-	static float cureThreshold[4]; //  non-static if not needed else where
+	static const float infectThreshold[4];
+	static const float cureThreshold[4];
 
-	float* fightStrength;
-	float* researchEfficiency; // Debug variable
 	bool* isVDetect; // Condition for if a company detects the virus
-	bool* isResearching; // Debug variable
-	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead
 	bool* newsDetectDone;
+	float* fightStrength;
+	float* researchEfficiency;
+
+	bool* isResearching; // Debug variable
+	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead | Debug variable, can be placed within member function, as local variable - if not used outside.
+
+	int whichCompanyIsPossible(Company* []) const;
 
 	bool isVirusDetected(float, const Company&, const Virus&) const;
 	bool doResearch(int, float) const;
@@ -40,24 +43,21 @@ private:
 
 public:
 	void triggerEvent(Company* [], const Virus&, const News&);
-	int whichCompanyIsPossible(Company* []) const;
+	bool isCureComplete();
 
 	void advanceCure(Company* [], const Virus&);
 
 	void displayStatus() const;
-	bool isCureComplete();
 
-	float getGlobalCureProgress() const;
-	int getDetectionLevel() const;
-	float getFightStrength(int) const;
 	bool getCureComplete() const;
 	bool getIsVDetect(int) const;
 	bool getIsResearching(int) const;
 	bool getNewsDetectDone(int) const;
-
-	void setGlobalCureProgress(float);
-	void setDetectionLevel(int);
+	int getDetectionLevel() const;
+	float getFightStrength(int) const;
+	float getGlobalCureProgress() const;
 
 	CyberSecurity(int);
+	CyberSecurity(int, int);
 	~CyberSecurity();
 };

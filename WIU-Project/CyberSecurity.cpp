@@ -2,18 +2,14 @@
 #include <iostream>
 #include <windows.h>
 
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+bool CyberSecurity::cureComplete = 0; // Keep
+int CyberSecurity::cyberNewsCount[2] = { 0, 0 }; // Keep
+float CyberSecurity::globalCureProgress = 0.0f; // Keep
+float CyberSecurity::infectedRate_global = 0; // Keep
 
-int CyberSecurity::detectionLevel = 0;
-float CyberSecurity::globalCureProgress = 0.0f;
-bool CyberSecurity::cureComplete = 0;
-float CyberSecurity::infectedRate_global = 0;
+const float CyberSecurity::infectThreshold[4] = { 3.0f, 15.0f, 39.0f, 75.0f }; // Keep
+const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; // Keep
 
-int CyberSecurity::cyberNewsCount[2] = { 0, 0 };
-float CyberSecurity::infectThreshold[4] = { 3.0f, 15.0f, 39.0f, 75.0f };
-float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f };
-
-/* +++++++++++++++++++++++++++++++++++++++++++++ */
 /* Function Members --------------------------------------------------------------------- */
 /* News */
 void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus, const News& news) {
@@ -54,14 +50,13 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus, const News&
 			}
 		}
 	}
-	/* Win/Loss Condition ----------------------------------- */ {
+	/* Game Win/Loss Condition ----------------------------------- */ {
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
 			news.PlayerWinNews();
 		}
 		else if (isCureComplete()) {
 			news.PlayerLoseNews();
 		}
-
 	}
 }
 int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
@@ -75,6 +70,14 @@ int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
 		}
 	} while ((coy[coyChoice]->getNoOfBrickedComputers() == coy[coyChoice]->getNetworkSize()) || breakLoop);
 	return coyChoice;
+}
+bool CyberSecurity::isCureComplete() {
+	if (globalCureProgress == 100.0f) {
+		return cureComplete = 1;
+	}
+	else {
+		return cureComplete = 0;
+	}
 }
 
 /* Cure Progress Bar */
@@ -98,7 +101,7 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 			}
 		}
 
-		if (commonization) { // communized code if the conditions are not met.
+		if (commonization) { // code if the conditions are not met.
 			fightStrength[i] = 0.0f;
 		}
 	}
@@ -149,12 +152,6 @@ bool CyberSecurity::isVirusDetected(float udr, const Company& coy, const Virus& 
 	}
 	return 0;
 }
-bool CyberSecurity::doResearch(int type, float threshold) const {
-	if (undeadRate[type] > threshold && detectionLevel > 0 && Company::getTotalNoOfBrickedComputers() > 0) {
-		return 1;
-	}
-	return 0;
-}
 void CyberSecurity::detectionLevelCheck() { // Checks if total infected networks have reached the thresholds
 	if (infectedRate_global >= infectThreshold[3]) {
 		detectionLevel = 4;
@@ -168,6 +165,13 @@ void CyberSecurity::detectionLevelCheck() { // Checks if total infected networks
 	else if (infectedRate_global >= infectThreshold[0]) {
 		detectionLevel = 1;
 	}
+}
+// undeadRate used V
+bool CyberSecurity::doResearch(int type, float threshold) const {
+	if (undeadRate[type] > threshold && detectionLevel > 0 && Company::getTotalNoOfBrickedComputers() > 0) {
+		return 1;
+	}
+	return 0;
 }
 void CyberSecurity::cureProgressSpeed(int scaleSpeed, const Virus& virus) { // Increment towards the cure progress bar
 	float totalFightStrength = 0.0f; // reset
@@ -185,6 +189,8 @@ void CyberSecurity::cureProgressSpeed(int scaleSpeed, const Virus& virus) { // I
 
 /* Display Status */
 void CyberSecurity::displayStatus() const {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	std::cout
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
@@ -214,39 +220,30 @@ void CyberSecurity::displayStatus() const {
 	SetConsoleTextAttribute(hConsole, 7);
 	/**/
 }
-/* Loss/Win Condition */
-bool CyberSecurity::isCureComplete() {
-	if (globalCureProgress == 100.0f) {
-		return cureComplete = 1;
-	}
-	else {
-		return cureComplete = 0;
-	}
-}
 
 /* Getters ------------------------------------------------------------------------------ */
 /* Public */
-float CyberSecurity::getGlobalCureProgress() const {
-	return this->globalCureProgress;
-}
-int CyberSecurity::getDetectionLevel() const {
-	return this->detectionLevel;
-}
-float CyberSecurity::getFightStrength(int type) const {
-	return this->fightStrength[type];
-}
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
 }
 bool CyberSecurity::getIsVDetect(int type) const {
 	return this->isVDetect[type];
-}
+} // Might not be used
 bool CyberSecurity::getIsResearching(int type) const {
 	return this->isResearching[type];
-}
+} // Might not be used
 bool CyberSecurity::getNewsDetectDone(int type) const {
 	return this->newsDetectDone[type];
-}
+} // Might not be used
+int CyberSecurity::getDetectionLevel() const {
+	return this->detectionLevel;
+} // Might not be used
+float CyberSecurity::getFightStrength(int type) const {
+	return this->fightStrength[type];
+} // Might not be used
+float CyberSecurity::getGlobalCureProgress() const {
+	return this->globalCureProgress;
+} // Might not be used
 
 /* Private */
 int CyberSecurity::getDetectThreshold_individual(const Company& coy) const {
@@ -257,18 +254,10 @@ int CyberSecurity::getDetectThreshold_global(const Company& coy) const {
 }
 
 /* Setters ------------------------------------------------------------------------------ */
-/* Public */
-void CyberSecurity::setGlobalCureProgress(float gcp) {
-	this->globalCureProgress = gcp;
-}
-void CyberSecurity::setDetectionLevel(int dl) {
-	this->detectionLevel = dl;
-}
-
 /* Private */
 void CyberSecurity::setUndeadRate(int type, const Company& coy) {
 	this->undeadRate[type] = ((coy.getNetworkSize() - coy.getNoOfBrickedComputers()) / (float)coy.getNetworkSize()) * 100.0f; // percentage of undead computers
-}
+} // Not used if localized
 void CyberSecurity::setResearchEfficiency(int type, const Company& coy) {
 	this->researchEfficiency[type] = (coy.getNetworkSize() - coy.getNoOfInfectedComputers()) / (float)coy.getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
 	if (this->researchEfficiency[type] < 0.01f) {
@@ -285,32 +274,58 @@ void CyberSecurity::setFightStrength(int type, const Company& coy) {
 /* Constructors / Destructors ----------------------------------------------------------- */
 CyberSecurity::CyberSecurity(int coyAmt) {
 	maxCompany = coyAmt;
+	detectionLevel = 0;
+
+	isVDetect = new bool[coyAmt];
+	newsDetectDone = new bool[coyAmt];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
-	undeadRate = new float[coyAmt];
 
-	isResearching = new bool[coyAmt];
-	isVDetect = new bool[coyAmt]; 
-	newsDetectDone = new bool[coyAmt];
+	isResearching = new bool[coyAmt]; // Remove
+	undeadRate = new float[coyAmt]; // Remove if localized
+
 	for (int i = 0; i < coyAmt; i++) {
-		isResearching = 0;
 		isVDetect = 0;
 		newsDetectDone = 0;
+
+		isResearching = 0; // Remove
+	}
+}
+CyberSecurity::CyberSecurity(int coyAmt, int dL) {
+	maxCompany = coyAmt;
+	detectionLevel = dL; // 0 to 4;
+
+	isVDetect = new bool[coyAmt];
+	newsDetectDone = new bool[coyAmt];
+	fightStrength = new float[coyAmt];
+	researchEfficiency = new float[coyAmt];
+
+	isResearching = new bool[coyAmt]; // Remove
+	undeadRate = new float[coyAmt]; // Remove if localized
+
+	for (int i = 0; i < coyAmt; i++) {
+		isVDetect = 0;
+		newsDetectDone = 0;
+
+		isResearching = 0; // Remove
 	}
 }
 CyberSecurity::~CyberSecurity() {
 	delete[] 
-		fightStrength, 
-		undeadRate,
-		researchEfficiency,
-		isResearching,
 		isVDetect,
-		newsDetectDone
+		newsDetectDone,
+		fightStrength,
+		researchEfficiency,
+
+		isResearching, // Remove
+		undeadRate // Remove if localized
 		;
-	researchEfficiency = nullptr;
-	undeadRate = nullptr;
-	fightStrength = nullptr;
-	isResearching = nullptr;
+
 	isVDetect = nullptr;
 	newsDetectDone = nullptr;
+	fightStrength = nullptr;
+	researchEfficiency = nullptr;
+
+	isResearching = nullptr; // Remove
+	undeadRate = nullptr; // Remove if localized
 }
