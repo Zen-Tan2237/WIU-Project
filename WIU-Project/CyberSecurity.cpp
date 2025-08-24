@@ -14,14 +14,14 @@ float CyberSecurity::infectThreshold[4] = { 3.0f, 15.0f, 39.0f, 75.0f };
 float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f };
 
 /* +++++++++++++++++++++++++++++++++++++++++++++ */
-/* Function Members */
-
+/* Function Members --------------------------------------------------------------------- */
 /* News */
 void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus, const News& news) {
 	/* Virus Found ------------------------------------------ */ {
 		for (int i = 0; i < maxCompany; i++) {
-			if (isVDetect[i]) {
+			if (isVDetect[i] && !newsDetectDone[i]) {
 				news.virusFoundNews(coy[i]->getName());
+				newsDetectDone[i] = 1;
 			}
 		}
 	}
@@ -41,13 +41,17 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus, const News&
 		}
 	}
 	/* Cyber Win/Loss --------------------------------------- */ {
-		if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-			news.cybersecurityWinningNews(); // Code for cyber wins
-			cyberNewsCount[0]++;
+		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
+			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
+				news.cybersecurityWinningNews(); // Code for cyber wins
+				cyberNewsCount[0]++;
+			}
 		}
-		if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-			news.cyberSecurityLosingNews(); // Code for cyber losses
-			cyberNewsCount[1]++;
+		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
+			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
+				news.cyberSecurityLosingNews(); // Code for cyber losses
+				cyberNewsCount[1]++;
+			}
 		}
 	}
 	/* Win/Loss Condition ----------------------------------- */ {
@@ -220,7 +224,8 @@ bool CyberSecurity::isCureComplete() {
 	}
 }
 
-/* Getters */
+/* Getters ------------------------------------------------------------------------------ */
+/* Public */
 float CyberSecurity::getGlobalCureProgress() const {
 	return this->globalCureProgress;
 }
@@ -233,6 +238,17 @@ float CyberSecurity::getFightStrength(int type) const {
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
 }
+bool CyberSecurity::getIsVDetect(int type) const {
+	return this->isVDetect[type];
+}
+bool CyberSecurity::getIsResearching(int type) const {
+	return this->isResearching[type];
+}
+bool CyberSecurity::getNewsDetectDone(int type) const {
+	return this->newsDetectDone[type];
+}
+
+/* Private */
 int CyberSecurity::getDetectThreshold_individual(const Company& coy) const {
 	return (int)(100 - (coy.getSecurityLevel() / 0.1f)) + 1;
 }
@@ -240,15 +256,8 @@ int CyberSecurity::getDetectThreshold_global(const Company& coy) const {
 	return this->getDetectThreshold_individual(coy) * 10;
 }
 
-/* Outside */
-bool CyberSecurity::getIsVDetect(int type) const{
-	return this->isVDetect[type];
-}
-bool CyberSecurity::getIsResearching(int type) const {
-	return this->isResearching[type];
-}
-
-/* Setters */
+/* Setters ------------------------------------------------------------------------------ */
+/* Public */
 void CyberSecurity::setGlobalCureProgress(float gcp) {
 	this->globalCureProgress = gcp;
 }
@@ -273,14 +282,21 @@ void CyberSecurity::setFightStrength(int type, const Company& coy) {
 	this->fightStrength[type] = ((coy.getNetworkSize() - coy.getNoOfBrickedComputers()) / ((Company::getTotalNetworkSize() - (coy.getNetworkSize() * (maxCompany / 2.0f))) / coy.getSecurityLevel())) * researchEfficiency[type];;
 }
 
-/* Constructors / Destructors */
+/* Constructors / Destructors ----------------------------------------------------------- */
 CyberSecurity::CyberSecurity(int coyAmt) {
 	maxCompany = coyAmt;
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
-	isResearching = new bool[coyAmt];
-	isVDetect = new bool[coyAmt];
 	undeadRate = new float[coyAmt];
+
+	isResearching = new bool[coyAmt];
+	isVDetect = new bool[coyAmt]; 
+	newsDetectDone = new bool[coyAmt];
+	for (int i = 0; i < coyAmt; i++) {
+		isResearching = 0;
+		isVDetect = 0;
+		newsDetectDone = 0;
+	}
 }
 CyberSecurity::~CyberSecurity() {
 	delete[] 
@@ -288,11 +304,13 @@ CyberSecurity::~CyberSecurity() {
 		undeadRate,
 		researchEfficiency,
 		isResearching,
-		isVDetect
+		isVDetect,
+		newsDetectDone
 		;
 	researchEfficiency = nullptr;
 	undeadRate = nullptr;
 	fightStrength = nullptr;
 	isResearching = nullptr;
 	isVDetect = nullptr;
+	newsDetectDone = nullptr;
 }

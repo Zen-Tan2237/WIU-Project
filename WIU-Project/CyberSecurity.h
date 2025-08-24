@@ -14,14 +14,15 @@ private:
 	static float infectedRate_global;
 
 	static int cyberNewsCount[2]; 
-	static float infectThreshold[4]; // inline if not needed else where
-	static float cureThreshold[4]; // inline if not needed else where
+	static float infectThreshold[4]; // non-static if not needed else where
+	static float cureThreshold[4]; //  non-static if not needed else where
 
 	float* fightStrength;
 	float* researchEfficiency; // Debug variable
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* isResearching; // Debug variable
 	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead
+	bool* newsDetectDone;
 
 	bool isVirusDetected(float, const Company&, const Virus&) const;
 	bool doResearch(int, float) const;
@@ -50,9 +51,9 @@ public:
 	int getDetectionLevel() const;
 	float getFightStrength(int) const;
 	bool getCureComplete() const;
-
 	bool getIsVDetect(int) const;
 	bool getIsResearching(int) const;
+	bool getNewsDetectDone(int) const;
 
 	void setGlobalCureProgress(float);
 	void setDetectionLevel(int);
