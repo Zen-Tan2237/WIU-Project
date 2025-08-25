@@ -3,7 +3,10 @@
 #include <cstdlib>
 
 Ransomware::Ransomware() {
-
+    speed = 2.f;
+    complexity = 2.f;
+    payload = 4.f;
+    resilience = 3.f;
 }
 
 Ransomware::~Ransomware() {
