@@ -10,7 +10,7 @@ public:
 	~Worm();
 
 	void evolve(Upgrades*) override;
-	void miniGame(int hackingPoints);
+	void miniGame();
 
 };
 

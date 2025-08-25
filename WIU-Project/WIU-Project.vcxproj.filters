@@ -45,12 +45,6 @@
     <ClCompile Include="Minigame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ransomware.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Trojan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Virus.h">
@@ -80,14 +74,5 @@
     <ClInclude Include="Minigame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ransomware.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Trojan.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Logo.txt" />
   </ItemGroup>
 </Project>

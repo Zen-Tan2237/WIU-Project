@@ -78,6 +78,11 @@ void Game::doTurn()
         }
     }
 
+    if (currentTick % 10 == 0)
+    {
+        //randomMutation;
+    }
+
     // update company infectivity
     for (int i = 0; i < tickInterval; i++) {
         for (int j = 0; j < maxCompany;  j++) {
@@ -158,5 +163,5 @@ void Game::CheckCompanyDead()
 
 void Game::randomMutation()
 {
-    //player.getPlayerVirus()->mutate(rand() % 10);
+    player.getPlayerVirus()->mutate(rand() % 10);
 }
