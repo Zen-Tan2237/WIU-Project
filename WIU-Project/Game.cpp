@@ -83,10 +83,10 @@ void Game::doTurn()
         for (int j = 0; j < maxCompany;  j++) {
             companies[j]->update(companies);
         }
-            cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
+        cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
         currentTick++;
     }
-    cyberSecurity->triggerEvent(companies, *newZ);
+
     Company::getTotalStuff();
 
     // update player chioces

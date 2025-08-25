@@ -14,20 +14,17 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 /* News */
 void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
+	/**
+	SetConsoleTextAttribute(debug_cS, 3);
 	/**/
-	SetConsoleTextAttribute(debug_cS, 4);
-	/**/
-	/* Virus Found ------------------------------------------ */ { // checked
+	/* Virus Found ------------------------------------------ */ {
 		for (int i = 0; i < maxCompany; i++) {
-			if (isVDetect[i] && !newsDetectDone[i] && coy[i]->getInfectedStatus() >= 0.33f) { // news out at 0.33;
+			if (isVDetect[i] && !newsDetectDone[i]) {
 				news.virusFoundNews(coy[i]->getName());
 				newsDetectDone[i] = 1;
 			}
 		}
 	}
-	/**/
-	SetConsoleTextAttribute(debug_cS, 5); // Checked
-	/**/
 	/* Collab ----------------------------------------------- */ {
 		int coyChoice1 = whichCompanyIsPossible(coy);
 		int coyChoice2;
@@ -43,10 +40,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 			}
 		}
 	}
-	/**/
-	SetConsoleTextAttribute(debug_cS, 6);
-	/**/
-	/* Cyber Win/Loss --------------------------------------- */ { //checked
+	/* Cyber Win/Loss --------------------------------------- */ {
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
 				news.cybersecurityWinningNews(); // Code for cyber wins
@@ -60,9 +54,6 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 			}
 		}
 	}
-	/**/
-	SetConsoleTextAttribute(debug_cS, 10);
-	/**/
 	/* Game Win/Loss Condition ----------------------------------- */ {
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
 			news.PlayerWinNews();
@@ -70,10 +61,10 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 		else if (isCureComplete()) {
 			news.PlayerLoseNews();
 		}
+		/**
+		SetConsoleTextAttribute(debug_cS, 7);
+		/**/
 	}
-	/**/
-	SetConsoleTextAttribute(debug_cS, 7);
-	/**/
 }
 int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
 	int coyChoice = -1;
@@ -87,7 +78,7 @@ int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
 			coyChoice = -1;
 		}
 		for (int i = 0; i < maxCompany; i++) {
-			if (!isVDetect[i] || !doResearch(coyChoice, 20.0f)) {
+			if (!isVDetect[i]) {
 				count++;
 				coyChoice = -2;
 			}
@@ -219,7 +210,7 @@ void CyberSecurity::displayStatus() const {
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
-	/**/
+	/**
 	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
