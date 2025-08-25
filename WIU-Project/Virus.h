@@ -17,7 +17,6 @@ public:
 	virtual void evolve(Upgrades* toUpgrade);
 	void setAll10();
 	void displayStats();
-	virtual void mutate(int** upgradesArray, int* currentUpgradesIndex) = 0;
 	virtual void miniGame(int hackingPoints) = 0;
 
 	Virus();

@@ -8,7 +8,6 @@ public:
     ~Trojan();
 
     void evolve(Upgrades*);
-    void mutate(int** upgradesArray, int* currentUpgradesIndexs);
     void miniGame(int hackingPoints);
 };
 

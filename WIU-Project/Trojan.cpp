@@ -9,7 +9,7 @@ Trojan::Trojan() {
 }
 
 Trojan::~Trojan() {
-
+	
 }
 
 void Trojan::evolve(Upgrades* toUpgrade) {
@@ -22,10 +22,6 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 	complexity += toUpgrade->getComplexity();
 	payload += toUpgrade->getPayload();
 	resilience += toUpgrade->getResilience();
-}
-
-void Trojan::mutate(int** upgradesArray, int* currentUpgradesIndex) {
-
 }
 
 void Trojan::miniGame(int hackingPoints) {

@@ -11,11 +11,6 @@ Worm::Worm() {
 Worm::~Worm() {
 
 }
-
-void Worm::mutate(int** upgradesArray, int* currentUpgradesIndexs) {
-	
-}
-
 void Worm::evolve(Upgrades* toUpgrade) {
 	std::cout << "Speed to upgrade: " << (toUpgrade->getSpeed() + 0.5f) << std::endl
 		<< " Complexity to upgrade: " << toUpgrade->getComplexity() << std::endl

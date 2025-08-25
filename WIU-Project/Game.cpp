@@ -82,7 +82,6 @@ void Game::doTurn()
     for (int i = 0; i < tickInterval; i++) {
         for (int j = 0; j < maxCompany;  j++) {
             companies[j]->update(companies);
-            player.getPlayerVirus()->mutate(player.getDependencyChain(), player.getCurrentUpgradeIndices());
         }
         cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
         currentTick++;
