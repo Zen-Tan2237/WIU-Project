@@ -53,11 +53,12 @@ void Ransomware::miniGame(int& hackingPoints)
 
     //points
     int Points = NoteBuilderPoints[0][option[0]] + NoteBuilderPoints[1][option[1]] + NoteBuilderPoints[2][option[2]];
-    std::cout << "Minimum points to win: 4\n"
+    std::cout << "Minimum points to win: 5\n"
         << "Your points: " << Points << std::endl;
-    if (Points > 3)
+    if (Points > 4)
     {
         std::cout << "You Win the mini game\n";
+        hackingPoints += 20;
     }
     else
     {
