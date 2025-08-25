@@ -15,9 +15,8 @@ protected:
 public:
 	virtual void evolve(Upgrades* toUpgrade);
 	void setAll10();
+	virtual void miniGame(int hackingPoints) = 0;
 	void displayStats();
-	virtual void mutate(int chainIndex) = 0;
-	virtual void miniGame() = 0;
 
 	Virus();
 	~Virus();

@@ -4,8 +4,11 @@ class Trojan :
     public Virus
 {
 public:
+
+    Trojan();
+    ~Trojan();
+
     void evolve(Upgrades*);
-    void mutate(int);
-    void miniGame();
+    void miniGame(int hackingPoints);
 };
 

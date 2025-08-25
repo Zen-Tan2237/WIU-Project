@@ -163,5 +163,5 @@ void Game::CheckCompanyDead()
 
 void Game::randomMutation()
 {
-    player.getPlayerVirus()->mutate(rand() % 10);
+    //player.getPlayerVirus()->mutate(rand() % 10);
 }

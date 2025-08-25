@@ -155,11 +155,14 @@ public:
 	void parseUpgrades();
 	void parseDependencies();
 
+	void applyUpgrade(int);
+
 	// Getters and Setters
 	int getHackingPoints() const;
 	int** getDependencyChain();
 	int* getCurrentUpgradeIndices();
 	int getCompanyChoice() const;
+	Upgrades** getUpgradesArray();
 	void setCompanyChoice(int choice);	
 	void setMaxCompany(int maxCompany);
 	Virus* getPlayerVirus() const;
@@ -167,8 +170,5 @@ public:
 	Upgrades* upgradesArray[NUM_UPGRADES];
 	
 	void setHackingPoints(int hackingPoints);
-
-
-
 };
 

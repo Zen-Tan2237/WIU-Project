@@ -1,9 +1,7 @@
 #include "Player.h"
 
 Player::Player() {
-	for (int i = 0; i < NUM_UPGRADES; i++) {
-		upgradesArray[i] = nullptr;
-	}
+	parseUpgrades();
 	hackingPoints = 5;
 	companyChoice = 0;
 	maxCompany = 0;
@@ -43,6 +41,10 @@ int Player::getCompanyChoice() const {
 
 int** Player::getDependencyChain() {
 	return dependencyChain;
+}
+
+Upgrades** Player::getUpgradesArray() {
+	return upgradesArray;
 }
 
 int* Player::getCurrentUpgradeIndices() {
@@ -249,10 +251,8 @@ void Player::blockUpgrade() {
 			}
 		}
 	}
-	for (int i = 0; i < noOfChains; i++) {
-		std::cout << "Current Array Index " << i + 1 << ": " << currentUpgradeIndices[i] << std::endl;
-	}
 }
+
 void Player::displayUpgrades(bool& menuing) {
 	blockUpgrade(); // update current available upgrades
 	std::string input;
@@ -298,18 +298,21 @@ void Player::displayUpgrades(bool& menuing) {
 				std::cout << "Not enough hacking points to purchase this upgrade.\n";
 			}
 			else{
-				// Apply upgrade
-				playerVirus->evolve(upgradesArray[upgradeIdx]);
-				spendPoints(upgradesArray[upgradeIdx]->getCost());
-				std::cout << "Purchased: " << upgradesArray[upgradeIdx]->getName() << std::endl;
-				// Delete upgrade to mark as purchased
-				delete upgradesArray[upgradeIdx];
-				upgradesArray[upgradeIdx] = nullptr;
-
-				// Update available upgrades
-				blockUpgrade();
+				applyUpgrade(upgradeIdx);
 			}
 		}
 	}
 }
 
+void Player::applyUpgrade(int upgradeIndex) {
+	// Apply upgrade
+	playerVirus->evolve(upgradesArray[upgradeIndex]);
+	spendPoints(upgradesArray[upgradeIndex]->getCost());
+	std::cout << upgradesArray[upgradeIndex]->getName() << " has been upgraded with NO additional cost!" << std::endl;
+	// Delete upgrade to mark as purchased
+	delete upgradesArray[upgradeIndex];
+	upgradesArray[upgradeIndex] = nullptr;
+
+	// Update available upgrades
+	blockUpgrade();
+}
