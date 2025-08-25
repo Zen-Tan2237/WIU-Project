@@ -13,7 +13,7 @@ protected:
 	float resilience;
 
 public:
-	void evolve(Upgrades* toUpgrade);
+	virtual void evolve(Upgrades* toUpgrade);
 	void setAll10();
 	void displayStats();
 	virtual void mutate(int chainIndex) = 0;

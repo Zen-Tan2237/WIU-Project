@@ -1,5 +1,7 @@
 #pragma once
 #include "Virus.h"
+#include "Upgrades.h"
+
 class Worm : public Virus
 {
 public:
@@ -8,6 +10,7 @@ public:
 	~Worm();
 
 	void mutate(int);
+	void evolve(Upgrades*) override;
 
 };
 
