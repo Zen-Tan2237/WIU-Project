@@ -189,14 +189,14 @@ void CyberSecurity::cureProgressSpeed(int scaleSpeed, const Virus& virus) { // I
 
 /* Display Status */
 void CyberSecurity::displayStatus() const {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	std::cout
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
 	/*
-	SetConsoleTextAttribute(hConsole, 3);
+	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
 	}
@@ -217,7 +217,7 @@ void CyberSecurity::displayStatus() const {
 		std::cout << "FStr" << i << " " << fightStrength[i - 1] << " ";
 	}
 	std::cout << '\n';
-	SetConsoleTextAttribute(hConsole, 7);
+	SetConsoleTextAttribute(debug_cS, 7);
 	/**/
 }
 
@@ -259,7 +259,8 @@ void CyberSecurity::setUndeadRate(int type, const Company& coy) {
 	this->undeadRate[type] = ((coy.getNetworkSize() - coy.getNoOfBrickedComputers()) / (float)coy.getNetworkSize()) * 100.0f; // percentage of undead computers
 } // Not used if localized
 void CyberSecurity::setResearchEfficiency(int type, const Company& coy) {
-	this->researchEfficiency[type] = (coy.getNetworkSize() - coy.getNoOfInfectedComputers()) / (float)coy.getNetworkSize(); // value of uninfected computers 0-1, the scalar value.
+	this->researchEfficiency[type] = 1 - coy.getInfectedStatus(); // value of uninfected computers 0-1, the scalar value.
+	
 	if (this->researchEfficiency[type] < 0.01f) {
 		this->researchEfficiency[type] = 0.01f;
 	}
@@ -285,10 +286,10 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 	undeadRate = new float[coyAmt]; // Remove if localized
 
 	for (int i = 0; i < coyAmt; i++) {
-		isVDetect = 0;
-		newsDetectDone = 0;
+		isVDetect[i] = 0;
+		newsDetectDone[i] = 0;
 
-		isResearching = 0; // Remove
+		isResearching[i] = 0; // Remove
 	}
 }
 CyberSecurity::CyberSecurity(int coyAmt, int dL) {
@@ -304,10 +305,10 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 	undeadRate = new float[coyAmt]; // Remove if localized
 
 	for (int i = 0; i < coyAmt; i++) {
-		isVDetect = 0;
-		newsDetectDone = 0;
+		isVDetect[i] = 0;
+		newsDetectDone[i] = 0;
 
-		isResearching = 0; // Remove
+		isResearching[i] = 0; // Remove
 	}
 }
 CyberSecurity::~CyberSecurity() {
