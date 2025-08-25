@@ -7,7 +7,8 @@ class Minigame
 private:
 public:
 	Minigame() ;
+	Minigame(std::string companyA, std::string companyB);
 	~Minigame();
-	void play(std::string companyA , std::string companyB); 
+	virtual void play(); 
 };
 
