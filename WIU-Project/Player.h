@@ -155,7 +155,7 @@ public:
 	void parseUpgrades();
 	void parseDependencies();
 
-	void applyUpgrade(int, int);
+	void applyUpgrade(int);
 
 	// Getters and Setters
 	int getHackingPoints() const;
