@@ -1,17 +1,5 @@
 #include "Trojan.h"
 
-Trojan::Trojan() {
-	speed = 2.1f; // 1 for slow 5 max
-	complexity = 3; // 1 to 10
-	payload = 3; // 1 to 10
-	resilience = 4; //1 to 10
-	mutationProbability = 25;
-}
-
-Trojan::~Trojan() {
-
-}
-
 void Trojan::evolve(Upgrades* toUpgrade) {
 	std::cout << "Speed to upgrade: " << (toUpgrade->getSpeed() + 0.5f) << std::endl
 		<< " Complexity to upgrade: " << toUpgrade->getComplexity() << std::endl
@@ -24,10 +12,10 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Trojan::mutate(int** upgradesArray, int* currentUpgradesIndex) {
+void Trojan::mutate(int index) {
 
 }
 
-void Trojan::miniGame(int hackingPoints) {
+void Trojan::miniGame() {
 
 }

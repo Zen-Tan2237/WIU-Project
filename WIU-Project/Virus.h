@@ -11,17 +11,16 @@ protected:
 	float complexity;
 	float payload;
 	float resilience;
-	int mutationProbability;
 
 public:
 	virtual void evolve(Upgrades* toUpgrade);
 	void setAll10();
 	void displayStats();
-	virtual void mutate(int** upgradesArray, int* currentUpgradesIndex) = 0;
-	virtual void miniGame(int hackingPoints) = 0;
+	virtual void mutate(int chainIndex) = 0;
+	virtual void miniGame() = 0;
 
 	Virus();
-	virtual ~Virus();
+	~Virus();
 
 	//GETTERS SETTERS
 	float getSpeed() const;

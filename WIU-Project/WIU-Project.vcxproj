@@ -135,6 +135,7 @@
     <ClCompile Include="Upgrades.cpp" />
     <ClCompile Include="Virus.cpp" />
     <ClCompile Include="Worm.cpp" />
+    <ClCompile Include="ZeroDayExploit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Company.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Upgrades.h" />
     <ClInclude Include="Virus.h" />
     <ClInclude Include="Worm.h" />
+    <ClInclude Include="ZeroDayExploit.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Logo.txt" />
