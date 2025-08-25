@@ -18,14 +18,15 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 	/* Virus Found ------------------------------------------ */ {
 		/**/	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
-			if (isVDetect[i] && !newsDetectDone[i] && coy[i]->getInfectedStatus() >= 0.33f) { // news out at 0.33;
+			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
 				news.virusFoundNews(coy[i]->getName());
 				newsDetectDone[i] = 1;
 			}
 		}
 	}
 	/* Collab ----------------------------------------------- */ {
-		/**/	SetConsoleTextAttribute(debug_cS, 5);	/**/
+		/**	SetConsoleTextAttribute(debug_cS, 14);	/**/
+		/*
 		int coyChoice1 = whichCompanyIsPossible(coy);
 		int coyChoice2;
 
@@ -39,6 +40,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 				news.companyCollabNews(coy[coyChoice1]->getName(), coy[coyChoice2]->getName());
 			}
 		}
+	*/
 	}
 	/* Cyber Win/Loss --------------------------------------- */ {
 		/**/	SetConsoleTextAttribute(debug_cS, 6);	/**/
@@ -66,6 +68,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 		/**/	SetConsoleTextAttribute(debug_cS, 7);	/**/
 	}
 }
+/*
 int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
 	int coyChoice = -1;
 	bool breakLoop = 0;
@@ -78,7 +81,7 @@ int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
 			coyChoice = -1;
 		}
 		for (int i = 0; i < maxCompany; i++) {
-			if (!isVDetect[i] || !doResearch(coyChoice, 20.0f)) {
+			if (!doResearch(coyChoice, 20.0f) || coy[i]->getInfectedStatus() > 0.7f) {
 				count++;
 				coyChoice = -2;
 			}
@@ -86,6 +89,7 @@ int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
 	} while ((coy[coyChoice]->getNoOfBrickedComputers() == coy[coyChoice]->getNetworkSize()) && !breakLoop && count != 5);
 	return coyChoice;
 }
+*/
 bool CyberSecurity::isCureComplete() {
 	if (globalCureProgress == 100.0f) {
 		return cureComplete = 1;
@@ -183,7 +187,7 @@ void CyberSecurity::detectionLevelCheck() { // Checks if total infected networks
 }
 // undeadRate used V
 bool CyberSecurity::doResearch(int type, float threshold) const {
-	if (undeadRate[type] > threshold && detectionLevel > 0 && Company::getTotalNoOfBrickedComputers() > 0) {
+	if (undeadRate[type] >= threshold && detectionLevel > 0 && Company::getTotalNoOfBrickedComputers() > 0) {
 		return 1;
 	}
 	return 0;
@@ -210,7 +214,7 @@ void CyberSecurity::displayStatus() const {
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
-	/**
+	/**/
 	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
@@ -225,7 +229,7 @@ void CyberSecurity::displayStatus() const {
 	}
 	std::cout << '\n';
 	for (int i = 1; i < maxCompany + 1; i++) {
-		std::cout << "UdR" << i << "% " << undeadRate[i - 1] << " ";
+		std::cout << "UdR" << i << " " << undeadRate[i - 1] << "% ";
 	}
 	std::cout << '\n';
 	for (int i = 1; i < maxCompany + 1; i++) {
