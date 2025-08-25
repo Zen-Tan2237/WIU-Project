@@ -14,7 +14,7 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 /* News */
 void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
-	/**/
+	/**
 	SetConsoleTextAttribute(debug_cS, 3);
 	/**/
 	/* Virus Found ------------------------------------------ */ {
@@ -29,13 +29,13 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 		int coyChoice1 = whichCompanyIsPossible(coy);
 		int coyChoice2;
 
-		if (coyChoice1 != -1 || coyChoice1 != -2) {
+		if (coyChoice1 != -1 && coyChoice1 != -2) {
 			do {
 				coyChoice2 = whichCompanyIsPossible(coy);
 			} while (coyChoice1 == coyChoice2 && coyChoice2 != -2);
 
 			// Code for news and changing of cure status.
-			if (coyChoice2 != -1 || coyChoice2 != -2) {
+			if (coyChoice2 != -1 && coyChoice2 != -2) {
 				news.companyCollabNews(coy[coyChoice1]->getName(), coy[coyChoice2]->getName());
 			}
 		}
@@ -61,7 +61,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 		else if (isCureComplete()) {
 			news.PlayerLoseNews();
 		}
-		/**/
+		/**
 		SetConsoleTextAttribute(debug_cS, 7);
 		/**/
 	}
@@ -210,7 +210,7 @@ void CyberSecurity::displayStatus() const {
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
-	/**/
+	/**
 	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
