@@ -1,11 +1,16 @@
 #pragma once
 #include "Virus.h"
+#include "Upgrades.h"
+
 class Worm : public Virus
 {
 public:
 
 	Worm();
-	Worm(float speed, float stealth, float payload, float resilience);
 	~Worm();
+
+	void mutate(int);
+	void evolve(Upgrades*) override;
+
 };
 

@@ -59,11 +59,6 @@ private:
 		19, -1
 	};
 
-	int** dependencyChain;
-	int noOfChains;
-	int* lengthOfArray;
-	int* currentUpgradeIndices;
-
 	std::string nameUpgrade[NUM_UPGRADES * 2] = { // First string is Name, After that is the description
 		// SPEED UPGRADES
 		"Polymorphic Engine", "The virus rewrites its code everytime it spreads to a new computer, harder to detect. Speed and complexity increase slightly",
@@ -137,6 +132,11 @@ private:
 		0, 0, 0.5f, 1.4f, 25
 	};
 
+	int** dependencyChain;
+	int noOfChains;
+	int* lengthOfArray;
+	int* currentUpgradeIndices;
+
 public:
 	Player();
 	~Player();
@@ -150,11 +150,15 @@ public:
 	void blockUpgrade();
 	void printArrays();
 
+	int getNoOfChains();
+
 	void parseUpgrades();
 	void parseDependencies();
 
 	// Getters and Setters
 	int getHackingPoints() const;
+	int** getDependencyChain();
+	int* getCurrentUpgradeIndices();
 	int getCompanyChoice() const;
 	void setCompanyChoice(int choice);	
 	void setMaxCompany(int maxCompany);
