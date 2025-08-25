@@ -11,6 +11,7 @@ public:
 
 	void mutate(int);
 	void evolve(Upgrades*) override;
+	void miniGame();
 
 };
 
