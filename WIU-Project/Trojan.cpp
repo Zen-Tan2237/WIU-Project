@@ -12,10 +12,10 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Trojan::mutate(int index) {
+void Trojan::mutate(int** upgradesArray, int* currentUpgradesIndex) {
 
 }
 
-void Trojan::miniGame() {
+void Trojan::miniGame(int hackingPoints) {
 
 }

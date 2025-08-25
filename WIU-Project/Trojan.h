@@ -5,7 +5,7 @@ class Trojan :
 {
 public:
     void evolve(Upgrades*);
-    void mutate(int);
-    void miniGame();
+    void mutate(int** upgradesArray, int* currentUpgradesIndexs);
+    void miniGame(int hackingPoints);
 };
 

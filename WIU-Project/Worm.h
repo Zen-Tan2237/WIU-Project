@@ -9,9 +9,9 @@ public:
 	Worm();
 	~Worm();
 
-	void mutate(int);
+	void mutate(int** upgradesArray, int* currentUpgradesIndex);
 	void evolve(Upgrades*) override;
-	void miniGame();
+	void miniGame(int hackingPoints);
 
 };
 

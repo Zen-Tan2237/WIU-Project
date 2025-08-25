@@ -12,10 +12,10 @@ void Ransomware::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Ransomware::mutate(int index) {
+void Ransomware::mutate(int** upgradesArray, int* currentUpgradesIndex) {
 
 }
 
-void Ransomware::miniGame() {
+void Ransomware::miniGame(int hackingPoints) {
 
 }

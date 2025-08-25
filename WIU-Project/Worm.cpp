@@ -11,7 +11,7 @@ Worm::~Worm() {
 
 }
 
-void Worm::mutate(int chainIndex) {
+void Worm::mutate(int** upgradesArray, int* currentUpgradesIndexs) {
 	
 }
 
@@ -27,6 +27,6 @@ void Worm::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Worm::miniGame() {
+void Worm::miniGame(int hackingPoints) {
 
 }
