@@ -42,7 +42,7 @@ private:
 	void setFightStrength(int, const Company&);
 
 public:
-	void triggerEvent(Company* [], const Virus&, const News&);
+	void triggerEvent(Company* [], const News&);
 	bool isCureComplete();
 
 	void advanceCure(Company* [], const Virus&);
