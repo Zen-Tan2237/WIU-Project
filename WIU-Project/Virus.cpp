@@ -7,6 +7,7 @@ Virus::Virus() {
 	complexity = 0;
 	payload = 0;
 	resilience = 0;
+	mutationProbability = 50;
 }
 
 Virus::~Virus() {

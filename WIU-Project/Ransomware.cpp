@@ -1,5 +1,17 @@
 #include "Ransomware.h"
 
+Ransomware::Ransomware() {
+	speed = 1.4f; // 1 for slow 5 max
+	complexity = 2; // 1 to 10
+	payload = 4; // 1 to 10
+	resilience = 3; //1 to 10
+	mutationProbability = 10;
+}
+
+Ransomware::~Ransomware() {
+
+}
+
 void Ransomware::evolve(Upgrades* toUpgrade) {
 	std::cout << "Speed to upgrade: " << (toUpgrade->getSpeed() + 0.5f) << std::endl
 		<< " Complexity to upgrade: " << toUpgrade->getComplexity() << std::endl
@@ -12,10 +24,10 @@ void Ransomware::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Ransomware::mutate(int index) {
+void Ransomware::mutate(int** upgradesArray, int* currentUpgradesIndex) {
 
 }
 
-void Ransomware::miniGame() {
+void Ransomware::miniGame(int hackingPoints) {
 
 }

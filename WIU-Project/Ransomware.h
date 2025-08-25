@@ -6,7 +6,7 @@ class Ransomware :
 
 public:
     void evolve(Upgrades*) override;
-    void mutate(int);
-    void miniGame();
+    void mutate(int** upgradesArray, int* currentUpgradesIndex);
+    void miniGame(int hackingPoints);
 };
 
