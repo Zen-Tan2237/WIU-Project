@@ -41,6 +41,14 @@ int Player::getCompanyChoice() const {
 	return companyChoice;
 }
 
+int** Player::getDependencyChain() {
+	return dependencyChain;
+}
+
+int* Player::getCurrentUpgradeIndices() {
+	return currentUpgradeIndices;
+}
+
 void Player::setCompanyChoice(int choice){
 	this->companyChoice = choice;
 }
@@ -164,6 +172,10 @@ void Player::printArrays() {
 	for (int i = 0; i < noOfChains; i++) {
 		std::cout << "Current index in array: " << i + 1 << ": " << currentUpgradeIndices[i] << std::endl;
 	}
+}
+
+int Player::getNoOfChains() {
+	return noOfChains;
 }
 
 void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedComputers) {

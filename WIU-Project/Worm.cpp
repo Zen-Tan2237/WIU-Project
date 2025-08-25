@@ -11,3 +11,6 @@ Worm::~Worm() {
 
 }
 
+void Worm::mutate(int chainIndex) {
+	
+}

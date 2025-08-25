@@ -16,6 +16,7 @@ public:
 	void evolve(Upgrades* toUpgrade);
 	void setAll10();
 	void displayStats();
+	virtual void mutate(int chainIndex) = 0;
 
 	Virus();
 	~Virus();
