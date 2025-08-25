@@ -5,7 +5,6 @@ Trojan::Trojan() {
 	complexity = 3; // 1 to 10
 	payload = 3; // 1 to 10
 	resilience = 4; //1 to 10
-	mutationProbability = 25;
 }
 
 Trojan::~Trojan() {

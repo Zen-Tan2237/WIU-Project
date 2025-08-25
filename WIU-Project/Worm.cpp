@@ -22,6 +22,6 @@ void Worm::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Worm::miniGame() {
+void Worm::miniGame(int hackingPoints) {
 
 }
