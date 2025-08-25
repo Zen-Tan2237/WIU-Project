@@ -11,6 +11,7 @@ protected:
 	float complexity;
 	float payload;
 	float resilience;
+	int mutationProbability;
 
 public:
 	virtual void evolve(Upgrades* toUpgrade);
@@ -20,7 +21,7 @@ public:
 	virtual void miniGame(int hackingPoints) = 0;
 
 	Virus();
-	~Virus();
+	virtual ~Virus();
 
 	//GETTERS SETTERS
 	float getSpeed() const;

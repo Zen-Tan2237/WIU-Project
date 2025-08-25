@@ -1,10 +1,11 @@
 #include "Worm.h"
 
 Worm::Worm() {
-	speed = 2; // 1 for slow 5 max
-	complexity = 3; // 1 to 10
+	speed = 4; // 1 for slow 5 max
+	complexity = 2; // 1 to 10
 	payload = 1; // 1 to 10
-	resilience = 4; //1 to 10
+	resilience = 2; //1 to 10
+	mutationProbability = 15;
 }
 
 Worm::~Worm() {
