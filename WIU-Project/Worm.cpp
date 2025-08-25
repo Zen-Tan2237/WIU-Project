@@ -26,3 +26,7 @@ void Worm::evolve(Upgrades* toUpgrade) {
 	payload += toUpgrade->getPayload();
 	resilience += toUpgrade->getResilience();
 }
+
+void Worm::miniGame() {
+
+}

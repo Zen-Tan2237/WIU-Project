@@ -15,3 +15,7 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 void Trojan::mutate(int index) {
 
 }
+
+void Trojan::miniGame() {
+
+}

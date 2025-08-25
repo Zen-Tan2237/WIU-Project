@@ -15,3 +15,7 @@ void Ransomware::evolve(Upgrades* toUpgrade) {
 void Ransomware::mutate(int index) {
 
 }
+
+void Ransomware::miniGame() {
+
+}
