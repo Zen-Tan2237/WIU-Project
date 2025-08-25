@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Game.h"
+#include "SoundController.h"
 
 int main() {
 
@@ -8,6 +9,7 @@ int main() {
 	Game* game = new Game;
 
 	game->initGame();
+	SoundController::playSoundLoop(L"resources\\yipeeee.wav");
 	while (true) {
 		game->printInterface();
 		game->doTurn();
