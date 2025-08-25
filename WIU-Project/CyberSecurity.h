@@ -7,55 +7,57 @@
 class CyberSecurity {
 private:
 	int maxCompany;
-
-	float globalCureProgress;
-	bool cureComplete;
-
 	int detectionLevel;
+
+	static bool cureComplete;
+	static int cyberNewsCount[2];
+	static float globalCureProgress;
+	static float infectedRate_global;
+
+	static const float infectThreshold[4];
+	static const float cureThreshold[4];
+
+	bool* isVDetect; // Condition for if a company detects the virus
+	bool* newsDetectDone;
 	float* fightStrength;
-	float* undeadRate;
 	float* researchEfficiency;
 
-	/*
-	enum events {
-		coyCollabs
-		,
-		ITLockdowns,
+	bool* isResearching; // Debug variable
+	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead | Debug variable, can be placed within member function, as local variable - if not used outside.
 
-		eventAmt
-	};
-	*/
+	int whichCompanyIsPossible(Company* []) const;
 
 	bool isVirusDetected(float, const Company&, const Virus&) const;
-	void detectionLevelCheck(float, float, float, float);
-	void cureProgressSpeed(float, const Virus&);
+	bool doResearch(int, float) const;
+
+	void detectionLevelCheck();
+	void cureProgressSpeed(int, const Virus&);
 
 	int getDetectThreshold_individual(const Company&) const;
 	int getDetectThreshold_global(const Company&) const;
-	void setCureComplete(bool);
+
+	void setUndeadRate(int, const Company&);
+	void setResearchEfficiency(int, const Company&);
+	void setInfectedRate_global();
+	void setFightStrength(int, const Company&);
 
 public:
-	void triggerEvent(Company* [], const Virus&, const News&) const; // Not used yet
-	int whichCompanyIsPossible(Company* []) const;
+	void triggerEvent(Company* [], const Virus&, const News&);
+	bool isCureComplete();
 
 	void advanceCure(Company* [], const Virus&);
 
 	void displayStatus() const;
-	bool isCureComplete();
 
-
-	float getGlobalCureProgress() const;
+	bool getCureComplete() const;
+	bool getIsVDetect(int) const;
+	bool getIsResearching(int) const;
+	bool getNewsDetectDone(int) const;
 	int getDetectionLevel() const;
 	float getFightStrength(int) const;
-	bool getCureComplete() const;
-
-	void setGlobalCureProgress(float);
-	void setDetectionLevel(int);
-	void setFightStrength(int, float);
-	void setUndeadRate(int, Company* []);
-	void setResearchEfficiency(int, Company* []);
+	float getGlobalCureProgress() const;
 
 	CyberSecurity(int);
-	//CyberSecurity(int, int, float);
+	CyberSecurity(int, int);
 	~CyberSecurity();
 };

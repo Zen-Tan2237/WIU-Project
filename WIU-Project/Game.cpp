@@ -4,6 +4,9 @@
 #include <cmath>
 #include <string>
 #include <iomanip>
+#include <vector>
+#include <random>
+#include "algorithm"
 
 #include "Game.h"
 
@@ -13,6 +16,7 @@ Game::Game()
     tickInterval = 10; // 10 = 1 day
     isGameRunning = true;
     
+    newZ = nullptr;
     companyA = NULL;
     companyB = NULL;
 
@@ -59,6 +63,7 @@ void Game::doTurn()
     if (currentTick == 0) {
         player.setMaxCompany(maxCompany);
         player.setInitials(companies);
+        newZ = new News(player.getPlayerVirus()->getName());
         for (int j = 0; j < maxCompany; j++) {
             companies[j]->setVirus(player.getPlayerVirus());
         }
@@ -66,9 +71,11 @@ void Game::doTurn()
 
     if (currentTick % 50 == 0)
     {
-
-        //cyberSecurity->triggerEvent(companies, *(player.getPlayerVirus()), newZ);
-        randomCollabGenerator();
+        int eventTrigger = rand() % 100;
+        if (eventTrigger >= 80)
+        {
+            randomCollabGenerator();
+        }
     }
 
     // update company infectivity
@@ -114,56 +121,27 @@ void Game::printInterface()
 
 void Game::randomCollabGenerator()
 {
-    int eventTrigger = rand() % 100;
-    if (eventTrigger >= 80)
+    // check how many companies can collab
+    std::vector<int> eligibleCompanies;
+    for (int i = 0; i < 5; ++i)
     {
-        // check howw many companies can collab
-        int companyCanCollab = 0;
-        for (int i = 0; i < 5; i++)
+        if (companies[i]->getInfectedStatus() < 0.7f)
         {
-            if (companies[i]->getInfectedStatus() < 0.7f)
-            {
-                companyCanCollab++;
-            }
+           eligibleCompanies.push_back(i);
         }
+    }
 
-        // collabing only runs if 2 or more companies can collab
-        if (companyCanCollab > 1)
-        {
-            bool companyACan = false;
-            while (!companyACan)
-            {
-                companyA = rand() % 5;
-                if (companies[companyA]->getInfectedStatus() < 0.7f)
-                {
-                    bool companyBCan = false;
-                    bool BequalA = true;
-                    while (!companyBCan)
-                    {
-                        // check make sure companyB is not A
-                        while (BequalA)
-                        {
-                            companyB = rand() % 5;
-                            if (companies[companyB]->getInfectedStatus() < 0.7f)
-                            {
-                                if (companyA != companyB)
-                                {
-                                    BequalA = false;
-                                    companyBCan = true;
-                                }
-                            }
-                        }
-                    }
+    // collabing only runs if 2 or more companies can collab
+    if (eligibleCompanies.size() >= 2)
+    {
+        std::shuffle(eligibleCompanies.begin(), eligibleCompanies.end(), std::default_random_engine(static_cast<unsigned>(std::time(0))));
+        int companyA = eligibleCompanies[0];
+        int companyB = eligibleCompanies[1];
 
-                    // print out and set the finalised companies collabing spread
-                    newZ.companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
-                    companies[companyA]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyB);
-                    companies[companyB]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyA);
-
-                    companyACan = true;
-                }
-            }
-        }
+        // print out and set the finalised companies collabing spread
+        newZ->companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
+        companies[companyA]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyB);
+        companies[companyB]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyA);
     }
 }
 
@@ -171,9 +149,14 @@ void Game::CheckCompanyDead()
 {
     for (int i = 0; i < 5; i++)
     {
-        if (companies[i]->getInfectedStatus())
+        if (companies[i]->getBrickedStatus() == 1)
         { 
-            newZ.companyDeadNews(companies[i]->getName());
+            newZ->companyDeadNews(companies[i]->getName());
         }
     }
+}
+
+void Game::randomMutation()
+{
+    //player.getPlayerVirus()->mutate(rand() % 10);
 }
