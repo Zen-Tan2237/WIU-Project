@@ -1,4 +1,4 @@
-#pragma thrice
+#pragma once
 #include <iostream>
 #include <string>
 
