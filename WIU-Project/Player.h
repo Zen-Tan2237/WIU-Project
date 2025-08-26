@@ -5,6 +5,8 @@
 #include "Virus.h"
 #include "Company.h"
 #include "Worm.h"
+#include "Trojan.h"
+#include "Ransomware.h"
 
 class Player
 {
@@ -145,7 +147,7 @@ public:
 
 	void setInitials(Company* companyList[]);
 	void update(int noOfInfectedComputers , int networkSize, int noOfBrickedComputers);
-	void displayUpgrades(bool& menuing);
+	void displayUpgrades();
 
 	void blockUpgrade();
 	void printArrays();

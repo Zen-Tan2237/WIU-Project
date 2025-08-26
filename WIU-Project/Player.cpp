@@ -74,14 +74,13 @@ void Player::spendPoints(float cost) {
 void Player::setInitials(Company* companyList[]){
 	int type;
 	do {
-		std::cout << "Enter your virus (1 - Worm): ";
+		std::cout << "Enter your virus (1 - Worm), (2 - Trojan), (3 - Ransomware): ";
 		std::cin >> type;
-	} while (type < 1 || type > 1);
+	} while (type < 1 || type > 3);
 
 	if (type == 1) {
 		playerVirus = new Worm;
 	}
-
 
 	do {
 		std::cout << "Enter the company you want to start at: " << std::endl;
@@ -212,35 +211,28 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 	}
 	infectedComputersPrevious = noOfInfectedComputers;
 	brickedComputersPrevious = noOfBrickedComputers;
-	bool next = true;
 	bool menuing = true;
-	do {
+	do {//upgrade menu
 		std::cout << "Hacker Points: " << hackingPoints << std::endl;
 		std::cout << "Enter to continue, U to open Upgrade Menu \n";
-		if (menuing == false) {
-			next = true;
-		}
 		do {
 			getline(std::cin, upgrade);
 		} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
-		menuing = true;
-		while (menuing == true) {
-			if (upgrade == "U" || upgrade == "u") {
-				next = false;
-				displayUpgrades(menuing);
-			}
-			else {
-				menuing = false;
-			}
+		if (upgrade == "U" || upgrade == "u") {
+			displayUpgrades();
+
 		}
-	} while (next == false);
+		else if(upgrade == ""){
+			menuing = false;
+		}
+	} while (menuing == true);
+	std::cout << "exited";
 }
 
 void Player::blockUpgrade() {
 	for (int i = 0; i < noOfChains; i++) {
 		currentUpgradeIndices[i] = dependencyChain[i][0];
 		for (int j = 0; dependencyChain[i][j] != -1; j++) {
-
 			if (upgradesArray[dependencyChain[i][j]] == nullptr) {
 				if (j + 1 < lengthOfArray[i]) {
 					currentUpgradeIndices[i] = dependencyChain[i][j + 1];
@@ -253,10 +245,10 @@ void Player::blockUpgrade() {
 	}
 }
 
-void Player::displayUpgrades(bool& menuing) {
+void Player::displayUpgrades() {
 	blockUpgrade(); // update current available upgrades
 	std::string input;
-	while (menuing) {
+	while (true) {
 		std::cout << "\nAvailable Upgrades:\n";
 		std::cout << "Hacker Points: " << hackingPoints << std::endl;
 		for (int i = 0; i < noOfChains; i++) {
@@ -268,10 +260,9 @@ void Player::displayUpgrades(bool& menuing) {
 			}
 		}
 		std::cout << "Enter number to purchase, 'E' to exit:";
-		std::cin >> input;
+		std::getline(std::cin, input);
 
 		if (input == "E" || input == "e") {
-			menuing = false;
 			return;
 		}
 		else if (input == "S" || input == "s") {
