@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +41,15 @@
     <ClCompile Include="Minigame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ransomware.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trojan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Virus.h">
@@ -74,15 +79,20 @@
     <ClInclude Include="Minigame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Ransomware.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trojan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZeroDayExploit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Logo.txt" />
-    <Text Include="yes.txt" />
-    <Text Include="LogoInteractToStart1.txt" />
-    <Text Include="LogoInteractToStart2.txt" />
-    <Text Include="Screen2DialoguePt1.txt" />
-    <Text Include="Screen3Welcome.txt" />
-    <Text Include="Screen3NameVirus.txt" />
-    <Text Include="emptyChickenFrames.txt" />
   </ItemGroup>
 </Project>

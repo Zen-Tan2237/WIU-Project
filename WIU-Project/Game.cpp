@@ -14,6 +14,7 @@
 #include <cctype>
 
 #include "algorithm"
+
 #include "Game.h"
 
 Game::Game()
@@ -88,19 +89,9 @@ int Game::getCurrentTick() const
     return this->currentTick;
 }
 
-int Game::getScreenIndex() const
-{
-    return this->screenIndex;
-}
-
 void Game::setCurrentTick(int tickInterval)
 {
     this->currentTick += tickInterval;
-}
-
-void Game::setScreenIndex(int screenIndex)
-{
-    this->screenIndex = screenIndex;
 }
 
 void Game::doTurn()
@@ -148,10 +139,8 @@ void Game::doTurn()
 
 void Game::printInterface()
 {
-
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    //system("cls ");
-    /*for (int i = 0; i < maxCompany; i++) {
+    system("cls ");
+    for (int i = 0; i < maxCompany; i++) {
         std::cout << "-----------------------" << std::endl
             << i + 1 << ". " << companies[i]->getName() << std::endl
             << "Network Size: " << companies[i]->getNetworkSize() << std::endl
@@ -589,7 +578,7 @@ void Game::CheckCompanyDead()
     }
 }
 
-void Game::highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes)
+void Game::randomMutation()
 {
     if (thisUIButton == selectedUIButton) {
         SetConsoleTextAttribute(yes, BACKGROUND_GREEN | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);

@@ -1,11 +1,10 @@
 #include <iostream>
-#include <windows.h>
 #include "Game.h"
-#include <thread>
+#include "SoundController.h"
 
 int main() {
-	srand(time(0));
-	SetConsoleOutputCP(CP_UTF8);
+
+	srand((unsigned)time(0));
 
 	Game* game = new Game;
 
@@ -21,6 +20,7 @@ int main() {
 
 	while (true) {
 		game->printInterface();
+		game->doTurn();
 	}
 
 	delete game;

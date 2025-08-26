@@ -1,16 +1,9 @@
 #include "Ransomware.h"
 #include <iostream>
 #include <cstdlib>
-#include <algorithm>  
-#include <random>     
-#include <chrono>    
 
 Ransomware::Ransomware() {
-    name = "no name lol";
-    speed = 2.f;
-    complexity = 2.f;
-    payload = 4.f;
-    resilience = 3.f;
+
 }
 
 Ransomware::~Ransomware() {
@@ -31,44 +24,34 @@ void Ransomware::evolve(Upgrades* toUpgrade) {
 
 void Ransomware::miniGame(int& hackingPoints)
 {
-    std::default_random_engine rng(static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()));
-
     for (int i = 0; i < 3; i++)
     {
         system("cls");
         std::cout << "Mini Game:\n"
-            << "Create a Ransomware note to convince victims to actually pay you.\n\n";
+            << "Create a Randsomeware note to convince victims to actually pay you.\n\n";
 
-        std::cout << NoteBuilderHeader[i];
-
-        // Create and shuffle index array
-        int indices[3] = { 0, 1, 2 };
-        std::shuffle(indices, indices + 3, rng);
-
-        // Display shuffled options
-        for (int j = 0; j < 3; j++)
-        {
-            std::cout << j + 1 << ". " << NoteBuilder[i][indices[j]] << std::endl;
-        }
-
-        int input;
-        std::cout << "Choose option (1-3): ";
+        std::cout << NoteBuilderHeader[i]
+            << "1. " << NoteBuilder[i][0] << std::endl
+            << "2. " << NoteBuilder[i][1] << std::endl
+            << "3. " << NoteBuilder[i][2] << std::endl
+            << "Choose options (1-3): ";
         do
         {
-            std::cin >> input;
+            std::cin >> option[i];
 
-            if (input < 1 || input > 3)
+            if (option[i] < 1 || option[i] > 3)
             {
-                std::cout << "Invalid option, please choose again\n";
+                std::cout << "invalid option, please choose again)\n";
             }
             else
             {
-                option[i] = indices[input - 1];
+                option[i] -= 1;
                 break;
             }
         } while (true);
     }
 
+    //points
     int Points = NoteBuilderPoints[0][option[0]] + NoteBuilderPoints[1][option[1]] + NoteBuilderPoints[2][option[2]];
     std::cout << "Minimum points to win: 5\n"
         << "Your points: " << Points << std::endl;
@@ -79,6 +62,6 @@ void Ransomware::miniGame(int& hackingPoints)
     }
     else
     {
-        std::cout << "You Lose the mini game\n";
+        std::cout << "You Lose the minigame\n";
     }
 }
