@@ -25,492 +25,194 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 }
 
 void Trojan::miniGame(int& hackingPoints) {
-	std::string coyNm_Versions[] = { // Version
+	char answers[5] = { '-', '-', '-', '-', '-' };
+	int condiOffset[2] = { 0, 0 };
+	int* condition = new int[5];
+	std::string fT[] = {
+		".pdf",
+		".docx", /* .odt, is not very common */
+		".xlsx", /* .ods, is not very common - not the standard */
+		".csv",
+		".pptx",
+		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
+	};
+	std::string ver[] = {
 		"v1",
 		"v2",
 		"v3",
 		"Final",
 		"Final_v2"
-	};
-	switch (rand() % 6) {
-	case 0:
-		if (companyOperation((sizeof(coyNm_Versions) / sizeof(*coyNm_Versions)), coyNm_Versions)) {
-			hackingPoints++;
-		}
-		break;
-	case 1:
-		if (companyFinancial((sizeof(coyNm_Versions) / sizeof(*coyNm_Versions)), coyNm_Versions)) {
-			hackingPoints++;
-		}
-		break;
-	case 2:
-		if (companySales((sizeof(coyNm_Versions) / sizeof(*coyNm_Versions)), coyNm_Versions)) {
-			hackingPoints++;
-		}
-		break;
-	case 3:
-		if (companyAccounting((sizeof(coyNm_Versions) / sizeof(*coyNm_Versions)), coyNm_Versions)) {
-			hackingPoints++;
-		}
-	case 4:
-		if (companyInfoTech((sizeof(coyNm_Versions) / sizeof(*coyNm_Versions)), coyNm_Versions)) {
-			hackingPoints++;
-		}
-		break;
-	case 5:
-		if (companyHumanResource((sizeof(coyNm_Versions) / sizeof(*coyNm_Versions)), coyNm_Versions)) {
-			hackingPoints++;
-		}
-		break;
-	default:
-		break;
+	}; // Version
+	std::string date[] = { 
+		"Q1", 
+		"Q2", 
+		"Q3", 
+		"Q4"
+	}; // Date
+	std::string** p_con = new std::string * [2];
+	for (int i = 0; i < 2; i++) {
+		p_con[i] = new std::string[4];
 	}
+	condition = winConditions(4, (sizeof(ver) / sizeof(*ver)), (sizeof(fT) / sizeof(*fT)), condition);
+	/* Defining Naming Conventions & Printing -------------------------------- */ {
+		{
+			std::string departName;
+			switch (rand() % 6) {
+			case 0:
+				nMConvention_Ops(p_con);
+				departName = "Operations";
+				break;
+			case 1:
+				nMConvention_Fin(p_con);
+				departName = "Financial";
+				break;
+			case 2:
+				nMConvention_Sales(p_con);
+				departName = "Sales";
+				break;
+			case 3:
+				nMConvention_Acct(p_con);
+				departName = "Accounting";
+				break;
+			case 4:
+				nMConvention_IT(p_con);
+				departName = "Information Technology";
+				break;
+			case 5:
+				nMConvention_HR(p_con);
+				break;
+				departName = "Human Resource";
+			default: break;
+			}
+			printDialog(
+				departName,
+				p_con[0][condition[0]],
+				p_con[1][condition[1]],
+				date[condition[2] + conditionOffset(sizeof(date) / sizeof(*date), condition[3])],
+				ver[condition[3] + conditionOffset((sizeof(ver) / sizeof(*ver)), condition[4])],
+				fT[condition[4]]
+			);
+		}
+		for (int i = 0; i < 5; i++) {
+			printSynSectNm(i);
+			/* Syntax Options Printing ======================================== */ {
+				std::vector<std::string> options[4];
+
+				/* What other options will be shown +++++++++++++++++++++++++++ */ {
+					if (i <= 2) { // Syntax Options - baitNm
+						minigameOptions_2d(i, 4, condition[i], p_con, options);
+					}
+					else if (i == 3) { // Syntax Options - versions
+						minigameOptions_1d(i, (sizeof(ver) / sizeof(*ver)), condition[i], ver, options);
+					}
+					else if (i == 4) { //Syntax Options - file type
+						minigameOptions_1d(i, (sizeof(fT) / sizeof(*fT)), condition[i], fT, options);
+					}
+				}
+				std::random_shuffle(options->begin(), options->end()); // Shuffles options - might need a rand() or seed.
+				int ansNum = 0;
+				for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
+					std::cout << '('  << i << ") " << *it << "   ";
+					/* Answer Allocation ++++++++++++++++++++++++++++++++++++++ */ {
+						if (i <= 2) {
+							if (*it == p_con[i][condition[i]]) {
+								answers[i] = (char)ansNum;
+							}
+						}
+						else if (i == 3) {
+							if (*it == ver[condition[i]]) {
+								answers[i] = (char)ansNum;
+							}
+						}
+						else if (i == 4) {
+							if (*it == fT[condition[i]]) {
+								answers[i] = (char)ansNum;
+							}
+						}
+					}
+					ansNum++;
+				}
+				std::cout << '\n'; // Go to next Line
+			}
+		}
+	}
+	if (playerInput(answers)) {
+		hackingPoints++;
+	}
+
+	for (int i = 0; i < 2; i++) {
+		delete[] p_con[i];
+	}
+	delete[] condition, p_con;
 }
 
-/* Corporate Teams */
-bool Trojan::companyOperation(int verAmt, std::string* ver) {
-	char answers[5];
-	int condiOffset[2] = { 0, 0 };
-	int* condition = new int[5];
-	std::string fileType[] = {
-		".pdf",
-		".docx", /* .odt, is not very common */
-		".xlsx", /* .ods, is not very common - not the standard; .csv, no format, and error prone - without commas/quotes. */
-		//".txt",
-		".pptx",
-		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
-	};
-	std::string baitNm[3][4] = {
+/* Naming Conventions */
+void Trojan::nMConvention_Ops(std::string** pushBaitNm) {
+	std::string baitNm[2][4] = {
 		{ "OpsDept", "Operations", "OpsTeam", "Ops" }, // Department/Name
 		{ "Report_SystemOutage", "MonthlyReport", "IncidentReport", "SLAReview",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-
-	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
-
-	printDialog(
-		"Operations",
-		baitNm[0][condition[0]],
-		baitNm[1][condition[1]],
-		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
-		ver[condition[3] + conditionOffset(verAmt, condition[4])],
-		fileType[condition[4]]
-	);
-	/* Options Printing */
-	std::cout << "Choose from one of these options:\n";
-	for (int i = 0; i < 5; i++) {
-		printSynSectNm(i);
-		/* Syntax Options ---------------------- */ {
-			std::vector<std::string> options[4];
-
-			if (i <= 2) { // Syntax Options - baitNm
-				minigameOptions_2d(i, (sizeof(*baitNm) / sizeof(**baitNm)), condition[i], baitNm, options);
-			}
-			else if (i == 3) { // Syntax Options - versions
-				minigameOptions_1d(i, verAmt, condition[i], ver, options);
-			}
-			else if (i == 4) { //Syntax Options - file type
-				minigameOptions_1d(i, (sizeof(fileType) / sizeof(*fileType)), condition[i], fileType, options);
-			}
-			std::random_shuffle(options->begin(), options->end()); // Shuffles options.
-			int ansNum = 0;
-			for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
-				std::cout << *it;
-				/* Answer Allocation */ {
-					if (i <= 2) {
-						if (*it == baitNm[i][condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 3) {
-						if (*it == ver[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 4) {
-						if (*it == fileType[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-				}
-				ansNum++;
-			}
-			std::cout << '\n'; // Go to next Line
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 4; j++) {
+			pushBaitNm[i][j] = baitNm[i][j];
 		}
 	}
-	delete[] condition;
-	return playerInput(answers);
-
-}
-bool Trojan::companyFinancial(int verAmt, std::string* ver) {
-	char answers[5];
-	int condiOffset[2] = { 0, 0 };
-	int* condition = new int[5];
-	std::string fileType[] = {
-		".pdf",
-		".docx", /* .odt, is not very common */
-		".xlsx", /* .ods, is not very common - not the standard */
-		//".txt",
-		".csv",
-		".pptx",
-		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
-	};
-	std::string baitNm[3][4] = {
+};
+void Trojan::nMConvention_Fin(std::string** pushBaitNm) {
+	std::string baitNm[2][4] = {
 		{ "Finance", "Treasury", "Ctrl", "FIN" }, // Department/Name
 		{ "Budget", "AuditReport", "Forecast", "TaxReturn",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-
-	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
-
-	printDialog(
-		"Financial",
-		baitNm[0][condition[0]],
-		baitNm[1][condition[1]],
-		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
-		ver[condition[3] + conditionOffset(verAmt, condition[4])],
-		fileType[condition[4]]
-	);
-	/* Options Printing */
-	std::cout << "Choose from one of these options:\n";
-	for (int i = 0; i < 5; i++) {
-		printSynSectNm(i);
-		/* Syntax Options ---------------------- */ {
-			std::vector<std::string> options[4];
-
-			if (i <= 2) { // Syntax Options - baitNm
-				minigameOptions_2d(i, (sizeof(*baitNm) / sizeof(**baitNm)), condition[i], baitNm, options);
-			}
-			else if (i == 3) { // Syntax Options - versions
-				minigameOptions_1d(i, verAmt, condition[i], ver, options);
-			}
-			else if (i == 4) { //Syntax Options - file type
-				minigameOptions_1d(i, (sizeof(fileType) / sizeof(*fileType)), condition[i], fileType, options);
-			}
-			std::random_shuffle(options->begin(), options->end()); // Shuffles options.
-			int ansNum = 0;
-			for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
-				std::cout << *it;
-				/* Answer Allocation */ {
-					if (i <= 2) {
-						if (*it == baitNm[i][condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 3) {
-						if (*it == ver[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 4) {
-						if (*it == fileType[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-				}
-				ansNum++;
-			}
-			std::cout << '\n'; // Go to next Line
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 4; j++) {
+			pushBaitNm[i][j] = baitNm[i][j];
 		}
 	}
-	delete[] condition;
-	return playerInput(answers);
-}
-bool Trojan::companySales(int verAmt, std::string* ver) {
-	char answers[5];
-	int condiOffset[2] = { 0, 0 };
-	int* condition = new int[5];
-	std::string fileType[] = {
-		".pdf",
-		".docx", /* .odt, is not very common */
-		".xlsx", /* .ods, is not very common - not the standard; .csv, no format, and error prone - without commas/quotes. */
-		".txt",
-		".pptx",
-		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
-	};
-	std::string baitNm[3][4] = {
+};
+void Trojan::nMConvention_Sales(std::string** pushBaitNm) {
+	std::string baitNm[2][4] = {
 		{ "Sales", "SalesTeam", "Marketing", "MKT" }, // Department/Name
 		{ "Report", "Proposal", "Forecast", "PipeLineReport",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-
-	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
-
-	printDialog(
-		"Sales",
-		baitNm[0][condition[0]],
-		baitNm[1][condition[1]],
-		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
-		ver[condition[3] + conditionOffset(verAmt, condition[4])],
-		fileType[condition[4]]
-	);
-	/* Options Printing */
-	std::cout << "Choose from one of these options:\n";
-	for (int i = 0; i < 5; i++) {
-		printSynSectNm(i);
-		/* Syntax Options ---------------------- */ {
-			std::vector<std::string> options[4];
-
-			if (i <= 2) { // Syntax Options - baitNm
-				minigameOptions_2d(i, (sizeof(*baitNm) / sizeof(**baitNm)), condition[i], baitNm, options);
-			}
-			else if (i == 3) { // Syntax Options - versions
-				minigameOptions_1d(i, verAmt, condition[i], ver, options);
-			}
-			else if (i == 4) { //Syntax Options - file type
-				minigameOptions_1d(i, (sizeof(fileType) / sizeof(*fileType)), condition[i], fileType, options);
-			}
-			std::random_shuffle(options->begin(), options->end()); // Shuffles options.
-			int ansNum = 0;
-			for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
-				std::cout << *it;
-				/* Answer Allocation */ {
-					if (i <= 2) {
-						if (*it == baitNm[i][condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 3) {
-						if (*it == ver[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 4) {
-						if (*it == fileType[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-				}
-				ansNum++;
-			}
-			std::cout << '\n'; // Go to next Line
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 4; j++) {
+			pushBaitNm[i][j] = baitNm[i][j];
 		}
 	}
-	delete[] condition;
-	return playerInput(answers);
-}
-bool Trojan::companyAccounting(int verAmt, std::string* ver) {
-	char answers[5];
-	int condiOffset[2] = { 0, 0 };
-	int* condition = new int[5];
-	std::string fileType[] = {
-		".pdf",
-		".docx", /* .odt, is not very common */
-		".xlsx", /* .ods, is not very common - not the standard */
-		".txt",
-		".csv",
-		".pptx",
-		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
-	};
-	std::string baitNm[3][4] = {
+};
+void Trojan::nMConvention_Acct(std::string** pushBaitNm) {
+	std::string baitNm[2][4] = {
 		{ "Books", "Accounts", "Accounting", "Acct" }, // Department/Name
 		{ "Ledger", " Invoice", "FinancialStatement", "Expense",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-
-	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
-
-	printDialog(
-		"Accounting",
-		baitNm[0][condition[0]],
-		baitNm[1][condition[1]],
-		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
-		ver[condition[3] + conditionOffset(verAmt, condition[4])],
-		fileType[condition[4]]
-	);
-	/* Options Printing */
-	std::cout << "Choose from one of these options:\n";
-	for (int i = 0; i < 5; i++) {
-		printSynSectNm(i);
-		/* Syntax Options ---------------------- */ {
-			std::vector<std::string> options[4];
-
-			if (i <= 2) { // Syntax Options - baitNm
-				minigameOptions_2d(i, (sizeof(*baitNm) / sizeof(**baitNm)), condition[i], baitNm, options);
-			}
-			else if (i == 3) { // Syntax Options - versions
-				minigameOptions_1d(i, verAmt, condition[i], ver, options);
-			}
-			else if (i == 4) { //Syntax Options - file type
-				minigameOptions_1d(i, (sizeof(fileType) / sizeof(*fileType)), condition[i], fileType, options);
-			}
-			std::random_shuffle(options->begin(), options->end()); // Shuffles options.
-			int ansNum = 0;
-			for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
-				std::cout << *it;
-				/* Answer Allocation */ {
-					if (i <= 2) {
-						if (*it == baitNm[i][condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 3) {
-						if (*it == ver[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 4) {
-						if (*it == fileType[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-				}
-				ansNum++;
-			}
-			std::cout << '\n'; // Go to next Line
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 4; j++) {
+			pushBaitNm[i][j] = baitNm[i][j];
 		}
 	}
-	delete[] condition;
-	return playerInput(answers);
-}
-bool Trojan::companyInfoTech(int verAmt, std::string* ver) {
-	char answers[5];
-	int condiOffset[2] = { 0, 0 };
-	int* condition = new int[5];
-	std::string fileType[] = {
-		".pdf",
-		".docx", /* .odt, is not very common */
-		".xlsx", /* .ods, is not very common - not the standard */
-		".txt",
-		".csv",
-		".pptx",
-		".7z", /* .zip, is less secure - better encryption, and is less efficient in compression */
-	};
-	std::string baitNm[3][4] = {
+};
+void Trojan::nMConvention_IT(std::string** pushBaitNm) {
+	std::string baitNm[2][4] = {
 		{ "Tech", "Network", "SysAdmin", "IT" }, // Department/Name
 		{ "CICDPipeline_Updates", "TopologyDiagram", "SecurityPatch", "Log_Backup",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-
-	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
-
-	printDialog(
-		"Information Technology",
-		baitNm[0][condition[0]],
-		baitNm[1][condition[1]],
-		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
-		ver[condition[3] + conditionOffset(verAmt, condition[4])],
-		fileType[condition[4]]
-	);
-	/* Options Printing */
-	std::cout << "Choose from one of these options:\n";
-	for (int i = 0; i < 5; i++) {
-		printSynSectNm(i);
-		/* Syntax Options ---------------------- */ {
-			std::vector<std::string> options[4];
-
-			if (i <= 2) { // Syntax Options - baitNm
-				minigameOptions_2d(i, (sizeof(*baitNm) / sizeof(**baitNm)), condition[i], baitNm, options);
-			}
-			else if (i == 3) { // Syntax Options - versions
-				minigameOptions_1d(i, verAmt, condition[i], ver, options);
-			}
-			else if (i == 4) { //Syntax Options - file type
-				minigameOptions_1d(i, (sizeof(fileType) / sizeof(*fileType)), condition[i], fileType, options);
-			}
-			std::random_shuffle(options->begin(), options->end()); // Shuffles options.
-			int ansNum = 0;
-			for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
-				std::cout << *it;
-				/* Answer Allocation */ {
-					if (i <= 2) {
-						if (*it == baitNm[i][condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 3) {
-						if (*it == ver[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 4) {
-						if (*it == fileType[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-				}
-				ansNum++;
-			}
-			std::cout << '\n'; // Go to next Line
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 4; j++) {
+			pushBaitNm[i][j] = baitNm[i][j];
 		}
 	}
-	delete[] condition;
-	return playerInput(answers);
-}
-bool Trojan::companyHumanResource(int verAmt, std::string* ver) {
-	char answers[5];
-	int condiOffset[2] = { 0, 0 };
-	int* condition = new int[5];
-	std::string fileType[] = {
-		".pdf",
-		".docx", /* .odt, is not very common */
-		".xlsx", /* .ods, is not very common - not the standard */
-		//".txt",
-		".csv",
-		".pptx",
-		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
-	};
-	std::string baitNm[3][4] = {
+};
+void Trojan::nMConvention_HR(std::string** pushBaitNm) {
+	std::string baitNm[2][4] = {
 		{"Human", "People", "EmployeeRelations", "HR" }, // Department/Name
 		{"Policy_Leave", "RecruitmentReport", "Incident_Report", "Payroll",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-
-	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
-
-	printDialog(
-		"Human Resource",
-		baitNm[0][condition[0]],
-		baitNm[1][condition[1]],
-		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
-		ver[condition[3] + conditionOffset(verAmt, condition[4])],
-		fileType[condition[4]]
-	);
-	/* Options Printing */
-	std::cout << "Choose from one of these options:\n";
-	for (int i = 0; i < 5; i++) {
-		printSynSectNm(i);
-		/* Syntax Options ---------------------- */ {
-			std::vector<std::string> options[4];
-
-			if (i <= 2) { // Syntax Options - baitNm
-				minigameOptions_2d(i, (sizeof(*baitNm) / sizeof(**baitNm)), condition[i], baitNm, options);
-			}
-			else if (i == 3) { // Syntax Options - versions
-				minigameOptions_1d(i, verAmt, condition[i], ver, options);
-			}
-			else if (i == 4) { //Syntax Options - file type
-				minigameOptions_1d(i, (sizeof(fileType) / sizeof(*fileType)), condition[i], fileType, options);
-			}
-			std::random_shuffle(options->begin(), options->end()); // Shuffles options.
-			int ansNum = 0;
-			for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
-				std::cout << *it;
-				/* Answer Allocation */ {
-					if (i <= 2) {
-						if (*it == baitNm[i][condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 3) {
-						if (*it == ver[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-					else if (i == 4) {
-						if (*it == fileType[condition[i]]) {
-							answers[i] = (char)ansNum;
-						}
-					}
-				}
-				ansNum++;
-			}
-			std::cout << '\n'; // Go to next Line
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 4; j++) {
+			pushBaitNm[i][j] = baitNm[i][j];
 		}
 	}
-	delete[] condition;
-	return playerInput(answers);
-}
+};
 
 /* Some Common code */
 int* Trojan::winConditions(int c123, int c4, int c5, int* c) {
@@ -543,8 +245,7 @@ void Trojan::printDialog(std::string department, std::string& fT, std::string& s
 	std::cout << "You have uncovered the latest file with the following syntax:\n";
 	std::cout << synNm << '_' << synSub << '_' << synDate << '_' << synVer << fT << '\n';
 	std::cout << "Name the TROJAN VIRUS with a similar syntax with the date and version being the follow up of that file.\n";
-
-
+	std::cout << "Choose from one of these options:\n";
 }
 void Trojan::printSynSectNm(int type) {
 	if (type == 0) {
@@ -563,7 +264,7 @@ void Trojan::printSynSectNm(int type) {
 		std::cout << "<File_Type> ";
 	}
 }
-void Trojan::minigameOptions_2d(int type, int syntaxAmt, int& condi, std::string syntax[][4], std::vector<std::string> opt[]) {
+void Trojan::minigameOptions_2d(int type, int syntaxAmt, int& condi, std::string** syntax, std::vector<std::string> opt[]) {
 	int k = 1;
 	opt[0].push_back(syntax[type][condi]); // Sets answer as 1st value.
 
@@ -618,33 +319,3 @@ bool Trojan::playerInput(char* ans) {
 	}
 	return 0;
 }
-
-/*
-To reduce the length of the code for each team pull a string from the chosen string type
-
-Than Move the strings into the member functions.
-
-after doing so, take the common code and move it into
-*/
-std::string Trojan::itemsOps() {
-	return "Debug";
-};
-std::string Trojan::itemsfin() {
-	return "Debug";
-};
-std::string Trojan::itemsSales() {
-	return "Debug";
-};
-std::string Trojan::itemsAcct() {
-	return "Debug";
-};
-std::string Trojan::itemsIT() {
-	return "Debug";
-};
-std::string Trojan::itemsHR() {
-	return "Debug";
-};
-
-bool Trojan::miniGameBody() {
-	return 0;
-};

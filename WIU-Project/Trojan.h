@@ -4,27 +4,18 @@
 
 class Trojan : public Virus {
 private:
-    bool companyOperation(int, std::string*);
-    bool companyFinancial(int, std::string*);
-    bool companySales(int, std::string*);
-    bool companyAccounting(int, std::string*);
-    bool companyInfoTech(int, std::string*);
-    bool companyHumanResource(int, std::string*);
-
-    std::string itemsOps();
-    std::string itemsfin();
-    std::string itemsSales();
-    std::string itemsAcct();
-    std::string itemsIT();
-    std::string itemsHR();
-    bool miniGameBody();
-
+    void nMConvention_Ops(std::string**);
+    void nMConvention_Fin(std::string**);
+    void nMConvention_Sales(std::string**);
+    void nMConvention_Acct(std::string**);
+    void nMConvention_IT(std::string**);
+    void nMConvention_HR(std::string**);
 
     int* winConditions(int, int, int, int*);
     int conditionOffset(int, int&);
     void printDialog(std::string, std::string&, std::string&, std::string&, std::string&, std::string&);
     void printSynSectNm(int);
-    void minigameOptions_2d(int, int, int&, std::string [][4], std::vector<std::string> []);
+    void minigameOptions_2d(int, int, int&, std::string**, std::vector<std::string> []);
     void minigameOptions_1d(int, int, int&, std::string*, std::vector<std::string> []);
     bool playerInput(char*);
 
