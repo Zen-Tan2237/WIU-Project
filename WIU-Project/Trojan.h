@@ -33,5 +33,5 @@ public:
     ~Trojan();
 
     void evolve(Upgrades*);
-    void miniGame(int hackingPoints);
+    void miniGame(int& hackingPoints);
 };

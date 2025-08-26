@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdlib.h>
 Trojan::Trojan() {
+	name = "no name lol";
 	speed = 2.1f; // 1 for slow 5 max
 	complexity = 3; // 1 to 10
 	payload = 3; // 1 to 10
@@ -80,10 +81,13 @@ bool Trojan::companyOperation(int verAmt, std::string* ver) {
 		".pptx",
 		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
 	};
-	std::string baitNm[3][4] = {
-		{ "OpsDept", "Operations", "OpsTeam", "Ops" }, // Department/Name
-		{ "Report_SystemOutage", "MonthlyReport", "IncidentReport", "SLAReview",}, // Subject
-		{ "Q1", "Q2", "Q3", "Q4" }, // Date
+	printDialog("Team", "Operation");
+	//std::cout << 
+}
+void Trojan::companyFinancial() {
+	std::string baitNm_Finance[2][4] = {
+		{"Finance", "Treasury", "Ctrl", "FIN" }, // Department
+		{"Budget", "AuditReport", "Forecast", "TaxReturn",} // Subject
 	};
 
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
