@@ -71,37 +71,38 @@ void Player::spendPoints(float cost) {
 
 }
 
-void Player::setInitials(Company* companyList[]){
-	int type;
-	do {
-		std::cout << "Enter your virus (1 - Worm), (2 - Trojan), (3 - Ransomware): ";
-		std::cin >> type;
-	} while (type < 1 || type > 3);
+void Player::setInitials(Company* companyList[], int type, int companyChoice){
 
-	if (type == 1) {
+	// Set virus types!
+	switch (type) {
+	case 1:
 		playerVirus = new Worm;
+		break;
+	case 2:
+		playerVirus = new Trojan;
+		break;
+	case 3:
+		playerVirus = new Ransomware;
+		break;
+	default:
+		// I hate this
+		break;
 	}
 
-	do {
-		std::cout << "Enter the company you want to start at: " << std::endl;
-		for (int i = 0; i < maxCompany; i++) {
-			std::cout << i + 1 << "." << companyList[i]->getName() << std::endl;
-		}
-		std::cin >> companyChoice;
-	} while (companyChoice < 1 || companyChoice > maxCompany);
-
+	// Set company choice to 1 infected computer
 	companyList[companyChoice - 1]->setNoOfInfectedComputers(1);
 
+	// Initalise all upgrades stuff
 	parseUpgrades();
 	parseDependencies();
 }
 
-//**************241199A**************
+//*******************************************
 // Written by Zen
 // Name: parseUpgrades
 // Description: Parses the array of data in player.h
-// Coding is my passion ahh font :sob:
-//**************241199A**************
+// Note: meant to be scalable to read an external file, but ig if no time I'll just leave it here lol
+//*******************************************
 void Player::parseUpgrades() {
 	int parserIndex1 = 0;
 	int parserIndex2 = 0;
