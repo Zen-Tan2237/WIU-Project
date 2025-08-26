@@ -50,7 +50,7 @@ void News::companyCollabNews(std::string companyA, std::string companyB) const
 	case 2:
 		std::cout 
 			<< companyA << " and " << companyB
-			<< " have begun a sustainability program together, which was created to tackle down on their business’s carbon footprint. The companies has launched a green initiative focused on reducing its environmental footprint and supporting global climate action."
+			<< " have begun a sustainability program together, which was created to tackle down on their business\’s carbon footprint. The companies has launched a green initiative focused on reducing its environmental footprint and supporting global climate action."
 			<< '\n';
 		break;
 	case 3:

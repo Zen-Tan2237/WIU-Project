@@ -96,7 +96,7 @@ void Trojan::companyOperation() {
 		{"SystemOutage", "MonthlyReport", "IncidentReport", "SLAReview",} // Subject
 	};
 	printDialog("Team", "Operation");
-	std::cout << 
+	//std::cout << 
 }
 void Trojan::companyFinancial() {
 	std::string baitNm_Finance[2][4] = {
@@ -156,7 +156,7 @@ void Trojan::printDialog(std::string employee, std::string departmentt) {
 		std::cout << "You are acting as a manager, you are to deliver the TROJAn via a " << fileType[rand() % 10] << " to the " << employee << " team.";
 		break;
 	case 1: // Acting as an employee
-		std::cout << "You are acting as an employee of the " << employee << " team, you are to deliver the TROJAN via a " << fileType[rand() % 10] << " to the manager of that department."
+		std::cout << "You are acting as an employee of the " << employee << " team, you are to deliver the TROJAN via a " << fileType[rand() % 10] << " to the manager of that department.";
 		break;
 	}
 }
