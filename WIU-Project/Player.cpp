@@ -1,9 +1,7 @@
 #include "Player.h"
 
 Player::Player() {
-	for (int i = 0; i < NUM_UPGRADES; i++) {
-		upgradesArray[i] = nullptr;
-	}
+	parseUpgrades();
 	hackingPoints = 5;
 	companyChoice = 0;
 	maxCompany = 0;
@@ -41,6 +39,18 @@ int Player::getCompanyChoice() const {
 	return companyChoice;
 }
 
+int** Player::getDependencyChain() {
+	return dependencyChain;
+}
+
+Upgrades** Player::getUpgradesArray() {
+	return upgradesArray;
+}
+
+int* Player::getCurrentUpgradeIndices() {
+	return currentUpgradeIndices;
+}
+
 void Player::setCompanyChoice(int choice){
 	this->companyChoice = choice;
 }
@@ -64,14 +74,13 @@ void Player::spendPoints(float cost) {
 void Player::setInitials(Company* companyList[]){
 	int type;
 	do {
-		std::cout << "Enter your virus (1 - Worm): ";
+		std::cout << "Enter your virus (1 - Worm), (2 - Trojan), (3 - Ransomware): ";
 		std::cin >> type;
-	} while (type < 1 || type > 1);
+	} while (type < 1 || type > 3);
 
 	if (type == 1) {
 		playerVirus = new Worm;
 	}
-
 
 	do {
 		std::cout << "Enter the company you want to start at: " << std::endl;
@@ -166,11 +175,15 @@ void Player::printArrays() {
 	}
 }
 
+int Player::getNoOfChains() {
+	return noOfChains;
+}
+
 void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedComputers) {
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
-		int probability = (rand() % 10);
-		if (probability > 1) {
+		int probability = (rand() % 10 +(noOfInfectedComputers - infectedComputersPrevious)/2);
+		if (probability > 4) {//60% base chance
 			if (noOfBrickedComputers < networkSize/(maxCompany*500)) {
 				// If bricked computers are less than 2% of the network size , play this set of rules
 				if (noOfInfectedComputers - infectedComputersPrevious < networkSize/(maxCompany*100)) {
@@ -178,47 +191,48 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 					hackingPoints += 1;
 				}
 				else if(noOfInfectedComputers - infectedComputersPrevious < networkSize / (maxCompany * 50)){
-					// If infected computers are less than 50% of the network size, add 1-2 points
+					// If infected computers are less than 50% of the network size, add 1-3 points
 					hackingPoints += (rand() % 2) + 1;
 				}
 				else {
 					// If infected computers are more than 50% of the network size, add 1-4 points
-					hackingPoints += (rand() % 4) + 1;
+					hackingPoints += (rand() % 3) + 1;
 				}
 			}
 			else if(noOfBrickedComputers < networkSize / (maxCompany * 100)) {
 				// If bricked computers are less than 10% of the network size, add 2-4 points
-				hackingPoints += (rand()% 3) + 2;
+				hackingPoints += (rand()% 3) + 1;
 			}
 			else {
 				// If bricked computers are more than 10% of the network size, add 2-6 points
-				hackingPoints += (rand() % 5) + 2;
+				hackingPoints += (rand() % 3) + 2;
 			}
 		}
 	}
 	infectedComputersPrevious = noOfInfectedComputers;
 	brickedComputersPrevious = noOfBrickedComputers;
-	std::cout << "Hacker Points: " << hackingPoints << std::endl;
-	std::cout << "Enter to continue, U to open Upgrade Menu \n";
-	do {
-		getline(std::cin, upgrade);
-	} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
 	bool menuing = true;
-	while (menuing == true) {
+	do {//upgrade menu
+		std::cout << "Hacker Points: " << hackingPoints << std::endl;
+		std::cout << "Enter to continue, U to open Upgrade Menu \n";
+		do {
+			getline(std::cin, upgrade);
+		} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
 		if (upgrade == "U" || upgrade == "u") {
-			displayUpgrades(menuing);
+			displayUpgrades();
+
 		}
-		else {
+		else if(upgrade == ""){
 			menuing = false;
 		}
-	}
+	} while (menuing == true);
+	std::cout << "exited";
 }
 
 void Player::blockUpgrade() {
 	for (int i = 0; i < noOfChains; i++) {
 		currentUpgradeIndices[i] = dependencyChain[i][0];
 		for (int j = 0; dependencyChain[i][j] != -1; j++) {
-
 			if (upgradesArray[dependencyChain[i][j]] == nullptr) {
 				if (j + 1 < lengthOfArray[i]) {
 					currentUpgradeIndices[i] = dependencyChain[i][j + 1];
@@ -229,15 +243,14 @@ void Player::blockUpgrade() {
 			}
 		}
 	}
-	for (int i = 0; i < noOfChains; i++) {
-		std::cout << "Current Array Index " << i + 1 << ": " << currentUpgradeIndices[i] << std::endl;
-	}
 }
-void Player::displayUpgrades(bool& menuing) {
+
+void Player::displayUpgrades() {
 	blockUpgrade(); // update current available upgrades
 	std::string input;
-	while (menuing) {
+	while (true) {
 		std::cout << "\nAvailable Upgrades:\n";
+		std::cout << "Hacker Points: " << hackingPoints << std::endl;
 		for (int i = 0; i < noOfChains; i++) {
 			if (currentUpgradeIndices[i] != -1) {
 				int idx = currentUpgradeIndices[i];
@@ -247,10 +260,9 @@ void Player::displayUpgrades(bool& menuing) {
 			}
 		}
 		std::cout << "Enter number to purchase, 'E' to exit:";
-		std::cin >> input;
+		std::getline(std::cin, input);
 
 		if (input == "E" || input == "e") {
-			menuing = false;
 			return;
 		}
 		else if (input == "S" || input == "s") {
@@ -277,18 +289,21 @@ void Player::displayUpgrades(bool& menuing) {
 				std::cout << "Not enough hacking points to purchase this upgrade.\n";
 			}
 			else{
-				// Apply upgrade
-				playerVirus->evolve(upgradesArray[upgradeIdx]);
-				spendPoints(upgradesArray[upgradeIdx]->getCost());
-				std::cout << "Purchased: " << upgradesArray[upgradeIdx]->getName() << std::endl;
-				// Delete upgrade to mark as purchased
-				delete upgradesArray[upgradeIdx];
-				upgradesArray[upgradeIdx] = nullptr;
-
-				// Update available upgrades
-				blockUpgrade();
+				applyUpgrade(upgradeIdx);
 			}
 		}
 	}
 }
 
+void Player::applyUpgrade(int upgradeIndex) {
+	// Apply upgrade
+	playerVirus->evolve(upgradesArray[upgradeIndex]);
+	spendPoints(upgradesArray[upgradeIndex]->getCost());
+	std::cout << upgradesArray[upgradeIndex]->getName() << " has been upgraded with NO additional cost!" << std::endl;
+	// Delete upgrade to mark as purchased
+	delete upgradesArray[upgradeIndex];
+	upgradesArray[upgradeIndex] = nullptr;
+
+	// Update available upgrades
+	blockUpgrade();
+}

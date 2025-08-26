@@ -5,6 +5,8 @@
 #include "Virus.h"
 #include "Company.h"
 #include "Worm.h"
+#include "Trojan.h"
+#include "Ransomware.h"
 
 class Player
 {
@@ -59,11 +61,6 @@ private:
 		19, -1
 	};
 
-	int** dependencyChain;
-	int noOfChains;
-	int* lengthOfArray;
-	int* currentUpgradeIndices;
-
 	std::string nameUpgrade[NUM_UPGRADES * 2] = { // First string is Name, After that is the description
 		// SPEED UPGRADES
 		"Polymorphic Engine", "The virus rewrites its code everytime it spreads to a new computer, harder to detect. Speed and complexity increase slightly",
@@ -96,19 +93,19 @@ private:
 
 	float statsUpgrade[NUM_UPGRADES * 5]{
 		// Polymorphic Engine 0
-		0.5f, 0.3f, 0, 0, 10,
+		0.3f, 0.2f, 0, 0, 10,
 		// LAN Scanner 1
-		0.4f, 0.1f, 0, 0, 10,
+		0.5f, 0.2f, 0, 0, 15,
 		// SMB Exploit 2
-		0.7f, 0, 0, 0, 13,
+		0.6f, 0, 0, 0, 18,
 		// USB Propagation 3
-		1.f, 0, 0, 0, 14,
+		0.4f, 0, 0, 0, 14,
 		// Botnet Boost 4
-		0.3f, 0, 0, 0, 13,
+		0.7f, 0, 0, 0, 23,
 		// Email Worm Boost 5
-		1.f, 0, 0, 0, 24,
+		0.8f, 0.1f, 0, 0, 27,
 		// Encryption Layer 6
-		0, 0.3f, 0, 0.5f, 9,
+		0, 0.1f, 0, 0.3f, 9,
 		// Keylogger Module 7
 		0, 0.2f, 0.1f, 0, 14,
 		// Rootkit Injection 8
@@ -116,26 +113,31 @@ private:
 		// Bricking Routine 9
 		0, 0.6f, 2.f, 0, 18,
 		// Data Wiper 10
-		0, 0.7f, 4.f, 0, 20,
+		0, 0.7f, 3.f, 0, 40,
 		// Antivirus Bypass 11
-		0, 1.f, 0.2f, 0, 15,
+		0, 1.f, 0.3f, 0, 15,
 		// Code Obfuscation I 12
-		0, 0, 0, 1.f, 10,
+		0, 0, 0, 0.5f, 10,
 		// Code Obfuscation II 13
-		0, 0, 0, 2.f, 15,
+		0, 0, 0, 0.7f, 15,
 		// Code Refactor I 14
-		0, 0, 0, 2.f, 13,
+		0, 0, 0, 0.5f, 13,
 		// Code Refactor II 15
-		0, 0, 0, 2.5f, 19,
+		0, 0, 0, 0.6f, 19,
 		// Code Refactor III 16
-		0, 0, 0, 3.f, 25,
+		0, 0, 0, 0.7f, 25,
 		// Kill Switch 17
-		0, 0, 0, 2.3f, 24,
+		-0.5f, -1.f, 0, 1.5f, 24,
 		// Signature Mutation 18
-		0, 0, 0, 2.8f, 100,
+		0, 1.f, 1.f, 2.8f, 60,
 		// Virtual Machine Detection 19
-		0, 0, 0, 3.4f, 20
+		0, 0, 0.5f, 1.4f, 25
 	};
+
+	int** dependencyChain;
+	int noOfChains;
+	int* lengthOfArray;
+	int* currentUpgradeIndices;
 
 public:
 	Player();
@@ -145,17 +147,24 @@ public:
 
 	void setInitials(Company* companyList[]);
 	void update(int noOfInfectedComputers , int networkSize, int noOfBrickedComputers);
-	void displayUpgrades(bool& menuing);
+	void displayUpgrades();
 
 	void blockUpgrade();
 	void printArrays();
 
+	int getNoOfChains();
+
 	void parseUpgrades();
 	void parseDependencies();
 
+	void applyUpgrade(int);
+
 	// Getters and Setters
 	int getHackingPoints() const;
+	int** getDependencyChain();
+	int* getCurrentUpgradeIndices();
 	int getCompanyChoice() const;
+	Upgrades** getUpgradesArray();
 	void setCompanyChoice(int choice);	
 	void setMaxCompany(int maxCompany);
 	Virus* getPlayerVirus() const;
@@ -163,8 +172,5 @@ public:
 	Upgrades* upgradesArray[NUM_UPGRADES];
 	
 	void setHackingPoints(int hackingPoints);
-
-
-
 };
 

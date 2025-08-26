@@ -6,21 +6,22 @@ class News
 {
 
 private:
-    std::string randomEventHeadlines[5][5] // 0 for company collaborations(virus spread chance increase), 1 for cybersecurity triggerd,
-                                           //2 for cybersecurity making progress against virus, 3 for cybersecurity losing against virus, 4 for company destroyed reports (sad stories)
-    {
+    /**
+    // 0 for company collaborations(virus spread chance increase), 1 for cybersecurity triggerd,
+    //2 for cybersecurity making progress against virus, 3 for cybersecurity losing against virus, 4 for company destroyed reports (sad stories)
+    std::string randomEventHeadlines[5][5] {
         { // company virus spread increase
-            " is having a international collaboration as a way to increase relations.",
+            " is having an international collaboration as a way to increase their relations.",
             " have been acquired by a parent company Zen.Inc and have started employee crossover program.",
             " started a sustainability program to help on Earths global warming.",
             " have decided to introduce a internship program to help students gain experience in larger and well known companies.",
-            " have cooperated in sponsering a charity event to help others in need.",
+            " have cooperated in sponsoring a charity event to help others in need.",
         },
 
         { // company virus news (trigger cybersecurity)
             " Has Shut Down Their Email Systems In Response To A Worm Virus Spreading Via Emails.", // Worms
             " In Chaos After Emails Flooded With Viruses.", 
-            " Has A Databreach Effecting 300 Million Customers Worldwide.",  
+            " Has A Data breach Effecting 300 Million Customers Worldwide.",  
             " Loses Important Files After Malware Crashes Systems",
             " CEO Quit After Losing Years Of Reports"
         },
@@ -50,8 +51,7 @@ private:
         }
     };
 
-    std::string randomEventsDescriptions[5][5]
-    {
+    std::string randomEventsDescriptions[5][5] {
         { // company virus spread increase events
             "The companies has partnered with foreign organizations to strengthen global ties and expand its international presence.",
             "Following the acquisition by Zen.Inc, the company is facilitating workforce integration through a cross-company employee exchange initiative.",
@@ -62,14 +62,14 @@ private:
 
         { // company virus news (trigger cybersecurity)
             "In an urgent defensive move, the company disabled its email infrastructure to contain a fast-spreading worm targeting internal communications.",
-            "\"We dont even know which is a real email at this point\" says employee at the company.",
+            "\"We don't even know which is a real email at this point\" says employee at the company.",
             "A major cybersecurity failure has exposed sensitive data of millions, triggering global concern and investigations.",
             "Critical business files were lost when a malware attack caused widespread system failures across departments.",
             "\"My heart cant take the loss of years of hard work\" says the Ceo",
         },
 
         { // cybersecurity news making progress against virus
-            "\"Our team has been hard at work to keep all of us safe from the new malware\" - Bryani Y.N, Ceo of Checkpoint Security",
+            "\"Our team has been hard at work to keep all of us safe from the new malware\" - Biryani Y.N, Ceo of Checkpoint Security",
             "Through rapid coordination and real-time response, cybersecurity professionals successfully stopped the virus before it could cause global damage.",
             "Researchers have successfully traced the infection vectors of a fast-spreading worm virus, allowing targeted containment strategies to be deployed across affected systems.",
             "Security analysts have uncovered potential flaws in the worm’s code structure, fueling hope for the eventual creation of a targeted patch.",
@@ -84,7 +84,7 @@ private:
             "Attempts to dissect the worm’s inner workings have been hampered by complex encryption layers and advanced obfuscation techniques.",
         },
 
-        { // news of when company die (the bad effects to teach the evil of a compter virus on companies)
+        { // news of when company die (the bad effects to teach the evil of a computer virus on companies)
             "Employees were seen embracing in the parking lot after learning that years of digital records, finances, and projects had been completely wiped out, forcing immediate closure.",
             "Employee said\"It was so sudden when when our computers all got destroyed at the same time by //virus name here//\""
             "Many left jobless after the incident with no where to go.",
@@ -93,8 +93,7 @@ private:
         }
     };
 
-    std::string WinOrLoseNewsHeadlines[2][2] //0 for player wins, 1 for player loses
-    {
+    std::string WinOrLoseNewsHeadlines[2][2] { //0 for player wins, 1 for player loses
         {
             "The Worlds Economy Has Taken A Big Hit After Major Companies Have Been Destroyed from //virus name here//",
             "Malware Meltdown: Corporate Titans Collapse in Wake of Digital Sabotage",
@@ -107,8 +106,7 @@ private:
     };
 
 
-    std::string WinOrLoseNewsDescriptions[2][2] //0 for player wins, 1 for player loses
-    {
+    std::string WinOrLoseNewsDescriptions[2][2] { //0 for player wins, 1 for player loses
         {
             "Security analysts warn of long-term economic repercussions as malware dismantles IT networks, corrupts backups, and leaks sensitive data from multiple conglomerates.",
             "Major players across the global economy are facing ruin after a destructive malware variant bypassed conventional defenses and triggered mass outages.",
@@ -120,7 +118,7 @@ private:
             "Cybersecurity infrastructures bent under pressure during a widespread malware blitz. Only through rapid-response units and drastic internal measures did companies manage to hold the line.",
         }
     };
-
+   /**/
 public:
     News();
     ~News();

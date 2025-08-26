@@ -13,8 +13,9 @@ protected:
 	float resilience;
 
 public:
-	void evolve(Upgrades* toUpgrade);
+	virtual void evolve(Upgrades* toUpgrade);
 	void setAll10();
+	virtual void miniGame(int& hackingPoints) = 0;
 	void displayStats();
 
 	Virus();

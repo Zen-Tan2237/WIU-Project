@@ -130,9 +130,13 @@
     <ClCompile Include="Minigame.cpp" />
     <ClCompile Include="News.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Ransomware.cpp" />
+    <ClCompile Include="SoundController.cpp" />
+    <ClCompile Include="Trojan.cpp" />
     <ClCompile Include="Upgrades.cpp" />
     <ClCompile Include="Virus.cpp" />
     <ClCompile Include="Worm.cpp" />
+    <ClCompile Include="ZeroDayExploit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Company.h" />
@@ -141,9 +145,13 @@
     <ClInclude Include="Minigame.h" />
     <ClInclude Include="News.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Ransomware.h" />
+    <ClInclude Include="SoundController.h" />
+    <ClInclude Include="Trojan.h" />
     <ClInclude Include="Upgrades.h" />
     <ClInclude Include="Virus.h" />
     <ClInclude Include="Worm.h" />
+    <ClInclude Include="ZeroDayExploit.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="emptyChickenFrames.txt" />
@@ -154,6 +162,9 @@
     <Text Include="Screen3NameVirus.txt" />
     <Text Include="Screen3Welcome.txt" />
     <Text Include="yes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\yipeeee.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
