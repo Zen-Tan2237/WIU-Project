@@ -633,4 +633,4 @@ std::string Trojan::itemsAcct() {};
 std::string Trojan::itemsIT() {};
 std::string Trojan::itemsHR() {};
 
-bool miniGameBody() {};
+bool Trojan::miniGameBody() {};
