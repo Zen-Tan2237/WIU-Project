@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 Ransomware::Ransomware() {
+    name = "no name lol";
     speed = 2.f;
     complexity = 2.f;
     payload = 4.f;

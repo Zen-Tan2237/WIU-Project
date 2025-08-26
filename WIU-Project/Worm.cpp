@@ -1,6 +1,7 @@
 #include "Worm.h"
 
 Worm::Worm() {
+    name = "no name lol";
 	speed = 2; // 1 for slow 5 max
 	complexity = 3; // 1 to 10
 	payload = 1; // 1 to 10

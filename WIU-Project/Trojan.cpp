@@ -1,6 +1,7 @@
 #include "Trojan.h"
 
 Trojan::Trojan() {
+	name = "no name lol";
 	speed = 2.1f; // 1 for slow 5 max
 	complexity = 3; // 1 to 10
 	payload = 3; // 1 to 10

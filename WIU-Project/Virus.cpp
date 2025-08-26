@@ -2,7 +2,8 @@
 #include "Upgrades.h"
 
 Virus::Virus() {
-	name = " ";
+
+	name = "I nate higgers";
 	speed = 0;
 	complexity = 0;
 	payload = 0;
