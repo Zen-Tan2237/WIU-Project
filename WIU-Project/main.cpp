@@ -1,5 +1,8 @@
 #include <iostream>
 #include "Game.h"
+#include <windows.h>
+#include <thread>
+
 #include "SoundController.h"
 
 int main() {
@@ -20,7 +23,6 @@ int main() {
 
 	while (true) {
 		game->printInterface();
-		game->doTurn();
 	}
 
 	delete game;

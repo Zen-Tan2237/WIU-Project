@@ -5,6 +5,8 @@
 #include <ctime>
 #include <cmath>
 #include <string>
+#include <vector>
+#include <windows.h>
 
 #include "Company.h"
 #include "Player.h"
@@ -129,11 +131,14 @@ public:
 
 	void initGame();
 
-	int getCurrentTick() const; // Getter
-	void setCurrentTick(int tickInterval); // Setter
+    int getCurrentTick() const; // Getter
+    void setCurrentTick(int tickInterval); // Setter
+
+    int consoleWidthHandler();
 
     void doTurn();
     void printInterface();
+    void typingEntrance(std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender);
     void randomCollabGenerator();
     void CheckCompanyDead();
     void highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes);

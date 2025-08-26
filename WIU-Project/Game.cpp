@@ -99,7 +99,7 @@ void Game::doTurn()
     // starting
     if (currentTick == 0) {
         player.setMaxCompany(maxCompany);
-        player.setInitials(companies);
+        // player.setInitials(companies);
         newZ = new News(player.getPlayerVirus()->getName());
         for (int j = 0; j < maxCompany; j++) {
             companies[j]->setVirus(player.getPlayerVirus());
@@ -139,26 +139,29 @@ void Game::doTurn()
 
 void Game::printInterface()
 {
-    system("cls ");
-    for (int i = 0; i < maxCompany; i++) {
-        std::cout << "-----------------------" << std::endl
-            << i + 1 << ". " << companies[i]->getName() << std::endl
-            << "Network Size: " << companies[i]->getNetworkSize() << std::endl
-            << "Security Level: " << std::fixed << std::setprecision(1) << companies[i]->getSecurityLevel() << "/10" << std::endl
-            << std::endl
-            << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
-            << "Bricked: " << companies[i]->getNoOfBrickedComputers() << std::endl
-            << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%" << std::endl
-            << "Percentage Bricked: " << std::fixed << std::setprecision(2) << companies[i]->getBrickedStatus() * 100.0f << "%"
-            << std::endl;
-        std::cout << std::endl; 
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleOutputCP(CP_UTF8);
 
-        if (player.getPlayerVirus() != nullptr) {
-            std::cout << "Debug (Advantage Count): " << companies[i]->getSecurityLevel() - player.getPlayerVirus()->getComplexity() << std::endl;
-        }
-    }
-    cyberSecurity->displayStatus();
-    std::cout << "Total Bricked: " << Company::getTotalNoOfBrickedComputers() << std::endl;*/
+    //system("cls ");
+    //for (int i = 0; i < maxCompany; i++) {
+    //    std::cout << "-----------------------" << std::endl
+    //        << i + 1 << ". " << companies[i]->getName() << std::endl
+    //        << "Network Size: " << companies[i]->getNetworkSize() << std::endl
+    //        << "Security Level: " << std::fixed << std::setprecision(1) << companies[i]->getSecurityLevel() << "/10" << std::endl
+    //        << std::endl
+    //        << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
+    //        << "Bricked: " << companies[i]->getNoOfBrickedComputers() << std::endl
+    //        << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%" << std::endl
+    //        << "Percentage Bricked: " << std::fixed << std::setprecision(2) << companies[i]->getBrickedStatus() * 100.0f << "%"
+    //        << std::endl;
+    //    std::cout << std::endl; 
+
+    //    if (player.getPlayerVirus() != nullptr) {
+    //        std::cout << "Debug (Advantage Count): " << companies[i]->getSecurityLevel() - player.getPlayerVirus()->getComplexity() << std::endl;
+    //    }
+    //}
+    //cyberSecurity->displayStatus();
+    //std::cout << "Total Bricked: " << Company::getTotalNoOfBrickedComputers() << std::endl;
 
     std::string screenIndex2_dialogues[3] = {
         "In a world dominated by towering corporations, one individual found themselves suffocated by the endless cycle of consumerism and corporate greed. Day after day, they toiled away in a job that felt more like servitude than work, watching as companies prioritized profit over people. The frustration grew, a quiet storm brewing inside, fueled by the injustice of a system that seemed designed to exploit rather than empower.",
@@ -578,7 +581,7 @@ void Game::CheckCompanyDead()
     }
 }
 
-void Game::randomMutation()
+void Game::highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes)
 {
     if (thisUIButton == selectedUIButton) {
         SetConsoleTextAttribute(yes, BACKGROUND_GREEN | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -663,7 +666,7 @@ void Game::inputHandler()
                     else if (isChoosingCompanyStart) {
                         companyStartIndex = selectedUIButton;
                         isChoosingCompanyStart = false;
-                        player.setInitials(companies, virusName, virusTypeIndex + 1, companyStartIndex + 1);
+                        player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1);
                         resetInputHandler();
                     }
                 }
