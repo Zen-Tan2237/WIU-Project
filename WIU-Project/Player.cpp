@@ -71,7 +71,7 @@ void Player::spendPoints(float cost) {
 
 }
 
-void Player::setInitials(Company* companyList[], int type, int companyChoice){
+void Player::setInitials(Company* companyList[], int type, int companyChoice, std::string virusName){
 
 	// Set virus types!
 	switch (type) {
@@ -87,6 +87,10 @@ void Player::setInitials(Company* companyList[], int type, int companyChoice){
 	default:
 		// I hate this
 		break;
+	}
+
+	if (!virusName.empty()) {
+		playerVirus->setName(virusName);
 	}
 
 	// Set company choice to 1 infected computer
