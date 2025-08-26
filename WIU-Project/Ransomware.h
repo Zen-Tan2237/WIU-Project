@@ -15,7 +15,7 @@ private:
     // minigame
     int option[3];
     std::string NoteBuilder[3][3]
-    {
+    {   
         {
             "We control your systems. Failure to pay will result in complete data destruction, exposure of private files, and system - wide corruption.\n",
             "Your files have been encrypted. We are professionals and will restore access upon payment.Follow instructions carefully to avoid permanent loss.\n",
