@@ -99,8 +99,11 @@ void Trojan::miniGame(int& hackingPoints) {
 				std::vector<std::string> options[4];
 
 				/* What other options will be shown +++++++++++++++++++++++++++ */ {
-					if (i <= 2) { // Syntax Options - baitNm
+					if (i <= 1) { // Syntax Options - p_con, pointer_convention
 						minigameOptions_2d(i, 4, condition[i], p_con, options);
+					}
+					else if (i == 2) { // Syntax Options - date
+						minigameOptions_1d(i, (sizeof(date) / sizeof(*date)), condition[i], date, options);
 					}
 					else if (i == 3) { // Syntax Options - versions
 						minigameOptions_1d(i, (sizeof(ver) / sizeof(*ver)), condition[i], ver, options);
@@ -114,8 +117,13 @@ void Trojan::miniGame(int& hackingPoints) {
 				for (std::vector<std::string>::iterator it = options->begin(); it < options->end(); it++) { // Prints Options
 					std::cout << '('  << i << ") " << *it << "   ";
 					/* Answer Allocation ++++++++++++++++++++++++++++++++++++++ */ {
-						if (i <= 2) {
+						if (i <= 1) {
 							if (*it == p_con[i][condition[i]]) {
+								answers[i] = (char)ansNum;
+							}
+						}
+						else if (i == 2) {
+							if (*it == date[condition[i]]) {
 								answers[i] = (char)ansNum;
 							}
 						}
