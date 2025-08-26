@@ -28,41 +28,42 @@ News::News(std::string VirusName)
 	{ "The Worlds Economy Has Taken A Big Hit After Major Companies Have Been Destroyed from " + VirusName };
 	*/
 }
-
+/*
+Ctrl + E + W to wrap, makes it easier to edit.
+*/
 void News::companyCollabNews(std::string companyA, std::string companyB) const
 {
 	srand((unsigned)time(0));
 	switch (rand() % 5) {
 	case 0:
 		std::cout
-			<< companyA << " and " << companyB
-			<< " are having their annual International Collaboration Program (ICP) as a way to strengthen their relations overseas. The companies has partnered with foreign organizations to strengthen global ties and expand its international presence."
+			<< companyA << " and " << companyB <<
+			" are having their annual International Collaboration Program (ICP) as a way to strengthen their relations overseas. The companies are partnered with each other as they both are foreign organizations to each other, in doing this they strengthen their global ties and expand their international presence."
 			<< '\n';
 		break;
 	case 1:
 		std::cout 
-			<< companyA
-			<< " has been acquired by "
-			<< companyB
-			<< ", and now has begun employee crossover programs.Following the acquisition by Zen.Inc, the company is facilitating workforce integration through a cross - company employee exchange initiative."
+			<< companyA << " and " << companyB << 
+			" has been acquired by Zen.Inc, A crossover program has been started to allow employees from both companies to get to know each other. Zen.Inc is leading in the facilitation of workforce integration, setting an example for other companies."
 			<< '\n';
 		break;
 	case 2:
 		std::cout 
-			<< companyA << " and " << companyB
-			<< " have begun a sustainability program together, which was created to tackle down on their business’s carbon footprint. The companies has launched a green initiative focused on reducing its environmental footprint and supporting global climate action."
+			<< companyA << " and " << companyB << 
+			" has partnered in a global initiative called Sustainability Together, which aims to reduce the carbon footprint usage within their companies, they hope, by the end of this year, their carbon footprint gets reduced by 15%. The companies have launched this green initiative, focused on reducing its environmental footprint, this supports the global climate, as it reduces the amount of carbon in the atmosphere, resulting in less heat being trapped."
 			<< '\n';
 		break;
 	case 3:
 		std::cout 
-			<< companyA << " and " << companyB
-			<< " have decided to introduce an internship program to help students gain experience in larger and well known companies. The company is opening doors to aspiring professionals by launching an internship program aimed at offering real-world corporate experience."
+			<< companyA << " and " << companyB <<
+			" have both decided to introduce an internship program, in the search for young talent, and to help students gain experience in larger and well known companies. The companies are opening their doors to all aspiring students, with the goal to become professionals in the future."
 			<< '\n';
 		break;
 	case 4:
-		std::cout 
-			<< companyA << " and " << companyB
-			<< " have cooperated in sponsoring a charity event to help others in need. Demonstrating its commitment to social responsibility, the company co-sponsored a charitable event to support underprivileged communities."
+		std::cout <<
+			"At the National Charity meet-up two new faces coming from "
+			<< companyA << " and " << companyB <<
+			" are sponsoring this years, charity event. This demonstrates their commitment to upkeep their social responsibilities, the companies are also co-sponsoring another charity event, People event to support underprivileged communities."
 			<< '\n';
 		break;
 	}
