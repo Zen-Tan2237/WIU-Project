@@ -28,7 +28,11 @@ private:
     int minSelectedUIButtonOffset;
     int navigationType;
     bool isNamingVirus;
+    bool isChoosingVirusType;
+    bool isChoosingCompanyStart;
     std::string virusName;
+    int virusTypeIndex;
+    int companyStartIndex;
     char character;
 
 	std::string companyNames[50] = {
@@ -109,8 +113,16 @@ private:
     std::vector<std::vector<std::string>> frame_LogoInteractToStart1;
     std::vector<std::vector<std::string>> frame_LogoInteractToStart2;
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt1;
+    std::vector<std::vector<std::string>> frame_Screen2DialoguePt2;
+    std::vector<std::vector<std::string>> frame_Screen2DialoguePt3;
     std::vector<std::vector<std::string>> frame_Screen3Welcome;
     std::vector<std::vector<std::string>> frame_Screen3NameVirus;
+    std::vector<std::vector<std::string>> frame_Screen3VirusType;
+    std::vector<std::vector<std::string>> frame_Screen3VirusType1;
+    std::vector<std::vector<std::string>> frame_Screen3VirusType2;
+    std::vector<std::vector<std::string>> frame_Screen3CompanyStart;
+    std::vector<std::vector<std::string>> frame_Screen3CompanyStart1;
+    std::vector<std::vector<std::string>> frame_Screen3CompanyStart2;
 
 public:
 	Game();
@@ -132,12 +144,13 @@ public:
     void CheckCompanyDead();
     void highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes);
     void displayUIControls(int previousSpaceUsed);
+    void renderCenteringSpaces();
 
     void inputHandler();
     void resetInputHandler();
     void resetUIButtonSelection();
 
     std::vector<std::vector<std::string>> loadFrames(const std::string& filename);
-    void renderAnimation(const std::vector<std::vector<std::string>>& frames, int delayMs, bool isContinued);
+    void renderAnimation(const std::vector<std::vector<std::string>>& frames, int delayMs, bool isContinued, bool haveControlsUI);
 };
 

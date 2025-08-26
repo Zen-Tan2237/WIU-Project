@@ -17,6 +17,7 @@ int main() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 	inputHandler.detach();
+	std::cout << "Awaiting appropriate Window Size...";
 
 	while (true) {
 		game->printInterface();
