@@ -3,14 +3,13 @@
 #include <algorithm>
 #include <stdlib.h>
 Trojan::Trojan() {
-	name = "no name lol";
 	speed = 2.1f; // 1 for slow 5 max
 	complexity = 3; // 1 to 10
 	payload = 3; // 1 to 10
 	resilience = 4; //1 to 10
 }
 Trojan::~Trojan() {
-	
+
 }
 
 void Trojan::evolve(Upgrades* toUpgrade) {
@@ -25,7 +24,7 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Trojan::miniGame(int hackingPoints) {
+void Trojan::miniGame(int& hackingPoints) {
 	std::string coyNm_Versions[] = { // Version
 		"v1",
 		"v2",
@@ -71,7 +70,7 @@ void Trojan::miniGame(int hackingPoints) {
 /* Corporate Teams */
 bool Trojan::companyOperation(int verAmt, std::string* ver) {
 	char answers[5];
-	int condiOffset[2] = {0, 0};
+	int condiOffset[2] = { 0, 0 };
 	int* condition = new int[5];
 	std::string fileType[] = {
 		".pdf",
@@ -81,13 +80,10 @@ bool Trojan::companyOperation(int verAmt, std::string* ver) {
 		".pptx",
 		".zip", /* .7z, is more secure - better encryption, but software that is compatible may be hard to find/use */
 	};
-	printDialog("Team", "Operation");
-	//std::cout << 
-}
-void Trojan::companyFinancial() {
-	std::string baitNm_Finance[2][4] = {
-		{"Finance", "Treasury", "Ctrl", "FIN" }, // Department
-		{"Budget", "AuditReport", "Forecast", "TaxReturn",} // Subject
+	std::string baitNm[3][4] = {
+		{ "OpsDept", "Operations", "OpsTeam", "Ops" }, // Department/Name
+		{ "Report_SystemOutage", "MonthlyReport", "IncidentReport", "SLAReview",}, // Subject
+		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
 
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
@@ -99,7 +95,7 @@ void Trojan::companyFinancial() {
 		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
 		ver[condition[3] + conditionOffset(verAmt, condition[4])],
 		fileType[condition[4]]
-		);
+	);
 	/* Options Printing */
 	std::cout << "Choose from one of these options:\n";
 	for (int i = 0; i < 5; i++) {
@@ -128,7 +124,7 @@ void Trojan::companyFinancial() {
 					}
 					else if (i == 3) {
 						if (*it == ver[condition[i]]) {
-							answers[i] =(char)ansNum;
+							answers[i] = (char)ansNum;
 						}
 					}
 					else if (i == 4) {
@@ -168,7 +164,7 @@ bool Trojan::companyFinancial(int verAmt, std::string* ver) {
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
 
 	printDialog(
-		"Financial", 
+		"Financial",
 		baitNm[0][condition[0]],
 		baitNm[1][condition[1]],
 		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
@@ -241,7 +237,7 @@ bool Trojan::companySales(int verAmt, std::string* ver) {
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
 
 	printDialog(
-		"Sales", 
+		"Sales",
 		baitNm[0][condition[0]],
 		baitNm[1][condition[1]],
 		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
@@ -311,7 +307,7 @@ bool Trojan::companyAccounting(int verAmt, std::string* ver) {
 		{ "Ledger", " Invoice", "FinancialStatement", "Expense",}, // Subject
 		{ "Q1", "Q2", "Q3", "Q4" }, // Date
 	};
-	
+
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
 
 	printDialog(
@@ -389,7 +385,7 @@ bool Trojan::companyInfoTech(int verAmt, std::string* ver) {
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
 
 	printDialog(
-		"Information Technology", 
+		"Information Technology",
 		baitNm[0][condition[0]],
 		baitNm[1][condition[1]],
 		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
@@ -463,7 +459,7 @@ bool Trojan::companyHumanResource(int verAmt, std::string* ver) {
 	condition = winConditions((sizeof(*baitNm) / sizeof(**baitNm)), verAmt, (sizeof(fileType) / sizeof(*fileType)), condition);
 
 	printDialog(
-		"Human Resource", 
+		"Human Resource",
 		baitNm[0][condition[0]],
 		baitNm[1][condition[1]],
 		baitNm[2][condition[2] + conditionOffset(sizeof(*baitNm) / sizeof(**baitNm), condition[3])],
@@ -535,7 +531,7 @@ int Trojan::conditionOffset(int maxValue, int& condition) { /* Set the string va
 	return 0;
 }
 void Trojan::printDialog(std::string department, std::string& fT, std::string& synNm, std::string& synSub, std::string& synDate, std::string& synVer) {
-	
+
 	switch (rand() % 2) {
 	case 0: // Acting as a manager
 		std::cout << "You are acting as a manager, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the employees of the " << department << " department.\n";
@@ -547,7 +543,7 @@ void Trojan::printDialog(std::string department, std::string& fT, std::string& s
 	std::cout << "You have uncovered the latest file with the following syntax:\n";
 	std::cout << synNm << '_' << synSub << '_' << synDate << '_' << synVer << fT << '\n';
 	std::cout << "Name the TROJAN VIRUS with a similar syntax with the date and version being the follow up of that file.\n";
-	
+
 
 }
 void Trojan::printSynSectNm(int type) {
@@ -628,13 +624,27 @@ To reduce the length of the code for each team pull a string from the chosen str
 
 Than Move the strings into the member functions.
 
-after doing so, take the common code and move it into 
+after doing so, take the common code and move it into
 */
-std::string Trojan::itemsOps() {};
-std::string Trojan::itemsfin() {};
-std::string Trojan::itemsSales() {};
-std::string Trojan::itemsAcct() {};
-std::string Trojan::itemsIT() {};
-std::string Trojan::itemsHR() {};
+std::string Trojan::itemsOps() {
+	return "Debug";
+};
+std::string Trojan::itemsfin() {
+	return "Debug";
+};
+std::string Trojan::itemsSales() {
+	return "Debug";
+};
+std::string Trojan::itemsAcct() {
+	return "Debug";
+};
+std::string Trojan::itemsIT() {
+	return "Debug";
+};
+std::string Trojan::itemsHR() {
+	return "Debug";
+};
 
-bool Trojan::miniGameBody() {};
+bool Trojan::miniGameBody() {
+	return 0;
+};
