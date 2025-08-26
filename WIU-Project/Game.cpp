@@ -666,7 +666,7 @@ void Game::inputHandler()
                     else if (isChoosingCompanyStart) {
                         companyStartIndex = selectedUIButton;
                         isChoosingCompanyStart = false;
-                        player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1);
+                        player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
                         resetInputHandler();
                     }
                 }
