@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -152,16 +152,6 @@
     <ClInclude Include="Worm.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\BotNet Boost.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\Bricking Routine.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\Data Wiper.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\Email Worm Boost.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\Encryption Layer.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\Keylogger Module.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\LAN Scanner.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\Rootkit Injection.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\SMB Exploit.txt" />
-    <Text Include="..\..\..\..\OneDrive\Desktop\NYP\WIUs\Icons WIU 1\USB Propagation.txt" />
     <Text Include="emptyChickenFrames.txt" />
     <Text Include="Logo.txt" />
     <Text Include="LogoInteractToStart1.txt" />
