@@ -1,16 +1,25 @@
 #include <iostream>
+#include <windows.h>
 #include "Game.h"
+#include <thread>
 
 int main() {
-
-	srand((unsigned)time(0));
+	srand(time(0));
+	SetConsoleOutputCP(CP_UTF8);
 
 	Game* game = new Game;
 
 	game->initGame();
+
+	std::thread inputHandler(&Game::inputHandler, game);
+	//std::thread printInterface(&Game::printInterface, game);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+	inputHandler.detach();
+
 	while (true) {
 		game->printInterface();
-		game->doTurn();
 	}
 
 	delete game;

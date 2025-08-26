@@ -146,7 +146,14 @@
     <ClInclude Include="Worm.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="emptyChickenFrames.txt" />
     <Text Include="Logo.txt" />
+    <Text Include="LogoInteractToStart1.txt" />
+    <Text Include="LogoInteractToStart2.txt" />
+    <Text Include="Screen2DialoguePt1.txt" />
+    <Text Include="Screen3NameVirus.txt" />
+    <Text Include="Screen3Welcome.txt" />
+    <Text Include="yes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

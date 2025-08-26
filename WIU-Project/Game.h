@@ -5,6 +5,7 @@
 #include <ctime>
 #include <cmath>
 #include <string>
+#include <vector>
 
 #include "Company.h"
 #include "Player.h"
@@ -20,6 +21,15 @@ private:
 	const static int maxCompany = 5;
     int companyA;
     int companyB;
+    int screenIndex;
+    int previousScreenIndex;
+    int selectedUIButton;
+    int maxSelectedUIButtonOffset;
+    int minSelectedUIButtonOffset;
+    int navigationType;
+    bool isNamingVirus;
+    std::string virusName;
+    char character;
 
 	std::string companyNames[50] = {
         // Tech
@@ -94,6 +104,14 @@ private:
 	Company* companies[maxCompany]; // list of all target companies
     News* newZ;
 
+    std::vector<std::vector<std::string>> emptyChickenFrames;
+    std::vector<std::vector<std::string>> frame_Logo;
+    std::vector<std::vector<std::string>> frame_LogoInteractToStart1;
+    std::vector<std::vector<std::string>> frame_LogoInteractToStart2;
+    std::vector<std::vector<std::string>> frame_Screen2DialoguePt1;
+    std::vector<std::vector<std::string>> frame_Screen3Welcome;
+    std::vector<std::vector<std::string>> frame_Screen3NameVirus;
+
 public:
 	Game();
 	~Game();
@@ -101,11 +119,25 @@ public:
 	void initGame();
 
 	int getCurrentTick() const; // Getter
+    int getScreenIndex() const;
 	void setCurrentTick(int tickInterval); // Setter
+    void setScreenIndex(int screenIndex);
+
+    int consoleWidthHandler();
 
     void doTurn();
     void printInterface();
+    void typingEntrance(std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender);
     void randomCollabGenerator();
     void CheckCompanyDead();
+    void highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes);
+    void displayUIControls(int previousSpaceUsed);
+
+    void inputHandler();
+    void resetInputHandler();
+    void resetUIButtonSelection();
+
+    std::vector<std::vector<std::string>> loadFrames(const std::string& filename);
+    void renderAnimation(const std::vector<std::vector<std::string>>& frames, int delayMs, bool isContinued);
 };
 

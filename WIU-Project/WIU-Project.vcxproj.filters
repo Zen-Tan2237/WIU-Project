@@ -75,4 +75,14 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Logo.txt" />
+    <Text Include="yes.txt" />
+    <Text Include="LogoInteractToStart1.txt" />
+    <Text Include="LogoInteractToStart2.txt" />
+    <Text Include="Screen2DialoguePt1.txt" />
+    <Text Include="Screen3Welcome.txt" />
+    <Text Include="Screen3NameVirus.txt" />
+    <Text Include="emptyChickenFrames.txt" />
+  </ItemGroup>
 </Project>
