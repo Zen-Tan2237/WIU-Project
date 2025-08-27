@@ -23,66 +23,137 @@ void Worm::evolve(Upgrades* toUpgrade) {
 }
 
 void Worm::miniGame(int &hackingPoints) {
-	std::cout << "Mini Game: Identify the fake domain name from the two options given.\n";
-    srand(static_cast<unsigned int>(time(0)));
-    std::string realArray[10] = {
-        "paypal.com",
-        "microsoft.com",
-        "google.com",
-        "apple.com",
-        "amazon.com",
-        "bankofamerica.com",
-        "facebook.com",
-        "twitter.com",
-        "dropbox.com",
-        "linkedin.com"
-    };
-    std::string fakeArray[10] = {
-        "paypa1.com",
-        "micros0ft.com",
-        "goog0l.com",
-        "apple-support.com",
-        "arnazon.com",
-        "bancofamerica.com",
-        "facebok-login.com",
-        "twltter.com",
-        "dropdox.net",
-        "1inkedin.com"
-    };
-	int tracker[6] = { -1, -1, -1, -1, -1, -1 };//to check if the random number has been used before
-    int userInput;
-    int randomIndex = 0;
+	srand(static_cast<unsigned int>(time(0)));
+	int points = 0;
+	for (int i = 0; i < row; i++) {
+		board[i] = new char[col];
+	}
+	std::cout << "Minigame: move the worm deeper into the companies defences using WSD\n";
+	makeboard();
+	board[wormRow][wormCol] = 'W';
+	printboard();
+	while (!lose) {
+		update();
+		if (wormCol % 6 == 2 && wormColPrevious % 6 != 2) {
+			points++;
+		}
+	}
+	std::cout << "you crashed. You get " << points << " points";
+	hackingPoints += points;
+	Sleep(5000);
+	for (int i = 0; i < row; i++)
+	{
+		delete[] board[i];
+	}
+	delete[] board;
+}
+void Worm::makeboard() {
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			if (j % 6 == 2) {
+				board[i][j] = '#';
+			}
+			else {
+				board[i][j] = ' ';
+			}
+		}
+	}
+	for (int j = 0; j < col; j++) {
+		if (j % 6 == 2) {
+			board[rand() % 10][j] = ' ';
+		}
+	}
+}
 
-    for (int i = 0; i < 3; i++) {
-        do {
-            randomIndex = rand() % 20;
-        } while (randomIndex == tracker[0] || randomIndex == tracker[1] || randomIndex == tracker[2] ||
-            randomIndex == tracker[3] || randomIndex == tracker[4] || randomIndex == tracker[5]);
+void Worm::printboard() {
+	std::cout << "======================================================================"
+		"===========================================================================\n";
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++)
+		{
+			std::cout << '|' << board[i][j];
+		}
+		std::cout << '|' << std::endl;
+	}
+	std::cout << "======================================================================"
+		"===========================================================================\n";
+}
 
-        if (randomIndex < 10) {
-            std::cout << "1." << realArray[randomIndex] << "\n\n2." << fakeArray[randomIndex] << std::endl;
-			tracker[i] = randomIndex;
-            tracker[i + 3] = randomIndex + 10;
-        }
-        else {
-            std::cout << "1." << fakeArray[randomIndex - 10] << "\n\n2." << realArray[randomIndex - 10] << std::endl;
-			tracker[i] = randomIndex;
-			tracker[i+3] = randomIndex - 10;
-        }
-        do {
-            std::cout << "Enter the FAKE domain:\n";
-            std::cin >> userInput;
-        } while (userInput < 1 || userInput > 2);
-        if (randomIndex < 10 && userInput == 2) {
-            std::cout << "Successful hack! Gain 1 hacker points" << std::endl;
-            hackingPoints++;
-        }
-        else if (randomIndex >= 10 && userInput == 1) {
-            std::cout << "Successful hack! Gain 1 hacker points" << std::endl;
-            hackingPoints++;
-        }
-        else {
-            std::cout << "Hack Failed! You sent the real link" << std::endl;
-        }
-    }
+void Worm::update() {
+	wormRowPrevious = wormRow;
+	wormColPrevious = wormCol;
+	getInput();
+	board[wormRow][wormCol] = 'W';
+	board[wormRowPrevious][wormColPrevious] = ' ';
+	Sleep(500);
+	system("cls");
+	printboard();
+}
+
+void Worm::getInput() {
+	std::cout << "enter a direction:\n";
+	if (_kbhit()) {
+		char input = _getch();
+		switch (input) {
+		case 'w':
+		case 'W':
+			dir = 'w';
+			break;
+		case 's':
+		case 'S':
+			dir = 's';
+			break;
+		case 'd':
+		case 'D':
+			dir = 'd';
+			break;
+		default:
+			std::cout << "invalid input\n";
+			break;
+		}
+	}
+	switch (dir) {
+	case 'w':
+		if (wormRow != 0) {
+			if (board[wormRow - 1][wormCol] == ' ') {
+				wormRow--;
+			}
+			else {
+				lose = true;
+			}
+		}
+		else {
+			lose = true;
+		}
+		break;
+	case 's':
+		if (wormRow < row - 1) {
+			if (board[wormRow + 1][wormCol] == ' ') {
+				wormRow++;
+			}
+			else {
+				lose = true;
+			}
+		}
+		else {
+			lose = true;
+		}
+		break;
+	case 'd':
+		if (wormCol < col - 1) {
+			if (board[wormRow][wormCol + 1] == ' ') {
+				wormCol++;
+			}
+			else {
+				lose = true;
+			}
+		}
+		else {
+			lose = true;
+		}
+		break;
+	default:
+		std::cout << "halalalal\n";
+		break;
+	}
 }
