@@ -2,9 +2,8 @@
 #include <iostream>
 #include <string>
 #include "Virus.h"
-class News
-{
 
+class News {
 private:
     /**
     // 0 for company collaborations(virus spread chance increase), 1 for cybersecurity triggerd,
@@ -125,16 +124,14 @@ public:
     News(std::string VirusName);
     
     void companyCollabNews(std::string companyA, std::string companyB) const;
-    void virusFoundNews(std::string company) const;
-    void cybersecurityWinningNews() const;
-    void cyberSecurityLosingNews() const;
-    void companyDeadNews(std::string company) const;
+    void virusFoundNews(std::string company, std::string virus) const;
+    void cybersecurityWinningNews(std::string virus) const;
+    void cyberSecurityLosingNews(std::string virus) const;
+    void companyDeadNews(std::string company, std::string virus) const;
     void PlayerWinNews() const;
     void PlayerLoseNews() const;
-    
 };
 
 // in case there is more than 1 virus type
-//  "In Chaos As Randsomeware Hits Every Computer In The Company.", // Ransomeware
-//  "Has A Databreach Effecting 300 Million Customers Worldwide.", //Trojan  
-
+//  "In Chaos As Ransomware Hits Every Computer In The Company.", // Ransomware
+//  "Has A Data breach Effecting 300 Million Customers Worldwide.", //Trojan  
