@@ -319,10 +319,20 @@ void Trojan::minigameOptions_1d(int type, int syntaxAmt, int& condi, std::string
 	}
 }
 bool Trojan::playerInput(char* ans) {
-	char PLAYERINPUT[5];
+	std::string PLAYERINPUT_str;
+	char PLAYERINPUT_char[5] = { '-', '-', '-', '-', '-' };
+
 	std::cout << "Input options as one sequence: 12345\n";
-	std::cin >> PLAYERINPUT;
-	if (atoi(PLAYERINPUT) == atoi(ans)) {
+	do {
+		std::cin >> PLAYERINPUT_str;
+		if (PLAYERINPUT_str.length() != 5) {
+			std::cout << "Enter 5 Character Values\n";
+		}
+	} while (PLAYERINPUT_str.length() != 5);
+	for (int i = 0; i < 5; i++) {
+		PLAYERINPUT_char[i] = PLAYERINPUT_str[i];
+	}
+	if (atoi(PLAYERINPUT_char) == atoi(ans)) {
 		return 1;
 	}
 	return 0;
