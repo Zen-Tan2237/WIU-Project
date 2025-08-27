@@ -88,11 +88,27 @@
     <ClInclude Include="Trojan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZeroDayExploit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Logo.txt" />
+    <Text Include="emptyChickenFrames.txt" />
+    <Text Include="LogoInteractToStart1.txt" />
+    <Text Include="LogoInteractToStart2.txt" />
+    <Text Include="Screen2DialoguePt1.txt" />
+    <Text Include="Screen2DialoguePt2.txt" />
+    <Text Include="Screen2DialoguePt3.txt" />
+    <Text Include="Screen3CompanyStart.txt" />
+    <Text Include="Screen3CompanyStart1.txt" />
+    <Text Include="Screen3CompanyStart2.txt" />
+    <Text Include="Screen3NameVirus.txt" />
+    <Text Include="Screen3VirusType.txt" />
+    <Text Include="Screen3VirusType1.txt" />
+    <Text Include="Screen3VirusType2.txt" />
+    <Text Include="Screen3Welcome.txt" />
+    <Text Include="yes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\yipeeee.wav" />
+    <Media Include="..\..\..\..\Downloads\hacking-sfx.wav" />
   </ItemGroup>
 </Project>
