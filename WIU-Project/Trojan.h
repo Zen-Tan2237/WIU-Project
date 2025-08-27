@@ -11,12 +11,12 @@ private:
     void nMConvention_IT(std::string**);
     void nMConvention_HR(std::string**);
 
-    int* winConditions(int, int, int, int*);
+    void winConditions(int, int, int, int*);
     int conditionOffset(int, int&);
     void printDialog(std::string, std::string&, std::string&, std::string&, std::string&, std::string&);
     void printSynSectNm(int);
-    void minigameOptions_2d(int, int, int&, std::string**, std::vector<std::string> []);
-    void minigameOptions_1d(int, int, int&, std::string*, std::vector<std::string> []);
+    void minigameOptions_2d(int, int, int, std::string**, std::vector<std::string>[]);
+    void minigameOptions_1d(int, int, std::string*, std::vector<std::string>[]);
     bool playerInput(char*);
 
 public:

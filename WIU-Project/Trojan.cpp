@@ -53,7 +53,8 @@ void Trojan::miniGame(int& hackingPoints) {
 	for (int i = 0; i < 2; i++) {
 		p_con[i] = new std::string[4];
 	}
-	condition = winConditions(4, (sizeof(ver) / sizeof(*ver)), (sizeof(fT) / sizeof(*fT)), condition);
+	
+	winConditions(4, (sizeof(ver) / sizeof(*ver)), (sizeof(fT) / sizeof(*fT)), condition);
 	/* Defining Naming Conventions & Printing -------------------------------- */ {
 		{
 			std::string departName;
@@ -62,27 +63,34 @@ void Trojan::miniGame(int& hackingPoints) {
 				nMConvention_Ops(p_con);
 				departName = "Operations";
 				break;
+
 			case 1:
 				nMConvention_Fin(p_con);
 				departName = "Financial";
 				break;
+
 			case 2:
 				nMConvention_Sales(p_con);
 				departName = "Sales";
 				break;
+
 			case 3:
 				nMConvention_Acct(p_con);
 				departName = "Accounting";
 				break;
+
 			case 4:
 				nMConvention_IT(p_con);
 				departName = "Information Technology";
 				break;
+
 			case 5:
 				nMConvention_HR(p_con);
-				break;
 				departName = "Human Resource";
-			default: break;
+				break;
+
+			default: 
+				break;
 			}
 			printDialog(
 				departName,
@@ -103,13 +111,13 @@ void Trojan::miniGame(int& hackingPoints) {
 						minigameOptions_2d(i, 4, condition[i], p_con, options);
 					}
 					else if (i == 2) { // Syntax Options - date
-						minigameOptions_1d(i, (sizeof(date) / sizeof(*date)), condition[i], date, options);
+						minigameOptions_1d((sizeof(date) / sizeof(*date)), condition[i], date, options);
 					}
 					else if (i == 3) { // Syntax Options - versions
-						minigameOptions_1d(i, (sizeof(ver) / sizeof(*ver)), condition[i], ver, options);
+						minigameOptions_1d((sizeof(ver) / sizeof(*ver)), condition[i], ver, options);
 					}
 					else if (i == 4) { //Syntax Options - file type
-						minigameOptions_1d(i, (sizeof(fT) / sizeof(*fT)), condition[i], fT, options);
+						minigameOptions_1d((sizeof(fT) / sizeof(*fT)), condition[i], fT, options);
 					}
 				}
 				std::random_shuffle(options->begin(), options->end()); // Shuffles options - might need a rand() or seed.
@@ -144,14 +152,15 @@ void Trojan::miniGame(int& hackingPoints) {
 			}
 		}
 	}
-	if (playerInput(answers)) {
-		hackingPoints++;
-	}
-
+	
 	for (int i = 0; i < 2; i++) {
 		delete[] p_con[i];
 	}
 	delete[] condition, p_con;
+
+	if (playerInput(answers)) {
+		hackingPoints++;
+	}
 }
 
 /* Naming Conventions */
@@ -223,13 +232,12 @@ void Trojan::nMConvention_HR(std::string** pushBaitNm) {
 };
 
 /* Some Common code */
-int* Trojan::winConditions(int c123, int c4, int c5, int* c) {
+void Trojan::winConditions(int c123, int c4, int c5, int* c) {
 	c[0] = rand() % c123; // Name
 	c[1] = rand() % c123; // Subject
 	c[2] = rand() % c123; // Date
 	c[3] = rand() % c4; // Version
 	c[4] = rand() % c5; // FileType
-	return c;
 }
 int Trojan::conditionOffset(int maxValue, int& condition) { /* Set the string value for the file syntax - the player has to make the potential next version. */
 	if (condition == 0) {
@@ -241,7 +249,6 @@ int Trojan::conditionOffset(int maxValue, int& condition) { /* Set the string va
 	return 0;
 }
 void Trojan::printDialog(std::string department, std::string& fT, std::string& synNm, std::string& synSub, std::string& synDate, std::string& synVer) {
-
 	switch (rand() % 2) {
 	case 0: // Acting as a manager
 		std::cout << "You are acting as a manager, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the employees of the " << department << " department.\n";
@@ -249,30 +256,41 @@ void Trojan::printDialog(std::string department, std::string& fT, std::string& s
 	case 1: // Acting as an employee
 		std::cout << "You are acting as an employee of the " << department << "department, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the manager of the department.\n";
 		break;
+	default:
+		break;
 	}
 	std::cout << "You have uncovered the latest file with the following syntax:\n";
 	std::cout << synNm << '_' << synSub << '_' << synDate << '_' << synVer << fT << '\n';
 	std::cout << "Name the TROJAN VIRUS with a similar syntax with the date and version being the follow up of that file.\n";
-	std::cout << "Choose from one of these options:\n";
+	std::cout << "Choose 1 from each sequence:\n";
 }
 void Trojan::printSynSectNm(int type) {
-	if (type == 0) {
+	switch (type) {
+	case 0: 
 		std::cout << "<Department_Name> ";
-	}
-	else if (type == 1) {
+		break;
+
+	case 1:
 		std::cout << "<Subject> ";
-	}
-	else if (type == 2) {
+		break;
+
+	case 2:
 		std::cout << "<Date> ";
-	}
-	else if (type == 3) {
+		break;
+
+	case 3:
 		std::cout << "<Version> ";
-	}
-	else if (type == 4) {
+		break;
+
+	case 4:
 		std::cout << "<File_Type> ";
+		break;
+
+	default:
+		break;
 	}
 }
-void Trojan::minigameOptions_2d(int type, int syntaxAmt, int& condi, std::string** syntax, std::vector<std::string> opt[]) {
+void Trojan::minigameOptions_2d(int type, int syntaxAmt, int condi, std::string** syntax, std::vector<std::string> opt[]) {
 	int k = 1;
 	opt[0].push_back(syntax[type][condi]); // Sets answer as 1st value.
 
@@ -295,7 +313,7 @@ void Trojan::minigameOptions_2d(int type, int syntaxAmt, int& condi, std::string
 		}
 	}
 }
-void Trojan::minigameOptions_1d(int type, int syntaxAmt, int& condi, std::string* syntax, std::vector<std::string> opt[]) {
+void Trojan::minigameOptions_1d(int syntaxAmt, int condi, std::string* syntax, std::vector<std::string> opt[]) {
 	int k = 1;
 	opt[0].push_back(syntax[condi]); // Sets answer as 1st value.
 
