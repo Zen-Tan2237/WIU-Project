@@ -179,6 +179,7 @@
     <Text Include="yes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="..\..\..\..\Downloads\hacking-sfx.wav" />
     <Media Include="resources\yipeeee.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,6 @@
 #include "CyberSecurity.h"
 #include <iostream>
-#include <windows.h>
+//#include <windows.h>
 
 bool CyberSecurity::cureComplete = 0; // Keep
 int CyberSecurity::cyberNewsCount[2] = { 0, 0 }; // Keep
@@ -12,84 +12,44 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 
 /* Function Members --------------------------------------------------------------------- */
 /* News */
-void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
-	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
+void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& virus) {
+	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
 	
 	/* Virus Found ------------------------------------------ */ {
-		/**/	SetConsoleTextAttribute(debug_cS, 4);	/**/
+		/**	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
-				news.virusFoundNews(coy[i]->getName());
+				news.virusFoundNews((rand() % 5), coy[i]->getName(), virus.getName());
 				newsDetectDone[i] = 1;
 			}
 		}
 	}
-	/* Collab ----------------------------------------------- */ {
-		/**	SetConsoleTextAttribute(debug_cS, 14);	/**/
-		/*
-		int coyChoice1 = whichCompanyIsPossible(coy);
-		int coyChoice2;
-
-		if (coyChoice1 != -1 && coyChoice1 != -2) {
-			do {
-				coyChoice2 = whichCompanyIsPossible(coy);
-			} while (coyChoice1 == coyChoice2 && coyChoice2 != -2);
-
-			// Code for news and changing of cure status.
-			if (coyChoice2 != -1 && coyChoice2 != -2) {
-				news.companyCollabNews(coy[coyChoice1]->getName(), coy[coyChoice2]->getName());
-			}
-		}
-	*/
-	}
 	/* Cyber Win/Loss --------------------------------------- */ {
-		/**/	SetConsoleTextAttribute(debug_cS, 6);	/**/
+		/**	SetConsoleTextAttribute(debug_cS, 6);	/**/
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-				news.cybersecurityWinningNews(); // Code for cyber wins
+				news.cybersecurityWinningNews((rand() % 5), virus.getName()); // Code for cyber wins
 				cyberNewsCount[0]++;
 			}
 		}
 		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-				news.cyberSecurityLosingNews(); // Code for cyber losses
+				news.cyberSecurityLosingNews((rand() % 5), virus.getName()); // Code for cyber losses
 				cyberNewsCount[1]++;
 			}
 		}
 	}
-	/* Game Win/Loss Condition ----------------------------------- */ {
-		/**/	SetConsoleTextAttribute(debug_cS, 10);		/**/
+	/* Game Win/Loss Condition ------------------------------ */ {
+		/**	SetConsoleTextAttribute(debug_cS, 10);		/**/
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
-			news.PlayerWinNews();
+			news.PlayerWinNews(rand() % 2);
 		}
 		else if (isCureComplete()) {
-			news.PlayerLoseNews();
+			news.PlayerLoseNews(rand() % 2);
 		}
-		/**/	SetConsoleTextAttribute(debug_cS, 7);	/**/
+		/**	SetConsoleTextAttribute(debug_cS, 7);	/**/
 	}
 }
-/*
-int CyberSecurity::whichCompanyIsPossible(Company* coy[]) const {
-	int coyChoice = -1;
-	bool breakLoop = 0;
-	int count;
-	do {
-		count = 0;
-		coyChoice = rand() % maxCompany;
-		if ((Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) || (!isVDetect[coyChoice])) {
-			breakLoop = 1;
-			coyChoice = -1;
-		}
-		for (int i = 0; i < maxCompany; i++) {
-			if (!doResearch(coyChoice, 20.0f) || coy[i]->getInfectedStatus() > 0.7f) {
-				count++;
-				coyChoice = -2;
-			}
-		}
-	} while ((coy[coyChoice]->getNoOfBrickedComputers() == coy[coyChoice]->getNetworkSize()) && !breakLoop && count != 5);
-	return coyChoice;
-}
-*/
 bool CyberSecurity::isCureComplete() {
 	if (globalCureProgress == 100.0f) {
 		return cureComplete = 1;
@@ -107,14 +67,14 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 		bool commonization = 1;
 		this->setResearchEfficiency(i, *coy[i]);
 		this->setUndeadRate(i, *coy[i]);
-		isResearching[i] = 0;
+		//isResearching[i] = 0;
 		isVDetect[i] = 0;
 
 		if (this->isVirusDetected(undeadRate[i], *coy[i], virus)) { // can the company detect the virus.
 			isVDetect[i] = 1;
 			this->detectionLevelCheck();
 			if (doResearch(i, 20.0f)) {
-				isResearching[i] = 1;
+				//isResearching[i] = 1;
 				this->setFightStrength(i, *coy[i]);
 				commonization = 0;
 			}
@@ -208,21 +168,21 @@ void CyberSecurity::cureProgressSpeed(int scaleSpeed, const Virus& virus) { // I
 
 /* Display Status */
 void CyberSecurity::displayStatus() const {
-	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
+	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
 
 	std::cout
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
-	/**/
+	/**
 	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
 	}
-	std::cout << '\n';
-	for (int i = 1; i < maxCompany + 1; i++) {
-		std::cout << "R" << i << " " << isResearching[i - 1] << " ";
-	}
+	// std::cout << '\n';
+	// for (int i = 1; i < maxCompany + 1; i++) {
+	//	std::cout << "R" << i << " " << isResearching[i - 1] << " ";
+	// }
 	std::cout << '\n';
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "REff" << i << " " << researchEfficiency[i - 1] << " ";
@@ -245,24 +205,6 @@ void CyberSecurity::displayStatus() const {
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
 }
-bool CyberSecurity::getIsVDetect(int type) const {
-	return this->isVDetect[type];
-} // Might not be used
-bool CyberSecurity::getIsResearching(int type) const {
-	return this->isResearching[type];
-} // Might not be used
-bool CyberSecurity::getNewsDetectDone(int type) const {
-	return this->newsDetectDone[type];
-} // Might not be used
-int CyberSecurity::getDetectionLevel() const {
-	return this->detectionLevel;
-} // Might not be used
-float CyberSecurity::getFightStrength(int type) const {
-	return this->fightStrength[type];
-} // Might not be used
-float CyberSecurity::getGlobalCureProgress() const {
-	return this->globalCureProgress;
-} // Might not be used
 
 /* Private */
 int CyberSecurity::getDetectThreshold_individual(const Company& coy) const {
@@ -301,14 +243,14 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
 
-	isResearching = new bool[coyAmt]; // Remove
-	undeadRate = new float[coyAmt]; // Remove if localized
+	//isResearching = new bool[coyAmt]; // Remove
+	undeadRate = new float[coyAmt];
 
 	for (int i = 0; i < coyAmt; i++) {
 		isVDetect[i] = 0;
 		newsDetectDone[i] = 0;
 
-		isResearching[i] = 0; // Remove
+		//isResearching[i] = 0; // Remove
 	}
 }
 CyberSecurity::CyberSecurity(int coyAmt, int dL) {
@@ -320,14 +262,14 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
 
-	isResearching = new bool[coyAmt]; // Remove
-	undeadRate = new float[coyAmt]; // Remove if localized
+	//isResearching = new bool[coyAmt]; // Remove
+	undeadRate = new float[coyAmt];
 
 	for (int i = 0; i < coyAmt; i++) {
 		isVDetect[i] = 0;
 		newsDetectDone[i] = 0;
 
-		isResearching[i] = 0; // Remove
+		//isResearching[i] = 0; // Remove
 	}
 }
 CyberSecurity::~CyberSecurity() {
@@ -337,8 +279,8 @@ CyberSecurity::~CyberSecurity() {
 		fightStrength,
 		researchEfficiency,
 
-		isResearching, // Remove
-		undeadRate // Remove if localized
+		//isResearching, // Remove
+		undeadRate
 		;
 
 	isVDetect = nullptr;
@@ -346,6 +288,6 @@ CyberSecurity::~CyberSecurity() {
 	fightStrength = nullptr;
 	researchEfficiency = nullptr;
 
-	isResearching = nullptr; // Remove
-	undeadRate = nullptr; // Remove if localized
+	//isResearching = nullptr; // Remove
+	undeadRate = nullptr;
 }
