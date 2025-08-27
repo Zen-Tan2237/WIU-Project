@@ -34,6 +34,7 @@ private:
     std::string virusName;
     int virusTypeIndex;
     int companyStartIndex;
+    int gameplayButtonChosenIndex;
     char character;
 
 	std::string companyNames[50] = {
@@ -109,21 +110,38 @@ private:
 	Company* companies[maxCompany]; // list of all target companies
     News* newZ;
 
+    std::vector<std::vector<std::string>> element_barFilled;
+    std::vector<std::vector<std::string>> element_barUnfilled;
+
     std::vector<std::vector<std::string>> emptyChickenFrames;
+
     std::vector<std::vector<std::string>> frame_Logo;
     std::vector<std::vector<std::string>> frame_LogoInteractToStart1;
     std::vector<std::vector<std::string>> frame_LogoInteractToStart2;
+
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt1;
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt2;
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt3;
+
     std::vector<std::vector<std::string>> frame_Screen3Welcome;
+
     std::vector<std::vector<std::string>> frame_Screen3NameVirus;
+
     std::vector<std::vector<std::string>> frame_Screen3VirusType;
     std::vector<std::vector<std::string>> frame_Screen3VirusType1;
     std::vector<std::vector<std::string>> frame_Screen3VirusType2;
+
     std::vector<std::vector<std::string>> frame_Screen3CompanyStart;
     std::vector<std::vector<std::string>> frame_Screen3CompanyStart1;
     std::vector<std::vector<std::string>> frame_Screen3CompanyStart2;
+
+    std::vector<std::vector<std::string>> frame_Screen4GameplayUI1;
+    std::vector<std::vector<std::string>> frame_Screen4GameplayUI2;
+    std::vector<std::vector<std::string>> frame_Screen4GameplayUI3;
+
+    std::vector<std::vector<std::string>> frame_Screen5BuildingBottom;
+    std::vector<std::vector<std::string>> frame_Screen5BuildingCenterClone;
+    std::vector<std::vector<std::string>> frame_Screen5BuildingTop;
 
 public:
 	Game();
@@ -133,6 +151,7 @@ public:
 
     int getCurrentTick() const; // Getter
     void setCurrentTick(int tickInterval); // Setter
+    int getCurrentScreen() const;
 
     int consoleWidthHandler();
 
@@ -150,6 +169,6 @@ public:
     void resetUIButtonSelection();
 
     std::vector<std::vector<std::string>> loadFrames(const std::string& filename);
-    void renderAnimation(const std::vector<std::vector<std::string>>& frames, int delayMs, bool isContinued, bool haveControlsUI);
+    void renderAnimation(const std::vector<std::vector<std::string>>& frames, int delayMs, bool isContinued, bool haveControlsUI, bool hasEnd);
 };
 

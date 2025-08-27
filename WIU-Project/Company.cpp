@@ -231,7 +231,6 @@ void Company::calculateSpread(Company* companies[]) // BALANCED
 
 		if (total > 0) { // has valid target
 			int r = rand() % total;
-			std::cout << "Chosen Weight: " << r << std::endl;
 
 			// find which company gets picked
 			int cumulative = 0;
@@ -246,11 +245,6 @@ void Company::calculateSpread(Company* companies[]) // BALANCED
 		else {
 			chosenSpreadCompany = -1;
 		}
-
-		for (int i = 0; i < maxCompany; i++) {
-			std::cout << collabSpreadWeight[i] << ", ";
-		}
-		std::cout << std::endl;
 
 		/*do {
 			chosenSpreadCompany = rand() % maxCompany;
@@ -274,11 +268,11 @@ void Company::calculateSpread(Company* companies[]) // BALANCED
 				triggers = (rand() % 1000) < (int)(probability * 1000.0);
 
 				if (triggers) {
-					std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
+					//std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
 					companies[chosenSpreadCompany]->setNoOfInfectedComputers(1);
 				}
 				else {
-					std::cout << "Virus failed: Security Too High" << std::endl;
+					//std::cout << "Virus failed: Security Too High" << std::endl;
 				}
 			}
 			else {
