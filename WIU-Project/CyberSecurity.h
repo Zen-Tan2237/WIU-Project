@@ -19,14 +19,11 @@ private:
 
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* newsDetectDone;
-	bool* newsCompanyDead;
 	float* fightStrength;
 	float* researchEfficiency;
 
-	bool* isResearching; // Debug variable
-	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead | Debug variable, can be placed within member function, as local variable - if not used outside.
-
-	//int whichCompanyIsPossible(Company* []) const;
+	//bool* isResearching; // Debug variable
+	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead
 
 	bool isVirusDetected(float, const Company&, const Virus&) const;
 	bool doResearch(int, float) const;
@@ -51,12 +48,6 @@ public:
 	void displayStatus() const;
 
 	bool getCureComplete() const;
-	bool getIsVDetect(int) const;
-	bool getIsResearching(int) const;
-	bool getNewsDetectDone(int) const;
-	int getDetectionLevel() const;
-	float getFightStrength(int) const;
-	float getGlobalCureProgress() const;
 
 	CyberSecurity(int);
 	CyberSecurity(int, int);
