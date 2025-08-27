@@ -19,7 +19,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& 
 		/**	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
-				news.virusFoundNews(coy[i]->getName(), virus.getName());
+				news.virusFoundNews((rand() % 5), coy[i]->getName(), virus.getName());
 				newsDetectDone[i] = 1;
 			}
 		}
@@ -28,13 +28,13 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& 
 		/**	SetConsoleTextAttribute(debug_cS, 6);	/**/
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-				news.cybersecurityWinningNews(virus.getName()); // Code for cyber wins
+				news.cybersecurityWinningNews((rand() % 5), virus.getName()); // Code for cyber wins
 				cyberNewsCount[0]++;
 			}
 		}
 		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-				news.cyberSecurityLosingNews(virus.getName()); // Code for cyber losses
+				news.cyberSecurityLosingNews((rand() % 5), virus.getName()); // Code for cyber losses
 				cyberNewsCount[1]++;
 			}
 		}
@@ -42,10 +42,10 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& 
 	/* Game Win/Loss Condition ------------------------------ */ {
 		/**	SetConsoleTextAttribute(debug_cS, 10);		/**/
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
-			news.PlayerWinNews();
+			news.PlayerWinNews(rand() % 2);
 		}
 		else if (isCureComplete()) {
-			news.PlayerLoseNews();
+			news.PlayerLoseNews(rand() % 2);
 		}
 		/**	SetConsoleTextAttribute(debug_cS, 7);	/**/
 	}
