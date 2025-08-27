@@ -12,14 +12,14 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 
 /* Function Members --------------------------------------------------------------------- */
 /* News */
-void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
+void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& virus) {
 	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
 	
 	/* Virus Found ------------------------------------------ */ {
 		/**/	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
-				news.virusFoundNews(coy[i]->getName());
+				news.virusFoundNews(coy[i]->getName(), virus.getName());
 				newsDetectDone[i] = 1;
 			}
 		}
@@ -46,18 +46,26 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news) {
 		/**/	SetConsoleTextAttribute(debug_cS, 6);	/**/
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-				news.cybersecurityWinningNews(); // Code for cyber wins
+				news.cybersecurityWinningNews(virus.getName()); // Code for cyber wins
 				cyberNewsCount[0]++;
 			}
 		}
 		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-				news.cyberSecurityLosingNews(); // Code for cyber losses
+				news.cyberSecurityLosingNews(virus.getName()); // Code for cyber losses
 				cyberNewsCount[1]++;
 			}
 		}
 	}
-	/* Game Win/Loss Condition ----------------------------------- */ {
+	/* Company Dead ----------------------------------------- */ {
+		for (int i = 0; i < maxCompany; i++) {
+			if (coy[i]->getBrickedStatus() == 1.8f && !newsCompanyDead[i]) {
+				news.companyDeadNews(coy[i]->getName(), virus.getName());
+				newsCompanyDead[i] = 1;
+			}
+		}
+	}
+	/* Game Win/Loss Condition ------------------------------ */ {
 		/**/	SetConsoleTextAttribute(debug_cS, 10);		/**/
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
 			news.PlayerWinNews();
@@ -214,7 +222,7 @@ void CyberSecurity::displayStatus() const {
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
 	/* Program Debug Values */
-	/**/
+	/**
 	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
@@ -298,6 +306,7 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 
 	isVDetect = new bool[coyAmt];
 	newsDetectDone = new bool[coyAmt];
+	newsCompanyDead = new bool[coyAmt];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
 
@@ -307,6 +316,7 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 	for (int i = 0; i < coyAmt; i++) {
 		isVDetect[i] = 0;
 		newsDetectDone[i] = 0;
+		newsCompanyDead[i] = 0;
 
 		isResearching[i] = 0; // Remove
 	}
@@ -317,6 +327,7 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 
 	isVDetect = new bool[coyAmt];
 	newsDetectDone = new bool[coyAmt];
+	newsCompanyDead = new bool[coyAmt];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
 
@@ -326,6 +337,7 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 	for (int i = 0; i < coyAmt; i++) {
 		isVDetect[i] = 0;
 		newsDetectDone[i] = 0;
+		newsCompanyDead[i] = 0;
 
 		isResearching[i] = 0; // Remove
 	}
@@ -334,6 +346,7 @@ CyberSecurity::~CyberSecurity() {
 	delete[] 
 		isVDetect,
 		newsDetectDone,
+		newsCompanyDead,
 		fightStrength,
 		researchEfficiency,
 
@@ -343,6 +356,7 @@ CyberSecurity::~CyberSecurity() {
 
 	isVDetect = nullptr;
 	newsDetectDone = nullptr;
+	newsCompanyDead = nullptr;
 	fightStrength = nullptr;
 	researchEfficiency = nullptr;
 

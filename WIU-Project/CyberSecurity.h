@@ -19,13 +19,14 @@ private:
 
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* newsDetectDone;
+	bool* newsCompanyDead;
 	float* fightStrength;
 	float* researchEfficiency;
 
 	bool* isResearching; // Debug variable
 	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead | Debug variable, can be placed within member function, as local variable - if not used outside.
 
-	int whichCompanyIsPossible(Company* []) const;
+	//int whichCompanyIsPossible(Company* []) const;
 
 	bool isVirusDetected(float, const Company&, const Virus&) const;
 	bool doResearch(int, float) const;
@@ -42,7 +43,7 @@ private:
 	void setFightStrength(int, const Company&);
 
 public:
-	void triggerEvent(Company* [], const News&);
+	void triggerEvent(Company* [], const News&, const Virus&);
 	bool isCureComplete();
 
 	void advanceCure(Company* [], const Virus&);
