@@ -118,18 +118,31 @@ private:
         }
     };
    /**/
+
+    static std::string HEAD;
+    static std::string BODY;
+    static int pastNews[7][2];
+
+    static void setHEAD(std::string);
+    static void setBODY(std::string);
+
 public:
     News();
     ~News();
     News(std::string VirusName);
     
-    void companyCollabNews(std::string companyA, std::string companyB) const;
-    void virusFoundNews(std::string company, std::string virus) const;
-    void cybersecurityWinningNews(std::string virus) const;
-    void cyberSecurityLosingNews(std::string virus) const;
-    void companyDeadNews(std::string company, std::string virus) const;
-    void PlayerWinNews() const;
-    void PlayerLoseNews() const;
+    void companyCollabNews(int, std::string, std::string) const;
+    void virusFoundNews(int, std::string, std::string) const;
+    void cybersecurityWinningNews(int, std::string) const;
+    void cyberSecurityLosingNews(int, std::string) const;
+    void companyDeadNews(int, std::string, std::string) const;
+    void PlayerWinNews(int) const;
+    void PlayerLoseNews(int) const;
+
+    static std::string getHEAD();
+    static std::string getBODY();
+
+    void setPastNews(int, int, int);
 };
 
 // in case there is more than 1 virus type
