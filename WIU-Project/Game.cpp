@@ -46,6 +46,7 @@ Game::Game()
     isChoosingCompanyStart = false;
     virusName = "";
     virusTypeIndex = 0;
+    gameplayButtonChosenIndex = 0;
     companyStartIndex = 0;
 }
 
@@ -67,6 +68,9 @@ void Game::initGame()
         std::cout << "yes" << std::endl;
     }
 
+    element_barFilled = loadFrames("barFilledCharacter.txt");
+    element_barUnfilled = loadFrames("barUnfilledCharacter.txt");
+
     emptyChickenFrames = loadFrames("emptyChickenFrames.txt");
     frame_Logo = loadFrames("Logo.txt");
     frame_LogoInteractToStart1 = loadFrames("LogoInteractToStart1.txt");
@@ -82,6 +86,14 @@ void Game::initGame()
     frame_Screen3CompanyStart = loadFrames("Screen3CompanyStart.txt");
     frame_Screen3CompanyStart1 = loadFrames("Screen3CompanyStart1.txt");
     frame_Screen3CompanyStart2 = loadFrames("Screen3CompanyStart2.txt");
+
+    frame_Screen4GameplayUI1 = loadFrames("Screen4GameplayUI1.txt");
+    frame_Screen4GameplayUI2 = loadFrames("Screen4GameplayUI2.txt");
+    frame_Screen4GameplayUI3 = loadFrames("Screen4GameplayUI3.txt");
+
+    frame_Screen5BuildingBottom = loadFrames("Screen5BuildingBottom.txt");
+    frame_Screen5BuildingCenterClone = loadFrames("Screen5BuildingCenterClone.txt");
+    frame_Screen5BuildingTop = loadFrames("Screen5BuildingTop.txt");
 }
 
 int Game::getCurrentTick() const
@@ -94,331 +106,577 @@ void Game::setCurrentTick(int tickInterval)
     this->currentTick += tickInterval;
 }
 
+int Game::getCurrentScreen() const
+{
+    return screenIndex;
+}
+
 void Game::doTurn()
 {
-    // starting
-    if (currentTick == 0) {
-        player.setMaxCompany(maxCompany);
-        // player.setInitials(companies);
-        newZ = new News(player.getPlayerVirus()->getName());
-        for (int j = 0; j < maxCompany; j++) {
-            companies[j]->setVirus(player.getPlayerVirus());
+    while (true) {
+        if (screenIndex == 4) {
+            // starting
+            if (currentTick == 0) {
+                player.setMaxCompany(maxCompany);
+                // player.setInitials(companies);
+                newZ = new News(player.getPlayerVirus()->getName());
+                for (int j = 0; j < maxCompany; j++) {
+                    companies[j]->setVirus(player.getPlayerVirus());
+                }
+            }
+
+            if (currentTick % 50 == 0)
+            {
+                int eventTrigger = rand() % 100;
+                if (eventTrigger >= 80)
+                {
+                    randomCollabGenerator();
+                }
+            }
+
+            if (currentTick % 10 == 0)
+            {
+                //randomMutation;
+            }
+
+            // update company infectivity
+            for (int i = 0; i < tickInterval; i++) {
+                for (int j = 0; j < maxCompany; j++) {
+                    companies[j]->update(companies);
+                }
+                cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
+                currentTick++;
+            }
+
+            // Company::getTotalStuff();
+
+            // update player chioces
+            // player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
+
+            CheckCompanyDead();
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
     }
-
-    if (currentTick % 50 == 0)
-    {
-        int eventTrigger = rand() % 100;
-        if (eventTrigger >= 80)
-        {
-            randomCollabGenerator();
-        }
-    }
-
-    if (currentTick % 10 == 0)
-    {
-        //randomMutation;
-    }
-
-    // update company infectivity
-    for (int i = 0; i < tickInterval; i++) {
-        for (int j = 0; j < maxCompany;  j++) {
-            companies[j]->update(companies);
-        }
-        cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
-        currentTick++;
-    }
-
-    Company::getTotalStuff();
-
-    // update player chioces
-    player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
-
-    CheckCompanyDead();
+    
 }
 
 void Game::printInterface()
 {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleOutputCP(CP_UTF8);
+    while (true) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleOutputCP(CP_UTF8);
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
-    //system("cls ");
-    //for (int i = 0; i < maxCompany; i++) {
-    //    std::cout << "-----------------------" << std::endl
-    //        << i + 1 << ". " << companies[i]->getName() << std::endl
-    //        << "Network Size: " << companies[i]->getNetworkSize() << std::endl
-    //        << "Security Level: " << std::fixed << std::setprecision(1) << companies[i]->getSecurityLevel() << "/10" << std::endl
-    //        << std::endl
-    //        << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
-    //        << "Bricked: " << companies[i]->getNoOfBrickedComputers() << std::endl
-    //        << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%" << std::endl
-    //        << "Percentage Bricked: " << std::fixed << std::setprecision(2) << companies[i]->getBrickedStatus() * 100.0f << "%"
-    //        << std::endl;
-    //    std::cout << std::endl; 
+        //system("cls ");
+        //for (int i = 0; i < maxCompany; i++) {
+        //    std::cout << "-----------------------" << std::endl
+        //        << i + 1 << ". " << companies[i]->getName() << std::endl
+        //        << "Network Size: " << companies[i]->getNetworkSize() << std::endl
+        //        << "Security Level: " << std::fixed << std::setprecision(1) << companies[i]->getSecurityLevel() << "/10" << std::endl
+        //        << std::endl
+        //        << "Infected: " << companies[i]->getNoOfInfectedComputers() << std::endl
+        //        << "Bricked: " << companies[i]->getNoOfBrickedComputers() << std::endl
+        //        << "Percentage Infected: " << std::fixed << std::setprecision(2) << companies[i]->getInfectedStatus() * 100.0f << "%" << std::endl
+        //        << "Percentage Bricked: " << std::fixed << std::setprecision(2) << companies[i]->getBrickedStatus() * 100.0f << "%"
+        //        << std::endl;
+        //    std::cout << std::endl; 
 
-    //    if (player.getPlayerVirus() != nullptr) {
-    //        std::cout << "Debug (Advantage Count): " << companies[i]->getSecurityLevel() - player.getPlayerVirus()->getComplexity() << std::endl;
-    //    }
-    //}
-    //cyberSecurity->displayStatus();
-    //std::cout << "Total Bricked: " << Company::getTotalNoOfBrickedComputers() << std::endl;
+        //    if (player.getPlayerVirus() != nullptr) {
+        //        std::cout << "Debug (Advantage Count): " << companies[i]->getSecurityLevel() - player.getPlayerVirus()->getComplexity() << std::endl;
+        //    }
+        //}
+        //cyberSecurity->displayStatus();
+        //std::cout << "Total Bricked: " << Company::getTotalNoOfBrickedComputers() << std::endl;
 
-    std::string screenIndex2_dialogues[3] = {
-        "In a world dominated by towering corporations, one individual found themselves suffocated by the endless cycle of consumerism and corporate greed. Day after day, they toiled away in a job that felt more like servitude than work, watching as companies prioritized profit over people. The frustration grew, a quiet storm brewing inside, fueled by the injustice of a system that seemed designed to exploit rather than empower.",
-        "One evening, overwhelmed by the weight of their dissatisfaction, they dreamed of a different kind of revolution—not one of destruction, but of transformation. Instead of fighting fire with fire, they envisioned a way to undermine the corporate giants through creativity and innovation, exposing the flaws in their systems and inspiring people to demand better. Their plan was to harness technology and art to awaken society to the power they held as consumers, turning frustration into a force for change.",
-        "With renewed purpose, they set out to create tools and platforms that challenged the status quo, encouraging transparency and fairness. Their rebellion was not one of chaos, but of hope—a movement that sought to rebuild a world where companies served the people, not the other way around."
-    };
+        std::string screenIndex2_dialogues[3] = {
+            "In a world dominated by towering corporations, one individual found themselves suffocated by the endless cycle of consumerism and corporate greed. Day after day, they toiled away in a job that felt more like servitude than work, watching as companies prioritized profit over people. The frustration grew, a quiet storm brewing inside, fueled by the injustice of a system that seemed designed to exploit rather than empower.",
+            "One evening, overwhelmed by the weight of their dissatisfaction, they dreamed of a different kind of revolution, not one of destruction, but of transformation. Instead of fighting fire with fire, they envisioned a way to undermine the corporate giants through creativity and innovation, exposing the flaws in their systems and inspiring people to demand better. Their plan was to harness technology and art to awaken society to the power they held as consumers, turning frustration into a force for change.",
+            "With renewed purpose, they set out to create tools and platforms that challenged the status quo, encouraging transparency and fairness. Their rebellion was not one of chaos, but a movement of hope that sought to rebuild a world where companies served the people, not the other way around."
+        };
 
-    int gap = 10;
-    int typingInterval = 25;
-    int longestCompanyValue = 0;
-    int longestgetInfectedStatus = 0;
-    std::string interactToStartContent = "Hold <Space> To Start";
+        int gap = 10;
+        int typingInterval = 25;
+        int longestCompanyValue = 0;
+        int longestgetInfectedStatus = 0;
+        int fraction;
+        int iBricked;
+        int iInfected;
+        int yes;
+        std::string interactToStartContent = "[ HOLD <SPACE> TO START ]";
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(750));
+        std::this_thread::sleep_for(std::chrono::milliseconds(750));
 
-    if (screenIndex != previousScreenIndex && consoleWidthHandler() > 155) {
-        resetUIButtonSelection();
-        previousScreenIndex = screenIndex;
+        if (screenIndex != previousScreenIndex && consoleWidthHandler() > 155) {
+            resetUIButtonSelection();
+            previousScreenIndex = screenIndex;
 
-        switch (screenIndex) {
-        case 0:
-            SetConsoleOutputCP(CP_UTF8);
+            switch (screenIndex) {
+            case 0:
+                SetConsoleOutputCP(CP_UTF8);
 
-            // Title Screen
-            renderAnimation(frame_Logo, 5, false, true);
-            screenIndex = 1;
+                // Title Screen
+                renderAnimation(frame_Logo, 5, false, true, true);
+                //virusName = "yes";
+                //virusTypeIndex = 0;
+                //companyStartIndex = 0;
+                screenIndex = 1;
+                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
-            break;
+                break;
 
-        case 1: // intro screen
-            while (screenIndex == 1) {
-                if (interactToStartContent == "Hold <Space> To Start") {
-                    renderAnimation(frame_LogoInteractToStart1, 3, false, false);
+            case 1: // intro screen
+                while (screenIndex == 1) {
+                    if (interactToStartContent == "[ HOLD <SPACE> TO START ]") {
+                        renderAnimation(frame_LogoInteractToStart1, 3, false, false, true);
 
-                    if (155 - interactToStartContent.length() > 1) {
-                        std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
-                        highlightSelectedUIButton(0, interactToStartContent, hConsole);
-                        std::cout << std::string(ceil((155 - interactToStartContent.length()) / 2), '.') << std::endl;
+                        if (155 - interactToStartContent.length() > 1) {
+                            std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
+                            highlightSelectedUIButton(0, interactToStartContent, hConsole);
+                            std::cout << std::string(ceil((155 - interactToStartContent.length()) / 2), '.') << std::endl;
+                        }
+                        else {
+                            std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
+                            highlightSelectedUIButton(0, interactToStartContent, hConsole);
+                            std::cout << std::string(ceil((155 - interactToStartContent.length()) / 2), '.') << std::endl;
+                        }
+                        renderAnimation(frame_LogoInteractToStart2, 0, true, true, true);
+                        interactToStartContent = "";
                     }
                     else {
-                        std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
-                        highlightSelectedUIButton(0, interactToStartContent, hConsole);
-                        std::cout << std::string(ceil((155 - interactToStartContent.length()) / 2), '.') << std::endl;
-                    }
-                    renderAnimation(frame_LogoInteractToStart2, 5, true, true);
-                    interactToStartContent = "";
-                }
-                else {
-                    renderAnimation(frame_LogoInteractToStart1, 5, false, false);
+                        renderAnimation(frame_LogoInteractToStart1, 0, false, false, true);
 
-                    std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(155, '.') << std::endl;
-                    
-                    renderAnimation(frame_LogoInteractToStart2, 5, true, true);
+                        std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(155, '.') << std::endl;
 
-                    interactToStartContent = "Hold <Space> To Start";
-                }
+                        renderAnimation(frame_LogoInteractToStart2, 0, true, true, true);
 
-                if (screenIndex == 1) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
-                }
-            }
-            break;
-
-        case 2: // dialogue screen
-            while (screenIndex == 2) {
-                system("cls ");
-                for (int i = 0; i < sizeof(screenIndex2_dialogues) / sizeof(screenIndex2_dialogues[0]); i++) {
-                    switch (i) {
-                    case 0:
-                        typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt1);
-                        break;
-
-                    case 1:
-                        typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt2);
-                        break;
-
-                    case 2:
-                        typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt3);
-                        break;
-
-                    default:
-                        typingEntrance(screenIndex2_dialogues[i], typingInterval, true, emptyChickenFrames);
-                        break;
+                        interactToStartContent = "[ HOLD <SPACE> TO START ]";
                     }
 
+                    if (screenIndex == 1) {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                    }
+                }
+                break;
+
+            case 2: // dialogue screen
+                while (screenIndex == 2) {
+                    system("cls ");
+                    for (int i = 0; i < sizeof(screenIndex2_dialogues) / sizeof(screenIndex2_dialogues[0]); i++) {
+                        switch (i) {
+                        case 0:
+                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt1);
+                            break;
+
+                        case 1:
+                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt2);
+                            break;
+
+                        case 2:
+                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt3);
+                            break;
+
+                        default:
+                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, emptyChickenFrames);
+                            break;
+                        }
+
+                        resetInputHandler();
+                        while (character != ' ') {
+                            continue;
+                        }
+                        resetInputHandler();
+                    }
+
+                    screenIndex = 3;
+                }
+                break;
+            case 3: // selection and welcome screen
+                while (screenIndex == 3) {
+                    system("cls ");
+                    renderAnimation(frame_Screen3Welcome, 0, false, true, true);
+
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+                    renderAnimation(frame_Screen3NameVirus, 2, false, true, true); // ask for name of virus
+                    isNamingVirus = true;
+
+                    while (isNamingVirus) {
+                        if (virusName != "") {
+                            if (character != -1) {
+                                system("cls");
+                                renderAnimation(emptyChickenFrames, 0, false, false, true);
+                                std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - virusName.length()) / 2), '.');
+                                highlightSelectedUIButton(0, virusName, hConsole);
+                                std::cout << std::string(ceil((155 - virusName.length()) / 2), '.') << std::endl;
+                                renderAnimation(emptyChickenFrames, 0, true, true, true);
+                                resetInputHandler();
+                            }
+                        }
+                    }
+
+                    system("cls ");
+                    renderAnimation(frame_Screen3VirusType, 0, false, true, true);
+                    isChoosingVirusType = true;
+
+                    system("cls");
+                    renderAnimation(frame_Screen3VirusType1, 0, false, false, true); // ask for type of virus
+                    renderCenteringSpaces();
+                    std::cout << std::string(floor((155 - 32) / 2), '.');
+                    highlightSelectedUIButton(0, "[ WORM ]", hConsole);
+                    highlightSelectedUIButton(1, "[ TROJAN ]", hConsole);
+                    highlightSelectedUIButton(2, "[ RANSOMWARE ]", hConsole);
+                    std::cout << std::string(ceil((155 - 32) / 2), '.');
+                    std::cout << std::endl;
+                    renderAnimation(frame_Screen3VirusType2, 0, true, true, true);
                     resetInputHandler();
-                    while (character != ' ') {
-                        continue;
-                    }
-                    resetInputHandler();
-                }
 
-                screenIndex = 3;
-            }
-            break;
-        case 3: // selection and welcome screen
-            while (screenIndex == 3) {
-                system("cls ");
-                renderAnimation(frame_Screen3Welcome, 0, false, true);
-
-                std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-
-                renderAnimation(frame_Screen3NameVirus, 2, false, true); // ask for name of virus
-                isNamingVirus = true;
-
-                while (isNamingVirus) {
-                    if (virusName != "") {
+                    while (isChoosingVirusType) {
                         if (character != -1) {
                             system("cls");
-                            renderAnimation(emptyChickenFrames, 2, false, false);
-                            std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - virusName.length()) / 2), '.');
-                            highlightSelectedUIButton(0, virusName, hConsole);
-                            std::cout << std::string(ceil((155 - virusName.length()) / 2), '.') << std::endl;
-                            renderAnimation(emptyChickenFrames, 2, true, true);
+                            renderAnimation(frame_Screen3VirusType1, 0, false, false, true); // ask for type of virus
+                            renderCenteringSpaces();
+                            std::cout << std::string(floor((155 - 32) / 2), '.');
+                            highlightSelectedUIButton(0, "[ WORM ]", hConsole);
+                            highlightSelectedUIButton(1, "[ TROJAN ]", hConsole);
+                            highlightSelectedUIButton(2, "[ RANSOMWARE ]", hConsole);
+                            std::cout << std::string(ceil((155 - 32) / 2), '.');
+                            std::cout << std::endl;
+                            renderAnimation(frame_Screen3VirusType2, 0, true, true, true);
                             resetInputHandler();
                         }
                     }
-                }
 
-                system("cls ");
-                renderAnimation(frame_Screen3VirusType, 0, false, true);
-                isChoosingVirusType = true;
+                    system("cls ");
+                    renderAnimation(frame_Screen3CompanyStart, 0, false, true, true);
+                    isChoosingCompanyStart = true;
+                    maxSelectedUIButtonOffset = maxCompany - 1;
 
-                system("cls");
-                renderAnimation(frame_Screen3VirusType1, 2, false, false); // ask for type of virus
-                renderCenteringSpaces();
-                std::cout << std::string(floor((155 - 26) / 2), '.');
-                highlightSelectedUIButton(0, "[Worm]", hConsole);
-                highlightSelectedUIButton(1, "[Trojan]", hConsole);
-                highlightSelectedUIButton(2, "[Ransomware]", hConsole);
-                std::cout << std::string(ceil((155 - 26) / 2), '.');
-                std::cout << std::endl;
-                renderAnimation(frame_Screen3VirusType2, 2, true, true);
-                resetInputHandler();
+                    system("cls");
+                    renderAnimation(frame_Screen3CompanyStart1, 2, false, false, true); // ask for type of virus
+                    renderCenteringSpaces();
 
-                while (isChoosingVirusType) {
-                    if (character != -1) {
-                        system("cls");
-                        renderAnimation(frame_Screen3VirusType1, 2, false, false); // ask for type of virus
-                        renderCenteringSpaces();
-                        std::cout << std::string(floor((155 - 26) / 2), '.');
-                        highlightSelectedUIButton(0, "[Worm]", hConsole);
-                        highlightSelectedUIButton(1, "[Trojan]", hConsole);
-                        highlightSelectedUIButton(2, "[Ransomware]", hConsole);
-                        std::cout << std::string(ceil((155 - 26) / 2), '.');
-                        std::cout << std::endl;
-                        renderAnimation(frame_Screen3VirusType2, 2, true, true);
-                        resetInputHandler();
+                    int temp = 0;
+                    for (int i = 0; i < maxCompany; i++) {
+                        temp += (4 + companies[i]->getName().length());
                     }
-                }
 
-                system("cls ");
-                renderAnimation(frame_Screen3CompanyStart, 0, false, true);
-                isChoosingCompanyStart = true;
-                maxSelectedUIButtonOffset = maxCompany - 1;
-
-                system("cls");
-                renderAnimation(frame_Screen3CompanyStart1, 2, false, false); // ask for type of virus
-                renderCenteringSpaces();
-
-                int temp = 0;
-                for (int i = 0; i < maxCompany; i++) {
-                    temp += (2 + companies[i]->getName().length());
-                }
-
-                if (temp <= 155) {
-                    std::cout << std::string(floor((155 - temp) / 2), '.');
-                }
-                else {
-                    std::cout << std::string(1, '.');
-                }
-
-                for (int i = 0; i < maxCompany; i++) {
-                    std::string yes = "[" + companies[i]->getName() + "]";
-                    highlightSelectedUIButton(i, yes, hConsole);
-                }
-
-                if (temp <= 155) {
-                    std::cout << std::string(floor((155 - temp) / 2), '.');
-                }
-                else {
-                    std::cout << std::string(1, '.');
-                }
-
-                std::cout << std::endl;
-                renderAnimation(frame_Screen3CompanyStart2, 2, true, true);
-                resetInputHandler();
-
-                while (isChoosingCompanyStart) {
-                    if (character != -1) {
-                        system("cls");
-                        renderAnimation(frame_Screen3CompanyStart1, 2, false, false); // ask for type of virus
-                        renderCenteringSpaces();
-                        
-                        int temp = 0;
-                        for (int i = 0; i < maxCompany; i++) {
-                            temp += (2 + companies[i]->getName().length());
-                        }
-
-                        if (temp <= 155) {
-                            std::cout << std::string(floor((155 - temp) / 2), '.');
-                        }
-                        else {
-                            std::cout << std::string(1, '.');
-                        }
-
-                        for (int i = 0; i < maxCompany; i++) {
-                            std::string yes = "[" + companies[i]->getName() + "]";
-                            highlightSelectedUIButton(i, yes, hConsole);
-                        }
-                        
-                        if (temp <= 155) {
-                            std::cout << std::string(floor((155 - temp) / 2), '.');
-                        }
-                        else {
-                            std::cout << std::string(1, '.');
-                        }
-
-                        std::cout << std::endl;
-                        renderAnimation(frame_Screen3CompanyStart2, 2, true, true);
-                        resetInputHandler();
+                    if (temp <= 155) {
+                        std::cout << std::string(floor((155 - temp) / 2), '.');
                     }
-                }
-
-                screenIndex = 12;
-            }
-            break;
-        case 12:
-            while (screenIndex == 12) {
-                system("cls ");
-                for (int i = 0; i < maxCompany; i++) {
-                    if (companies[i]->getName().length() > longestCompanyValue) {
-                        longestCompanyValue = companies[i]->getName().length();
+                    else {
+                        std::cout << std::string(1, '.');
                     }
-                    if (std::to_string(companies[i]->getInfectedStatus()).length() > longestgetInfectedStatus) {
-                        longestgetInfectedStatus = std::to_string(companies[i]->getInfectedStatus()).length();
-                    }
-                }
 
-                std::cout << "Company" << std::string(longestCompanyValue - 7 + gap, ' ') << "Status" << std::endl;
-                std::cout << std::string((longestCompanyValue + gap) + (longestgetInfectedStatus + gap), '-') << std::endl;
-                for (int i = 0; i < maxCompany; i++) {
-                    std::cout << companies[i]->getName() << std::string(longestCompanyValue - (companies[i]->getName().length()) + gap, ' ')
-                        << companies[i]->getInfectedStatus() << std::string(longestgetInfectedStatus - (std::to_string(companies[i]->getInfectedStatus()).length()) + gap, ' ')
+                    for (int i = 0; i < maxCompany; i++) {
+                        std::string yes = "[ " + companies[i]->getName() + " ]";
+                        highlightSelectedUIButton(i, yes, hConsole);
+                    }
+
+                    if (temp <= 155) {
+                        std::cout << std::string(floor((155 - temp) / 2), '.');
+                    }
+                    else {
+                        std::cout << std::string(1, '.');
+                    }
+
+                    std::cout << std::endl;
+                    renderAnimation(frame_Screen3CompanyStart2, 0, true, true, true);
+                    resetInputHandler();
+
+                    while (isChoosingCompanyStart) {
+                        if (character != -1) {
+                            system("cls");
+                            renderAnimation(frame_Screen3CompanyStart1, 0, false, false, true); // ask for type of virus
+                            renderCenteringSpaces();
+
+                            int temp = 0;
+                            for (int i = 0; i < maxCompany; i++) {
+                                temp += (4 + companies[i]->getName().length());
+                            }
+
+                            if (temp <= 155) {
+                                std::cout << std::string(floor((155 - temp) / 2), '.');
+                            }
+                            else {
+                                std::cout << std::string(1, '.');
+                            }
+
+                            for (int i = 0; i < maxCompany; i++) {
+                                std::string yes = "[ " + companies[i]->getName() + " ]";
+                                highlightSelectedUIButton(i, yes, hConsole);
+                            }
+
+                            if (temp <= 155) {
+                                std::cout << std::string(floor((155 - temp) / 2), '.');
+                            }
+                            else {
+                                std::cout << std::string(1, '.');
+                            }
+
+                            std::cout << std::endl;
+                            renderAnimation(frame_Screen3CompanyStart2, 0, true, true, true);
+                            resetInputHandler();
+                        }
+                    }
+
+                    screenIndex = 4;
+                }
+                break;
+            case 4:
+                while (screenIndex == 4) {
+                    system("cls ");
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+
+                    // pt1 (auto)
+                    renderAnimation(frame_Screen4GameplayUI1, 0, false, false, true);
+
+                    // pt2 (manual)
+                    renderCenteringSpaces();
+                    std::cout << ". Session : corporate_scan/001/" << player.getPlayerVirus()->getName()
+                        << std::string(48 - player.getPlayerVirus()->getName().length(), ' ')
+                        << ".                                                                          ."
                         << std::endl;
+
+                    // pt3.1 (manual)
+                    renderCenteringSpaces();
+                    std::cout << ".                                                                              . Complexity : " << std::string(10 - 10, ' ');
+
+                    for (int yes = 0; yes < 10; yes++) {
+                        if (yes < player.getPlayerVirus()->getComplexity()) {
+                            //renderAnimation(element_barFilled, 0, true, false, false);
+                            std::cout << "#";
+                        }
+                        else {
+                            //renderAnimation(element_barUnfilled, 0, true, false, false);
+                            std::cout << "-";
+                        }
+                    }
+
+                    std::cout << " (" << player.getPlayerVirus()->getComplexity() << "/10)" << std::string(43, ' ') << "." << std::endl;
+
+                    // pt3.2 (manual)
+                    renderCenteringSpaces();
+
+                    std::cout << ". Hacker Points : " << player.getHackingPoints()
+                        << std::string(61 - std::to_string(player.getHackingPoints()).length(), ' ');
+
+                    std::cout << ". Speed : " << std::string(10 - 5, ' ');
+
+                    for (int yes = 0; yes < 10; yes++) {
+                        if (yes < player.getPlayerVirus()->getSpeed()) {
+                            //renderAnimation(element_barFilled, 0, true, false, false);
+                            std::cout << "#";
+                        }
+                        else {
+                            //renderAnimation(element_barUnfilled, 0, true, false, false);
+                            std::cout << "-";
+                        }
+                    }
+
+                    std::cout << " (" << player.getPlayerVirus()->getSpeed() << "/10)" << std::string(43, ' ') << "." << std::endl;
+
+                    // pt3.3 (manual)
+                    renderCenteringSpaces();
+                    std::cout << ".                                                                              . Payload : " << std::string(10 - 7, ' ');
+
+                    for (int yes = 0; yes < 10; yes++) {
+                        if (yes < player.getPlayerVirus()->getPayload()) {
+                            //renderAnimation(element_barFilled, 0, true, false, false);
+                            std::cout << "#";
+                        }
+                        else {
+                            //renderAnimation(element_barUnfilled, 0, true, false, false);
+                            std::cout << "-";
+                        }
+                    }
+
+                    std::cout << " (" << player.getPlayerVirus()->getPayload() << "/10)" << std::string(43, ' ') << "." << std::endl;
+
+                    // pt3.4 (manual)
+                    renderCenteringSpaces();
+                    std::cout << ".                                                                              . Resilience : " << std::string(10 - 10, ' ');
+
+                    for (int yes = 0; yes < 10; yes++) {
+                        if (yes < player.getPlayerVirus()->getResilience()) {
+                            //renderAnimation(element_barFilled, 0, true, false, false);
+                            std::cout << "#";
+                        }
+                        else {
+                            //renderAnimation(element_barUnfilled, 0, true, false, false);
+                            std::cout << "-";
+                        }
+                    }
+
+                    std::cout << " (" << player.getPlayerVirus()->getResilience() << "/10)" << std::string(43, ' ') << "." << std::endl;
+
+                    // upgrade button
+                    renderCenteringSpaces();
+                    std::cout << ".                                                                              .                                                                          ." << std::endl;
+                    renderCenteringSpaces();
+                    std::cout << ".                                                                              . ";
+                    highlightSelectedUIButton(0, "[ EVOLVE ]", hConsole);
+                    std::cout << std::string(10 - 10, ' ') << std::endl;
+
+                    
+
+                    // pt4 (auto)
+
+                    renderAnimation(frame_Screen4GameplayUI2, 0, true, false, true);
+
+                    // pt5 (manual)
+
+                    int temp = 0;
+                    int oldSelection = selectedUIButton;
+
+                    for (int i = 0; i < maxCompany; i++) {
+                        if (companies[i]->getName().length() > temp) {
+                            temp = companies[i]->getName().length();
+                        }
+                    }
+
+                    std::string tempWOW = ". Company" + std::string((temp + 2) - 7, ' ')
+                        + "Status" + std::string((12 + 2) - 6, ' ')
+                        + "No. Of Infected" + std::string(2 + 5, ' ')
+                        + "No. Of Bricked" + std::string(2 + 5, ' ')
+                        + "Network Size" + std::string(2 + 5, ' ');
+
+
+                    renderCenteringSpaces();
+                    std::cout << tempWOW << std::string(155 - (tempWOW.length() + 1), ' ') << "." << std::endl;
+
+                    for (int i = 0; i < maxCompany; i++) {
+                        std::string tempEvenMoreWOW = companies[i]->getName();
+                        tempWOW = ". " + tempEvenMoreWOW + std::string((temp + 2) - tempEvenMoreWOW.length(), ' ');
+
+                        // infected status
+                        if (companies[i]->getInfectedStatus() == 0) {
+                            tempEvenMoreWOW = "--SAFE--";
+
+                        }
+                        else if (companies[i]->getInfectedStatus() < 1) {
+                            tempEvenMoreWOW = "~PARTIAL~";
+                        }
+                        else {
+                            tempEvenMoreWOW = "!!INFECTED!!";
+                        }
+                        tempWOW = tempWOW + tempEvenMoreWOW + std::string((12 + 2) - tempEvenMoreWOW.length(), ' ');
+
+                        // no of infected
+                        int value = companies[i]->getInfectedStatus() * 100;
+                        tempEvenMoreWOW = std::to_string(companies[i]->getNoOfInfectedComputers()) + " (" + std::to_string(value) + "%)";
+                        tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 15) - tempEvenMoreWOW.length(), ' ');
+
+                        // no of bricked
+                        value = companies[i]->getBrickedStatus() * 100;
+                        tempEvenMoreWOW = std::to_string(companies[i]->getNoOfBrickedComputers()) + " (" + std::to_string(value) + "%)";
+                        tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 14) - tempEvenMoreWOW.length(), ' ');
+
+                        // network size
+                        tempEvenMoreWOW = std::to_string(companies[i]->getNetworkSize());
+                        tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 12) - tempEvenMoreWOW.length(), ' ');
+
+                        renderCenteringSpaces();
+                        std::cout << std::setprecision(2) << tempWOW;
+                        highlightSelectedUIButton(i + 1, "[ VIEW ]", hConsole);
+                        std::cout << std::string(155 - (tempWOW.length() + 1) - (8), ' ') << "." << std::endl;
+                    }
+
+                    renderAnimation(frame_Screen4GameplayUI3, 0, true, false, true);
+
+                    for (int yes = 0; yes < 50; yes++) {
+                        if (oldSelection != selectedUIButton) {
+                            break;
+                        }
+
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }
+                    
                 }
-                doTurn();
+                break;
+            case 5:
+                while (screenIndex == 5) {
+                    if (gameplayButtonChosenIndex == 0) {
+                        // upgrade menu
+                    }
+                    else {
+                        system("cls");
+                        yes = std::round(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()) + 2;
+                        fraction = companies[gameplayButtonChosenIndex - 1]->getNetworkSize() / yes;
+                        iBricked = 0;
+                        iInfected = 0;
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            }
-            break;
+                        for (int i = yes; i > 0; i--) {
+                            if (companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers() >= fraction * i) {
+                                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
-        default:
-            break;
+                                if (iInfected == 0) {
+                                    iInfected = i;
+                                }
+                            }
 
+                            if (companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers() >= fraction * i) {
+                                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+
+                                if (iBricked == 0) {
+                                    iBricked = i;
+                                }
+
+                            }
+
+                            if (i == yes) { // top
+                                renderAnimation(frame_Screen5BuildingTop, 0, false, false, true);
+                            }
+                            else if (i > 1) { // center
+                                renderAnimation(frame_Screen5BuildingCenterClone, 0, true, false, true);
+                            }
+                            else { // bottom
+                                renderAnimation(frame_Screen5BuildingBottom, 0, true, false, true);
+                            }
+
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+                        }
+
+                        std::string title[7] = { "COMPANY", "NETWORK SIZE", "SECURITY LEVEL", "INFECTION STATUS", "VIRUS PLANTED", "AMOUNT INFECTED DATA", "AMOUNT BRICKED DATA" };
+                        std::string content[7] = { companies[gameplayButtonChosenIndex - 1]->getName(), 
+                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNetworkSize()), 
+                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()),
+                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus()),
+                            player.getPlayerVirus()->getName() + "[" + std::to_string(player.getPlayerVirus()->getComplexity()) + std::to_string(player.getPlayerVirus()->getSpeed()) + std::to_string(player.getPlayerVirus()->getPayload()) + std::to_string(player.getPlayerVirus()->getResilience()) + "]",
+                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers()) + " (" + std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus() * 100) + "%)",
+                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers()) + " (" + std::to_string(companies[gameplayButtonChosenIndex - 1]->getBrickedStatus() * 100) + "%)"
+                        };
+
+                        std::cout << std::endl;
+
+                        for (int k = 0; k < 7; k++) {
+                            renderCenteringSpaces();
+                            //std::cout << std::string((155 - (title[k].length() + 3 + content[k].length())) / 2, ' ');
+                            std::cout << title[k] << " | " << content[k] << std::endl << std::endl;
+                        }
+
+                        std::cout << std::endl << std::endl;
+
+                        renderCenteringSpaces();
+                        highlightSelectedUIButton(0, "[ RETURN ]", hConsole);
+
+                        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+                        while (companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers() < fraction * (iBricked + 1) && companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers() < fraction * (iInfected + 1) && screenIndex == 5) {
+                            // yes
+                        }
+                    }
+
+                }
+
+                break;
+            default:
+                break;
+            } 
         }
     }
+    
 }
 
 void Game::typingEntrance(std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender)
@@ -426,7 +684,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     std::string typedContent = "";
-    std::string instantContent = "";
+    std::string instantContent = "\n";
     int noOfLines = 0;
     int perLine = 100;
     int iteration = 0;
@@ -435,7 +693,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
     bool isSkip = false;
 
     // image
-    renderAnimation(graphicsToRender, 5, false, false);
+    renderAnimation(graphicsToRender, delayMs, false, false, true);
 
     // line
     renderCenteringSpaces();
@@ -445,7 +703,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
 
     // buttons
     renderCenteringSpaces();
-    highlightSelectedUIButton(0, "[Skip]", hConsole);
+    highlightSelectedUIButton(0, "[ SKIP ]", hConsole);
     displayUIControls(6);
 
     // ui controls
@@ -507,7 +765,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
     system("cls");
 
     // image
-    renderAnimation(graphicsToRender, 5, false, false);
+    renderAnimation(graphicsToRender, delayMs, false, false, true);
 
     // line
     renderCenteringSpaces();
@@ -517,7 +775,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
 
     // buttons
     renderCenteringSpaces();
-    highlightSelectedUIButton(0, "[Continue]", hConsole);
+    highlightSelectedUIButton(0, "[ CONTINUE ]", hConsole);
 
     // controls
     displayUIControls(10);
@@ -584,9 +842,9 @@ void Game::CheckCompanyDead()
 void Game::highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes)
 {
     if (thisUIButton == selectedUIButton) {
-        SetConsoleTextAttribute(yes, BACKGROUND_GREEN | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        SetConsoleTextAttribute(yes, BACKGROUND_GREEN | BACKGROUND_INTENSITY);
         std::cout << content;
-        SetConsoleTextAttribute(yes, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        SetConsoleTextAttribute(yes, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     }
     else {
         std::cout << content;
@@ -603,6 +861,10 @@ void Game::displayUIControls(int previousSpaceUsed)
     else {
         uiControlsContent = "[A] Previous  |  [D] Next  |  [SPACE] Select";
     }
+
+    if (isNamingVirus) {
+        uiControlsContent = "[ENTER] Enter";
+    }
     
     std::cout << std::string(155 - previousSpaceUsed - uiControlsContent.length(), ' ') << uiControlsContent;
 }
@@ -615,59 +877,59 @@ void Game::renderCenteringSpaces()
 void Game::inputHandler()
 {
     while (true) {
-        switch (screenIndex) {
-        case 0:
-        case 1:
-            navigationType = 0; // 0 means up down
-            break;
-
-        case 2:
-        case 3:
-            navigationType = 1; // 1 means sideways
-            break;
-
-        default:
-            navigationType = 0;
-            break;
-        }
-
         char characterInput = _getch();
+
         if (character != characterInput) {
             character = characterInput;
         }
         if (isNamingVirus) {
-            if (character == ' ' && virusName.length() > 0) {
+            if (character == '\r' && virusName.length() > 0) {
                 isNamingVirus = false;
             }
-            else if (character == 8) {
+            else if (character == '\b') {
                 if (virusName.length() > 0) {
                     virusName.pop_back();
                 }
             }
-            else {
+            else if (virusName.length() < 20){
                 virusName = virusName + character;
             }
         }
         else {
             switch (character) {
             case ' ':
-                if (screenIndex == 1) {
+                if (screenIndex == 1) { // screen 1 selected button
                     if (selectedUIButton == 0) {
                         screenIndex = 2;
                         resetInputHandler();
                     }
                 }
-                else if (screenIndex == 3) {
+                else if (screenIndex == 3) { // screen 3 selected button
                     if (isChoosingVirusType) {
                         virusTypeIndex = selectedUIButton;
                         isChoosingVirusType = false;
                         resetInputHandler();
                     }
-                    else if (isChoosingCompanyStart) {
+                    else if (isChoosingCompanyStart) { // screen 3.5 selected button
                         companyStartIndex = selectedUIButton;
                         isChoosingCompanyStart = false;
                         player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
                         resetInputHandler();
+                    }
+                }
+                else if (screenIndex == 4) { // screen 4 selected button
+                    gameplayButtonChosenIndex = selectedUIButton;
+
+                    if (gameplayButtonChosenIndex == 0) {
+                        screenIndex = 6;
+                    }
+                    else {
+                        screenIndex = 5;
+                    }
+                }
+                else if (screenIndex == 5) { // screen 5 selected button
+                    if (selectedUIButton == 0) {
+                        screenIndex = 4;
                     }
                 }
 
@@ -716,7 +978,25 @@ void Game::resetInputHandler()
 
 void Game::resetUIButtonSelection()
 {
-    int screenTotalButtons[5] = {0, 1, 1, 3};
+    switch (screenIndex) {
+    case 0:
+    case 1:
+    case 4:
+        navigationType = 0; // 0 means up down
+        break;
+
+    case 2:
+    case 3:
+    case 5:
+        navigationType = 1; // 1 means sideways
+        break;
+
+    default:
+        navigationType = 0;
+        break;
+    }
+
+    int screenTotalButtons[6] = {0, 1, 1, 3, 6, 1};
 
     selectedUIButton = 0;
     minSelectedUIButtonOffset = 0;
@@ -751,7 +1031,7 @@ std::vector<std::vector<std::string>> Game::loadFrames(const std::string & filen
 }
 
 // Render one loop of animation frames
-void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, int delayMs, bool isContinued, bool haveControlsUI) {
+void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, int delayMs, bool isContinued, bool haveControlsUI, bool hasEnd) {
     std::string totalRender = "";
 
     for (const auto& frame : frames) {
@@ -781,6 +1061,11 @@ void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, i
             else {
                 totalRender = totalRender + std::string(1, ' ') + line + std::string(1, ' ') + "\n";
             }
+        }
+        
+        if (!hasEnd) {
+            totalRender.erase(totalRender.begin());
+            totalRender.pop_back();
         }
 
         std::cout << totalRender;

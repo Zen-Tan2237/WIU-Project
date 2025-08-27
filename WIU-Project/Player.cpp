@@ -188,6 +188,7 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
 		int probability = (rand() % 10 +(noOfInfectedComputers - infectedComputersPrevious)/2);
+
 		if (probability > 4) {//60% base chance
 			if (noOfBrickedComputers < networkSize/(maxCompany*500)) {
 				// If bricked computers are less than 2% of the network size , play this set of rules
@@ -214,24 +215,26 @@ void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedC
 			}
 		}
 	}
+
 	infectedComputersPrevious = noOfInfectedComputers;
 	brickedComputersPrevious = noOfBrickedComputers;
 	bool menuing = true;
-	do {//upgrade menu
-		std::cout << "Hacker Points: " << hackingPoints << std::endl;
-		std::cout << "Enter to continue, U to open Upgrade Menu \n";
-		do {
-			getline(std::cin, upgrade);
-		} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
-		if (upgrade == "U" || upgrade == "u") {
-			displayUpgrades();
 
-		}
-		else if(upgrade == ""){
-			menuing = false;
-		}
-	} while (menuing == true);
-	std::cout << "exited";
+	//do {//upgrade menu
+	//	std::cout << "Hacker Points: " << hackingPoints << std::endl;
+	//	std::cout << "Enter to continue, U to open Upgrade Menu \n";
+	//	do {
+	//		getline(std::cin, upgrade);
+	//	} while (!(upgrade == "" || upgrade == "U" || upgrade == "u"));
+	//	if (upgrade == "U" || upgrade == "u") {
+	//		displayUpgrades();
+
+	//	}
+	//	else if(upgrade == ""){
+	//		menuing = false;
+	//	}
+	//} while (menuing == true);
+	//std::cout << "exited";
 }
 
 void Player::blockUpgrade() {

@@ -152,6 +152,8 @@
     <ClInclude Include="Worm.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="barFilledCharacter.txt" />
+    <Text Include="barUnfilledCharacter.txt" />
     <Text Include="emptyChickenFrames.txt" />
     <Text Include="Logo.txt" />
     <Text Include="LogoInteractToStart1.txt" />
@@ -167,6 +169,13 @@
     <Text Include="Screen3VirusType1.txt" />
     <Text Include="Screen3VirusType2.txt" />
     <Text Include="Screen3Welcome.txt" />
+    <Text Include="Screen4GameplayUI1.txt" />
+    <Text Include="Screen4GameplayUI2.txt" />
+    <Text Include="Screen4GameplayUI3.txt" />
+    <Text Include="Screen5BuildingBottom.txt" />
+    <Text Include="Screen5BuildingCenterClone.txt" />
+    <Text Include="Screen5BuildingTop.txt" />
+    <Text Include="tempEdit.txt" />
     <Text Include="yes.txt" />
   </ItemGroup>
   <ItemGroup>

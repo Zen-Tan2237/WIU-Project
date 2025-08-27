@@ -14,16 +14,20 @@ int main() {
 	game->initGame();
 
 	std::thread inputHandler(&Game::inputHandler, game);
-	//std::thread printInterface(&Game::printInterface, game);
+	std::thread printInterface(&Game::printInterface, game);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
 	inputHandler.detach();
-	std::cout << "Awaiting appropriate Window Size...";
+	printInterface.detach();
+	std::cout << "Please resize your window";
 
-	while (true) {
-		game->printInterface();
+	while (game->getCurrentScreen() != 4) {
+		continue;
 	}
+
+	std::thread doTurn(&Game::doTurn, game);
+	doTurn.join();
 
 	delete game;
 
