@@ -25,3 +25,23 @@ void SoundController::playSoundLoop(const std::wstring& filePath) {
 void SoundController::stopSound() {
     PlaySound(NULL, 0, 0); // stops everything
 }
+
+void SoundController::playSoundMP3(const std::string& filePath, bool loop) {
+    std::wstring wPath(filePath.begin(), filePath.end());
+
+    // Open the MP3
+    mciSendString((L"open \"" + wPath + L"\" type mpegvideo alias mp3").c_str(), NULL, 0, NULL);
+
+    // Play it
+    if (loop) {
+        mciSendString(L"play mp3 repeat", NULL, 0, NULL);
+    }
+    else {
+        mciSendString(L"play mp3", NULL, 0, NULL);
+    }
+}
+
+void SoundController::stopSoundMP3() {
+    mciSendString(L"stop mp3", NULL, 0, NULL);
+    mciSendString(L"close mp3", NULL, 0, NULL);
+}
