@@ -20,6 +20,7 @@ private:
 	bool isEmailTransmissionEnabled;
 	int maxCompany;
 	int* collabSpreadWeight;
+	bool isFallen;
 
 	int companyIndex;
 
@@ -41,6 +42,9 @@ public:
 	static int getTotalNetworkSize();
 	static int getTotalNoOfInfectedComputers();
 	static int getTotalNoOfBrickedComputers();
+
+	bool getIsFallen() const;
+	void setIsFallen(bool isFallen);
 
 	void setVirus(Virus* Virus);
 	void setNoOfInfectedComputers(int noOfInfectedComputers);

@@ -28,6 +28,7 @@ Company::Company()
 	isEmailTransmissionEnabled = true;
 	maxCompany = 1;
 	collabSpreadWeight = new int[maxCompany];
+	isFallen = false;
 
 	totalNetworkSize += networkSize;
 
@@ -56,6 +57,7 @@ Company::Company(std::string Name, int size, float startingSecurityLevel, int ma
 	isEmailTransmissionEnabled = true;
 	this->maxCompany = maxCompany;
 	collabSpreadWeight = new int[maxCompany];
+	isFallen = false;
 
 	totalNetworkSize += networkSize;
 
@@ -126,7 +128,7 @@ void Company::update(Company* companies[])
 
 int Company::calculateInfected() // BALANCED
 {
-	float speedMult = 1.0 + 0.5 * (virus->getSpeed() - 1);
+	float speedMult = 1.0 + 0.25 * (virus->getSpeed() - 1);
 	if (virus->getSpeed() == 0) {
 		speedMult = 0;
 	}
@@ -150,7 +152,7 @@ int Company::calculateInfected() // BALANCED
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0f);
 
 	if (triggers) {
-		int add = (int)std::floor(noOfInfectedComputers * 0.02 * speedMult * advMult * (1.0 - infectedFrac));
+		int add = (int)std::floor(noOfInfectedComputers * 0.01 * speedMult * advMult * (1.0 - infectedFrac));
 		if (add < 1) {
 			add = 1;
 		}
@@ -166,7 +168,7 @@ int Company::calculateInfected() // BALANCED
 
 int Company::calculateBricked() // BALANCED
 {
-	float payloadMult = 0 + 0.5 * (virus->getPayload() - 1);
+	float payloadMult = 0 + 0.25 * (virus->getPayload() - 1);
 	float advantage = virus->getComplexity() - securityLevel;
 	if (advantage <= 0) {
 		advantage = 0;
@@ -188,7 +190,7 @@ int Company::calculateBricked() // BALANCED
 	bool triggers = (rand() % 1000) < (int)(probability * 1000.0);
 
 	if (triggers) {
-		int add = (int)std::floor(noOfBrickedComputers * 0.02 * payloadMult * advMult * (1.0 - brickedFrac));
+		int add = (int)std::floor(noOfBrickedComputers * 0.01 * payloadMult * advMult * (1.0 - brickedFrac));
 		if (add < 1) {
 			add = 1;
 		}
@@ -372,6 +374,16 @@ int Company::getTotalNoOfInfectedComputers()
 int Company::getTotalNoOfBrickedComputers()
 {
 	return totalNoOfBrickedComputers;
+}
+
+bool Company::getIsFallen() const
+{
+	return this->isFallen;
+}
+
+void Company::setIsFallen(bool isFallen)
+{
+	this->isFallen = isFallen;
 }
 
 

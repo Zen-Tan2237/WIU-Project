@@ -176,3 +176,4 @@ public:
 	void setHackingPoints(int hackingPoints);
 };
 
+//upgradesArray[currentUpgradesIndex[indexOfChain]]

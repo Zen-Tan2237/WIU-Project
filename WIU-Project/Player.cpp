@@ -175,6 +175,7 @@ void Player::parseDependencies() {
 			start = i + 1;
 		}
 	}
+	blockUpgrade();
 }
 
 void Player::printArrays() {
@@ -203,7 +204,6 @@ int Player::getNoOfChains() {
 }
 
 void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedComputers) {
-
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
 		int probability = (rand() % 10 +(noOfInfectedComputers - infectedComputersPrevious)/2);

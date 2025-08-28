@@ -151,6 +151,8 @@ void News::cybersecurityWinningNews(int type, std::string virus) const {
 	default:
 		break;
 	}
+
+	setEFFECTS("");
 }
 
 /* 5 Instances */
@@ -184,6 +186,8 @@ void News::cyberSecurityLosingNews(int type, std::string virus) const {
 	default:
 		break;
 	}
+
+	setEFFECTS("");
 }
 
 /* 5 Instances */
@@ -237,6 +241,8 @@ void News::PlayerWinNews(int type) const {
 	default: 
 		break;
 	}
+
+	setEFFECTS("GAME WON");
 }
 
 /* 2 Instances */
@@ -255,6 +261,8 @@ void News::PlayerLoseNews(int type) const {
 	default:
 		break;
 	}
+
+	setEFFECTS("YOU LOST");
 }
 
 std::string News::getHEAD() {

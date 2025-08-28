@@ -19,6 +19,7 @@ private:
 	int currentTick;
 	int tickInterval;
 	bool isGameRunning;
+    int gameResult;
 	const static int maxCompany = 5;
     int companyA;
     int companyB;
@@ -38,6 +39,7 @@ private:
     int consoleWidth;
     int previousConsoleWidth;
     bool refreshNow;
+    int completedNews;
     char character;
 
     std::vector<std::string> newsInADay_Head;

@@ -22,6 +22,7 @@ Game::Game()
     currentTick = 0;
     tickInterval = 10; // 10 = 1 day
     isGameRunning = true;
+    gameResult = 0;
     
     newZ = nullptr;
     companyA = NULL;
@@ -51,6 +52,7 @@ Game::Game()
     refreshNow = false;
     consoleWidth = 0;
     previousConsoleWidth = 0;
+    completedNews = 0;
 }
 
 Game::~Game()
@@ -126,7 +128,7 @@ int Game::getCurrentScreen() const
 
 void Game::doTurn()
 {
-    while (true) {
+    while (isGameRunning) {
         if (screenIndex == 4) {
             // starting
             if (currentTick == 0) {
@@ -144,42 +146,93 @@ void Game::doTurn()
                     companies[j]->update(companies);
                 }
                 cyberSecurity->advanceCure(companies, *(player.getPlayerVirus()));
+                cyberSecurity->triggerEvent(companies, *(player.getPlayerVirus()));
+
                 currentTick++;
             }
 
             // all the news stuff
-            if (currentTick % 50 == 0)
+            if (currentTick % 250 == 0)
             {
                 int eventTrigger = rand() % 100;
-                if (eventTrigger >= 80)
+                if (eventTrigger >= 40)
                 {
                     randomCollabGenerator();
-                    newsInADay_Head.push_back(newZ->getHEAD());
-                    newsInADay_Body.push_back(newZ->getBODY());
-                    newsInADay_Effects.push_back(newZ->getEFFECTS());
                 }
             }
 
             CheckCompanyDead();
 
-            if (newsInADay_Head.size() > 0) {
+            //for (int i = 0; i < maxCompany + 4; i++) {
+            //    int idx = cyberSecurity->getNewsIndex(i);
+            //    if (idx == -1) continue; // no news for this slot
+
+            //    if (i < maxCompany) {
+            //        // virus found for company i
+            //        newZ->virusFoundNews(idx, companies[i]->getName(), virusName);
+            //    }
+            //    else if (i == maxCompany) {
+            //        // cyber-security milestone (cure progress)
+            //        newZ->cybersecurityWinningNews(idx, virusName);
+            //    }
+            //    else if (i == maxCompany + 1) {
+            //        // cyber-security losing milestone (infection thresholds)
+            //        newZ->cyberSecurityLosingNews(idx, virusName);
+            //    }
+            //    else if (i == maxCompany + 2) {
+            //        // player win (all bricked was used as push condition in CyberSecurity)
+            //        newZ->PlayerWinNews(idx);
+            //    }
+            //    else { //i == maxCompany + 3
+            //        // player lose
+            //        newZ->PlayerLoseNews(idx);
+            //    }
+
+            //    newsInADay_Head.push_back(newZ->getHEAD());
+            //    newsInADay_Body.push_back(newZ->getBODY());
+            //    newsInADay_Effects.push_back(newZ->getEFFECTS());
+            //}
+
+            // ok
+
+            // update player chioces
+            player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
+
+            // results
+            if (cyberSecurity->isCureComplete()) {
+                int temp = rand() % 2;
+                newZ->PlayerLoseNews(temp);
+                newsInADay_Head.push_back(newZ->getHEAD());
+                newsInADay_Body.push_back(newZ->getBODY());
+                newsInADay_Effects.push_back(newZ->getEFFECTS());
+
+                gameResult = 1; // lost (cure found)
+                screenIndex = 8; 
+            }
+
+            else if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
+                int temp = rand() % 2;
+                newZ->PlayerWinNews(temp);
+                newsInADay_Head.push_back(newZ->getHEAD());
+                newsInADay_Body.push_back(newZ->getBODY());
+                newsInADay_Effects.push_back(newZ->getEFFECTS());
+
+                gameResult = 2; // won (yes)
+                screenIndex = 8;
+            }
+
+            else if (newsInADay_Head.size() - completedNews > 0) {
                 screenIndex = 7;
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-            // Company::getTotalStuff();
-
-            // update player chioces
-            player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
         }
     }
-    
 }
 
 void Game::printInterface()
 {
-    while (true) {
+    while (isGameRunning) {
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleOutputCP(CP_UTF8);
         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
@@ -221,7 +274,7 @@ void Game::printInterface()
         int yes;
         std::string interactToStartContent = "[ HOLD <SPACE> TO START ]";
 
-        if (screenIndex != previousScreenIndex && consoleWidth > 155) {
+        if (consoleWidth > 155) {
             resetUIButtonSelection();
             previousScreenIndex = screenIndex;
 
@@ -231,11 +284,11 @@ void Game::printInterface()
 
                 // Title Screen
                 renderAnimation(frame_Logo, 5, false, true, true);
-                //virusName = "yes";
-                //virusTypeIndex = 0;
-                //companyStartIndex = 0;
-                screenIndex = 1;
-                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                virusName = "yes";
+                virusTypeIndex = 0;
+                companyStartIndex = 0;
+                screenIndex = 4;
+                player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
                 break;
 
@@ -445,6 +498,8 @@ void Game::printInterface()
                 }
                 break;
             case 4:
+                gameplayButtonChosenIndex = 0;
+
                 while (screenIndex == 4) {
                     // pt1 (auto)
                     renderAnimation(frame_Screen4GameplayUI1, 0, false, false, true);
@@ -479,7 +534,7 @@ void Game::printInterface()
                         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
-                    std::cout << " (" << player.getPlayerVirus()->getComplexity() << "/10)" << std::string(43, ' ') << "." << std::endl;
+                    std::cout << " (" << player.getPlayerVirus()->getComplexity() << "/10)" << std::string(57 - (" (" + std::to_string(player.getPlayerVirus()->getComplexity()) + "/10)").length(), ' ') << "." << std::endl;
 
                     // pt3.2 (manual)
                     renderCenteringSpaces();
@@ -508,7 +563,7 @@ void Game::printInterface()
                         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
-                    std::cout << " (" << player.getPlayerVirus()->getSpeed() << "/10)" << std::string(43, ' ') << "." << std::endl;
+                    std::cout << " (" << player.getPlayerVirus()->getSpeed() << "/10)" << std::string(57 - (" (" + std::to_string(player.getPlayerVirus()->getSpeed()) + "/10)").length(), ' ') << "." << std::endl;
 
                     // pt3.3 (manual)
                     renderCenteringSpaces();
@@ -533,7 +588,7 @@ void Game::printInterface()
                         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
-                    std::cout << " (" << player.getPlayerVirus()->getPayload() << "/10)" << std::string(43, ' ') << "." << std::endl;
+                    std::cout << " (" << player.getPlayerVirus()->getPayload() << "/10)" << std::string(57 - (" (" + std::to_string(player.getPlayerVirus()->getPayload()) + "/10)").length(), ' ') << "." << std::endl;
 
                     // pt3.4 (manual)
                     renderCenteringSpaces();
@@ -558,7 +613,7 @@ void Game::printInterface()
                         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
-                    std::cout << " (" << player.getPlayerVirus()->getResilience() << "/10)" << std::string(43, ' ') << "." << std::endl;
+                    std::cout << " (" << player.getPlayerVirus()->getResilience() << "/10)" << std::string(57 - (" (" + std::to_string(player.getPlayerVirus()->getResilience()) + "/10)").length(), ' ') << "." << std::endl;
 
                     // upgrade button
                     renderCenteringSpaces();
@@ -663,12 +718,12 @@ void Game::printInterface()
                     tempWOW = tempWOW + tempEvenMoreWOW + std::string((12 + 2) - tempEvenMoreWOW.length(), ' ');
 
                     // no of infected
-                    int value = (Company::getTotalNoOfInfectedComputers() / Company::getTotalNetworkSize()) * 100;
+                    int value = ((float)Company::getTotalNoOfInfectedComputers() / (float)Company::getTotalNetworkSize()) * 100;
                     tempEvenMoreWOW = std::to_string(Company::getTotalNoOfInfectedComputers()) + " (" + std::to_string(value) + "%)";
                     tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 15) - tempEvenMoreWOW.length(), ' ');
 
                     // no of bricked
-                    value = (Company::getTotalNoOfBrickedComputers() / Company::getTotalNetworkSize()) * 100;
+                    value = ((float)Company::getTotalNoOfBrickedComputers() / (float)Company::getTotalNetworkSize()) * 100;
                     tempEvenMoreWOW = std::to_string(Company::getTotalNoOfBrickedComputers()) + " (" + std::to_string(value) + "%)";
                     tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 14) - tempEvenMoreWOW.length(), ' ');
 
@@ -774,8 +829,8 @@ void Game::printInterface()
                         }
 
                         std::string title[7] = { "COMPANY", "NETWORK SIZE", "SECURITY LEVEL", "INFECTION STATUS", "VIRUS PLANTED", "AMOUNT INFECTED DATA", "AMOUNT BRICKED DATA" };
-                        std::string content[7] = { companies[gameplayButtonChosenIndex - 1]->getName(), 
-                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNetworkSize()), 
+                        std::string content[7] = { companies[gameplayButtonChosenIndex - 1]->getName(),
+                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNetworkSize()),
                             std::to_string(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()),
                             std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus()),
                             player.getPlayerVirus()->getName() + "[" + std::to_string(player.getPlayerVirus()->getComplexity()) + std::to_string(player.getPlayerVirus()->getSpeed()) + std::to_string(player.getPlayerVirus()->getPayload()) + std::to_string(player.getPlayerVirus()->getResilience()) + "]",
@@ -806,14 +861,36 @@ void Game::printInterface()
 
                 break;
             case 6: // upgrade
-                player.displayUpgrades();
+            {
+                while (screenIndex == 6) {
+                    system("cls ");
+                    player.parseUpgrades();
+                    player.parseDependencies();
 
+                    Upgrades* upgradesArray[20] = {nullptr};
+                    int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
+
+                    for (int i = 0; i < 20; i++) {
+                        upgradesArray[i] = player.getUpgradesArray()[i];
+                    }
+                    for (int i = 0; i < maxSelectedUIButtonOffset + 1; i++) {
+                        renderCenteringSpaces();
+                        highlightSelectedUIButton(i, "[ " + upgradesArray[currentUpgradesIndices[i]]->getName() + " ]", hConsole);
+                        std::cout << std::endl;
+                    }
+
+                    delayBeforeRefresh(previousScreenIndex);
+                }
+            }
+                break;
+                
             case 7: // news screen
                 system("cls ");
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                 resetInputHandler();
 
-                for (int i = 0; i < newsInADay_Head.size(); i++) {
+                for (int i = completedNews; i < newsInADay_Head.size(); i++) {
+                    system("cls ");
                     typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen7DialogueNews);
 
                     resetInputHandler();
@@ -823,13 +900,41 @@ void Game::printInterface()
                     resetInputHandler();
                 }
                 
-                newsInADay_Head.clear();
-                newsInADay_Body.clear();
-                newsInADay_Effects.clear();
+                completedNews += (newsInADay_Head.size() - completedNews);
+
+                News::setHEAD("");
+                News::setBODY("");
+                News::setEFFECTS("");
+
+                std::cout << "alert " << screenIndex << " " << newsInADay_Head.size() << " " << completedNews << std::endl;
+
                 screenIndex = 4;
 
-                std::cout << "alert " << screenIndex << std::endl;
                 
+                break;
+            case 8: // ending screen
+                system("cls ");
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                resetInputHandler();
+
+                for (int i = completedNews; i < newsInADay_Head.size(); i++) {
+                    system("cls ");
+                    typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen7DialogueNews);
+
+                    resetInputHandler();
+                    while (character != ' ') {
+                        continue;
+                    }
+                    resetInputHandler();
+                }
+
+                completedNews += newsInADay_Head.size();
+
+                News::setHEAD("");
+                News::setBODY("");
+                News::setEFFECTS("");
+
+                isGameRunning = false;
                 break;
             default:
                 break;
@@ -1004,6 +1109,10 @@ void Game::randomCollabGenerator()
         temp = rand() % 3 + 2;
         companies[companyA]->setCollabSpreadWeightIndex(temp, companyB);
         companies[companyB]->setCollabSpreadWeightIndex(temp, companyA);
+
+        newsInADay_Head.push_back(newZ->getHEAD());
+        newsInADay_Body.push_back(newZ->getBODY());
+        newsInADay_Effects.push_back(newZ->getEFFECTS());
     }
 }
 
@@ -1013,9 +1122,10 @@ void Game::CheckCompanyDead()
 
     for (int i = 0; i < maxCompany; i++)
     {
-        if (companies[i]->getBrickedStatus() == 1)
+        if (companies[i]->getBrickedStatus() == 1 && companies[i]->getIsFallen() == false)
         { 
             temp = rand() % 5;
+            companies[i]->setIsFallen(true);
             newZ->companyDeadNews(temp, companies[i]->getName(), virusName);
             newsInADay_Head.push_back(newZ->getHEAD());
             newsInADay_Body.push_back(newZ->getBODY());
@@ -1064,7 +1174,7 @@ void Game::delayBeforeRefresh(int previousScreenIndex)
 {
     if (screenIndex == previousScreenIndex) {
         for (int i = 0; i < 50; i++) {
-            if (refreshNow) {
+            if (refreshNow || (newsInADay_Body.size() - completedNews) > 0) {
                 refreshNow = false;
                 break;
             }
@@ -1080,7 +1190,7 @@ void Game::delayBeforeRefresh(int previousScreenIndex)
 
 void Game::inputHandler()
 {
-    while (true) {
+    while (isGameRunning) {
         char characterInput = _getch();
         refreshNow = true;
 
@@ -1138,6 +1248,12 @@ void Game::inputHandler()
                         screenIndex = 4;
                     }
                 }
+                else if (screenIndex == 6) {
+                    int* balls = player.getCurrentUpgradeIndices();
+                    player.applyUpgrade(balls[selectedUIButton]);
+                    player.blockUpgrade();
+                    screenIndex = 4;
+                }
 
                 break;
 
@@ -1194,6 +1310,7 @@ void Game::resetUIButtonSelection()
     case 2:
     case 3:
     case 5:
+    case 6:
         navigationType = 1; // 1 means sideways
         break;
 
@@ -1202,7 +1319,7 @@ void Game::resetUIButtonSelection()
         break;
     }
 
-    int screenTotalButtons[6] = {0, 1, 1, 3, 6, 1};
+    int screenTotalButtons[8] = {0, 1, 1, 3, 6, 1, 7, 1};
 
     selectedUIButton = 0;
     minSelectedUIButtonOffset = 0;
@@ -1319,7 +1436,7 @@ void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, i
 }
 
 void Game::consoleWidthHandler() {
-    while (true) {
+    while (isGameRunning) {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         int consoleWidthTemp = 0;
 

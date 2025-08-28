@@ -123,10 +123,6 @@ private:
     static std::string BODY;
     static std::string EFFECTS;
 
-    static void setHEAD(std::string);
-    static void setBODY(std::string);
-    static void setEFFECTS(std::string);
-
 public:
     News();
     ~News();
@@ -143,6 +139,10 @@ public:
     static std::string getHEAD();
     static std::string getBODY();
     static std::string getEFFECTS();
+
+    static void setHEAD(std::string);
+    static void setBODY(std::string);
+    static void setEFFECTS(std::string);
 };
 
 // in case there is more than 1 virus type
