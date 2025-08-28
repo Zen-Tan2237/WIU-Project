@@ -68,29 +68,29 @@ void News::companyCollabNews(int type, std::string companyA, std::string company
 		break;
 	case 1: {
 		setHEAD("Zen.Inc. New Leading Corporation?");
-		setBODY(companyA + " and " + companyB + " has been acquired by Zen.Inc, A crossover program has been started to allow employees from both companies to get to know each other. Zen.Inc is leading in the facilitation of workforce integration, setting an example for other companies.");
+		setBODY(companyA + " and " + companyB + " has been acquired by Zen.Inc. A crossover program has been started to allow employees from both companies to get to know each other. Zen.Inc is leading in the facilitation of workforce integration, setting an example for other companies.");
 	}
 		break;
 	case 2: {
 		setHEAD("Global Initiative By " + companyA + " & " + companyB);
-		setBODY(companyA + " and " + companyB + " has partnered in a global initiative called Sustainability Together, which aims to reduce the carbon footprint usage within their companies, they hope, by the end of this year, their carbon footprint gets reduced by 15%. The companies have launched this green initiative, focused on reducing its environmental footprint, this supports the global climate, as it reduces the amount of carbon in the atmosphere, resulting in less heat being trapped.");
+		setBODY(companyA + " and " + companyB + " has partnered in a global initiative called Sustainability Together, which aims to reduce the carbon footprint usage within their companies, they hope that by the end of this year, their carbon footprint will be reduced by 15%. The companies have launched this green initiative, focused on reducing its environmental footprint, this supports the global climate, as it reduces the amount of carbon in the atmosphere, resulting in less heat being trapped.");
 	}
 		break;
 	case 3: {
 		setHEAD("Calling All Students! Internship At Well Established Companies.");
-		setBODY(companyA + " and " + companyB + " have both decided to introduce an internship program, in the search for young talent, and to help students gain experience in larger and well known companies. The companies are opening their doors to all aspiring students, with the goal to become professionals in the future.");
+		setBODY(companyA + " and " + companyB + " have both decided to introduce an internship program, in the search for young talent, and to help students gain experience in larger and well-known companies. The companies are opening their doors to all aspiring students, with the goal to become professionals in the future.");
 	}
 		break;
 	case 4: {
 		setHEAD("News At The National Charity As 2 New Faces From " + companyA + " & " + companyB + " Were Seen");
-		setBODY("At the National Charity meet-up two new faces coming from " + companyA + " and " + companyB + " are sponsoring this years, charity event. This demonstrates their commitment to upkeep their social responsibilities, the companies are also co-sponsoring another charity event, Peoples United to support those that come from underprivileged communities.");
+		setBODY("At the National Charity meet-up two new faces coming from " + companyA + " and " + companyB + " are sponsoring this year's, charity event. This demonstrates their commitment to upkeep their social responsibilities, the companies are also co-sponsoring another charity event, Peoples United to support those that come from underprivileged communities.");
 	}
 		break;
 	default:
 		break;
 	}
 
-	setEFFECTS(companyA + " and " + companyB + " have their spread rate between " + companyA + " and " + companyB + "increased(virus can spread more easily)");
+	setEFFECTS(companyA + " and " + companyB + " have their spread rate increased with each other (virus can spread more easily)");
 }
 
 /* 5 Instances */
@@ -219,7 +219,7 @@ void News::companyDeadNews(int type, std::string company, std::string virus) con
 		break;
 	case 4: {
 		setHEAD("Cyberattacks Toward " + company + " Destroys All Files");
-		setBODY(" Crippling Cyberattack Destroys All Orders, Invoices, and Communication Logs. With months of business lost and no records to rebuild from, the CEO said continuing would be \"financially and emotionally impossible\". Cyberattacks towards " + company + " have cripple their records of orders, invoices, and communication logs, resulting in months of business records being lost and unable to recover, the Chairman says that continuing operations would result in an uncertain future for the company, and its people.");
+		setBODY(" Crippling Cyberattack Destroys All Orders, Invoices, and Communication Logs. With months of business lost and no records to rebuild from, the CEO said continuing would be \"financially and emotionally impossible\". Cyberattacks towards " + company + " have crippled their records of orders, invoices, and communication logs, resulting in months of business records being lost and unable to recover, the Chairman says that continuing operations would result in an uncertain future for the company, and its people.");
 	}
 		break;
 	}
