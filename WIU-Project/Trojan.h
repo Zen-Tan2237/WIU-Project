@@ -3,66 +3,51 @@
 
 class Trojan : public Virus {
 private:
-    void nMConvention_Ops(std::string**);
-    void nMConvention_Fin(std::string**);
-    void nMConvention_Sales(std::string**);
-    void nMConvention_Acct(std::string**);
-    void nMConvention_IT(std::string**);
-    void nMConvention_HR(std::string**);
 
-    void winConditions(int, int, int, int, int*);
-    int conditionOffset(int, int&);
-    void printDialog(std::string, std::string&, std::string&, std::string&, std::string&, std::string&);
-    void printSynSectNm(int);
-    void minigameOptions_2d(int, int, int, std::string**, std::string*);
-    void minigameOptions_1d(int, int, std::string*, std::string*);
-    bool playerInput(char*);
 
-public:
+    enum UPGRADES {
+        // SPEED UPGRADES
+        PHISHING_EMAILS,
+        FAKE_SOFTWARE_INSTALLER,
+        DRIVEBY_DOWNLOAD,
+        SOCIAL_ENGINEERING_TOOLKIT,
+        MALVERTISING_NETWORK,
+        SUPPY_CHAIN_INJECTION,
+        //COMPLEXITY/PAYLOAD UPGRADES
+        CREDENTIAL_STEALER,
+        REMOTE_ACCESS_MODULE,
+        PRIVILAGE_EXTENSION_EXPLOIT,
+        SYSTEM_SERVICE_INJECTION,
+        DATA_EXFILTRATION,
+        BANKING_TROJAN_MODULE,
+        //RESILIENCE UPGRADES
+        CODE_OBFUSCATION_I,
+        CODE_OBFUSCATION_II,
+        CODE_REFACTOR_I,
+        CODE_REFACTOR_II,
+        CODE_REFACTOR_III,
+        KILL_SWITCH,
+        SIGNATURE_MUTATION,
+        VIRTUAL_MACHINE_DETECTION,
+        NUM_UPGRADES,
+    };
 
-	enum UPGRADES {
-		// SPEED UPGRADES
-		PHISHING_EMAILS,
-		FAKE_SOFTWARE_INSTALLER,
-		DRIVEBY_DOWNLOAD,
-		SOCIAL_ENGINEERING_TOOLKIT,
-		MALVERTISING_NETWORK,
-		SUPPY_CHAIN_INJECTION,
-		//COMPLEXITY/PAYLOAD UPGRADES
-		CREDENTIAL_STEALER,
-		REMOTE_ACCESS_MODULE,
-		PRIVILAGE_EXTENSION_EXPLOIT,
-		SYSTEM_SERVICE_INJECTION,
-		DATA_EXFILTRATION,
-		BANKING_TROJAN_MODULE,
-		//RESILIENCE UPGRADES
-		CODE_OBFUSCATION_I,
-		CODE_OBFUSCATION_II,
-		CODE_REFACTOR_I,
-		CODE_REFACTOR_II,
-		CODE_REFACTOR_III,
-		KILL_SWITCH,
-		SIGNATURE_MUTATION,
-		VIRTUAL_MACHINE_DETECTION,
-		NUM_UPGRADES,
-	};
-
-	int dependentIndices[NUM_UPGRADES + 6]{
-		//Dependency chain 1
-		0, 1, 2, 4, -1,
-		//Depenency Chain 2
-		0, 3, 5, -1,
-		//Dependency Chain 3
-		6, 8, 11, -1,
-		//Dependency Chain 4
-		7, 10, 9, -1,
-		//Dependency Chain 5
-		14, 15, 16, 18, -1,
-		//Dependency Chain 6
-		17, -1,
-		//Dependency Chain 7
-		19, -1
-	};
+    int dependentIndices[NUM_UPGRADES + 6]{
+        //Dependency chain 1
+        0, 1, 2, 4, -1,
+        //Depenency Chain 2
+        0, 3, 5, -1,
+        //Dependency Chain 3
+        6, 8, 11, -1,
+        //Dependency Chain 4
+        7, 10, 9, -1,
+        //Dependency Chain 5
+        14, 15, 16, 18, -1,
+        //Dependency Chain 6
+        17, -1,
+        //Dependency Chain 7
+        19, -1
+    };
 
     std::string nameUpgrade[NUM_UPGRADES * 2] = {
         // SPEED / SPREAD (6)
@@ -138,11 +123,33 @@ public:
     };
 
 
+    void nMConvention_Ops(std::string**);
+    void nMConvention_Fin(std::string**);
+    void nMConvention_Sales(std::string**);
+    void nMConvention_Acct(std::string**);
+    void nMConvention_IT(std::string**);
+    void nMConvention_HR(std::string**);
 
+    void winConditions(int, int, int, int, int*);
+    int conditionOffset(int, int&);
+    void printDialog(std::string, std::string&, std::string&, std::string&, std::string&, std::string&);
+    void printSynSectNm(int);
+    void minigameOptions_2d(int, int, int, std::string**, std::string*);
+    void minigameOptions_1d(int, int, std::string*, std::string*);
+    bool playerInput(char*);
+
+public:
 
     Trojan();
     ~Trojan();
 
     void evolve(Upgrades*);
     void miniGame(int& hackingPoints);
+
+
+    const std::string* getNameUpgrade() const;
+    const float* getStatsUpgrades() const;
+    const int* getDependentIndices() const;
+    const int getNumUpgrades() const;
+
 };

@@ -19,7 +19,8 @@ private:
 	int wormColPrevious = wormCol;
 	char dir = 's';
 	char** board = new char* [row];
-public:
+
+
 
 	enum UPGRADES {
 		// SPEED UPGRADES
@@ -138,16 +139,22 @@ public:
 		0, 0, 0.5f, 1.4f, 25
 	};
 
+public:
+
 
 	Worm();
 	~Worm();
 
 	void evolve(Upgrades*) override;
-	void miniGame(int &hackingPoints);
+	void miniGame(int& hackingPoints);
 	void makeboard();
 	void printboard();
 	void update();
 	void getInput();
 
+	const std::string* getNameUpgrade() const;
+	const float* getStatsUpgrades() const;
+	const int* getDependentIndices() const;
+	const int getNumUpgrades() const;
 };
 

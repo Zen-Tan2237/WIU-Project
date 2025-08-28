@@ -157,3 +157,19 @@ void Worm::getInput() {
 		break;
 	}
 }
+
+const std::string* Worm::getNameUpgrade() const{
+	return nameUpgrade;
+}
+
+const float* Worm::getStatsUpgrades() const{
+	return statsUpgrade;
+}
+
+const int* Worm::getDependentIndices() const{
+	return dependentIndices;
+}
+
+const int Worm::getNumUpgrades() const{
+	return NUM_UPGRADES;
+}

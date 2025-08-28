@@ -5,52 +5,66 @@ class Ransomware :
 {
 
 public:
+    Ransomware();
+    ~Ransomware();
 
-	enum UPGRADES {
-		// SPEED UPGRADES
+    void evolve(Upgrades*) override;
+    void miniGame(int& hackingPoints);
+
+
+    const std::string* getNameUpgrade() const;
+    const float* getStatsUpgrades() const;
+    const int* getDependentIndices() const;
+    const int getNumUpgrades() const;
+
+private:
+
+
+    enum UPGRADES {
+        // SPEED UPGRADES
         SPAM_CAMPAIGN,
         NETWORK_PROPAGATION,
         RDP_BRUTE_FORCER,
         EXPLOIT_KIT_INTEGRATION,
         WORM_LIKE_PROPAGATION,
         MALICIOUS_UPDATE_HIJACK,
-		//COMPLEXITY/PAYLOAD UPGRADES
+        //COMPLEXITY/PAYLOAD UPGRADES
         AES_FILE_ENCRYPTION,
         RSA_KEY_EXCHANGE,
         FILE_EXTENSION_TARGETING,
         SHADOW_COPY_DELETION,
         NETWORK_SHARE_ENCRYPTION,
         DOUBLE_EXTORTION_MODULE,
-		//RESILIENCE UPGRADES
-		CODE_OBFUSCATION_I,
-		CODE_OBFUSCATION_II,
-		CODE_REFACTOR_I,
-		CODE_REFACTOR_II,
-		CODE_REFACTOR_III,
-		KILL_SWITCH,
-		SIGNATURE_MUTATION,
-		VIRTUAL_MACHINE_DETECTION,
-		NUM_UPGRADES,
-	};
+        //RESILIENCE UPGRADES
+        CODE_OBFUSCATION_I,
+        CODE_OBFUSCATION_II,
+        CODE_REFACTOR_I,
+        CODE_REFACTOR_II,
+        CODE_REFACTOR_III,
+        KILL_SWITCH,
+        SIGNATURE_MUTATION,
+        VIRTUAL_MACHINE_DETECTION,
+        NUM_UPGRADES,
+    };
 
-	int dependentIndices[NUM_UPGRADES + 6]{
-		//Dependency chain 1
-		0, 1, 2, 4, -1,
-		//Depenency Chain 2
-		0, 3, 5, -1,
-		//Dependency Chain 3
-		6, 8, 11, -1,
-		//Dependency Chain 4
-		7, 10, 9, -1,
-		//Dependency Chain 5
-		14, 15, 16, 18, -1,
-		//Dependency Chain 6
-		17, -1,
-		//Dependency Chain 7
-		19, -1
-	};
+    int dependentIndices[NUM_UPGRADES + 6]{
+        //Dependency chain 1
+        0, 1, 2, 4, -1,
+        //Depenency Chain 2
+        0, 3, 5, -1,
+        //Dependency Chain 3
+        6, 8, 11, -1,
+        //Dependency Chain 4
+        7, 10, 9, -1,
+        //Dependency Chain 5
+        14, 15, 16, 18, -1,
+        //Dependency Chain 6
+        17, -1,
+        //Dependency Chain 7
+        19, -1
+    };
 
-    std::string nameUpgradeRansomware[NUM_UPGRADES * 2] = {
+    std::string nameUpgrade[NUM_UPGRADES * 2] = {
         // SPEED / SPREAD (6)
         "Spam Campaign", "Mass phishing with malicious attachments. Spread increases.",
         "Network Propagation", "Scans LAN shares and weak creds to spread laterally.",
@@ -78,7 +92,7 @@ public:
         "Boot Locker", "Locks at boot with ransom notice; severe disruption."
     };
 
-    float statsUpgradeRansomware[NUM_UPGRADES * 5] = {
+    float statsUpgrade[NUM_UPGRADES * 5] = {
         // Spam Campaign
         0.20f, 0.20f, 0.60f, 0.10f, 14,
         // Network Propagation
@@ -124,14 +138,6 @@ public:
     };
 
 
-
-    Ransomware();
-    ~Ransomware();
-
-    void evolve(Upgrades*) override;
-    void miniGame(int& hackingPoints);
-
-private:
     // minigame
     int option[3];
     std::string NoteBuilder[3][3]

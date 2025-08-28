@@ -378,3 +378,19 @@ bool Trojan::playerInput(char* ans) {
 	}
 	return 0;
 }
+
+const std::string* Trojan::getNameUpgrade() const {
+	return nameUpgrade;
+}
+
+const float* Trojan::getStatsUpgrades() const {
+	return statsUpgrade;
+}
+
+const int* Trojan::getDependentIndices() const {
+	return dependentIndices;
+}
+
+const int Trojan::getNumUpgrades() const {
+	return NUM_UPGRADES;
+}
