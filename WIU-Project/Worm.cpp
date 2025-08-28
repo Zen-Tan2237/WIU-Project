@@ -158,7 +158,7 @@ void Worm::getInput() {
 				wormCol++;
 			}
 			else {
-				win = true;
+				lose = true;
 			}
 		}
 		else {
