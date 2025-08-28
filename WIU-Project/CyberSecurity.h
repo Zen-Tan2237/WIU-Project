@@ -45,9 +45,11 @@ public:
 
 	void advanceCure(Company* [], const Virus&);
 
-	void displayStatus() const;
+	//void displayStatus() const;
 
+	int getDetectionLevel() const; 
 	bool getCureComplete() const;
+	static float getGlobalCureProgress();
 
 	CyberSecurity(int);
 	CyberSecurity(int, int);
