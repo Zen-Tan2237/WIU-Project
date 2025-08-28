@@ -72,7 +72,7 @@ void Game::initGame()
         
         companies[i] = new Company(companyNames[temp], (networkSize[temp] * 1000) + ((rand() % 500 + 1) - 250), securityLevel[temp] - ((rand() % 5 + 1) / 10.0f), maxCompany, i);
         companyNames[temp] = "none";
-        std::cout << "yes" << std::endl;
+        //std::cout << "yes" << std::endl;
     }
         
 
@@ -165,7 +165,7 @@ void Game::doTurn()
 
             CheckCompanyDead();
 
-            for (int i = 0; i < maxCompany + 4; i++) {
+            /*for (int i = 0; i < maxCompany + 4; i++) {
                 if (cyberSecurity->getNewsDetectDone_bool(i) && i < maxCompany) {
                     newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), companies[cyberSecurity->getNewsDetectDone_int(i)]->getName(), player.getPlayerVirus()->getName());
                     cyberSecurity->setNewsDetectDone(0, i);
@@ -197,7 +197,7 @@ void Game::doTurn()
                     newsInADay_Body.push_back(newZ->getBODY());
                     newsInADay_Effects.push_back(newZ->getEFFECTS());
                 }
-            }
+            }*/
 
             //for (int i = 0; i < maxCompany + 4; i++) {
             //    int idx = cyberSecurity->getNewsIndex(i);
@@ -246,7 +246,7 @@ void Game::doTurn()
                 screenIndex = 8; 
             }
             else if (Company::getTotalUniqueCompanyInfections() != oldUniqueCompaniesInfected) {
-                screenIndex = 9;
+                screenIndex = 9; // game
             }
             else if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
                 int temp = rand() % 2;
@@ -953,12 +953,14 @@ void Game::printInterface()
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                 resetInputHandler();
 
-                SoundController::playSoundMP3("resources\\cartoon-phone-voice-88637.mp3", false);
-
+                
+                
                 for (int i = completedNews; i < newsInADay_Head.size(); i++) {
                     system("cls ");
-                    SoundController::playSound(L"resources\\cartoon-phone-voice-88637.mp3");
+                    //SoundController::playSound(L"resources\\cartoon-phone-voice-88637.mp3");
+                    SoundController::playSoundMP3("resources\\cartoon-phone-voice-88637.mp3", true);
                     typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen7DialogueNews);
+                    
 
                     resetInputHandler();
                     while (character != ' ') {
@@ -966,7 +968,7 @@ void Game::printInterface()
                     }
                     resetInputHandler();
                 }
-                
+
                 completedNews += (newsInADay_Head.size() - completedNews);
 
                 News::setHEAD("");
@@ -995,6 +997,15 @@ void Game::printInterface()
                     resetInputHandler();
                 }
 
+                system("cls ");
+                typingEntrance("FINAL RESULTS: ", "Here's a look into your overall destruction. You managed to infect" + std::to_string(Company::getTotalNoOfInfectedComputers()) + ", bricking " + std::to_string(Company::getTotalNoOfBrickedComputers()) + " along the way.", "GAME WON", typingInterval, true, frame_Screen7DialogueNews);
+
+                resetInputHandler();
+                while (character != ' ') {
+                    continue;
+                }
+                resetInputHandler();
+
                 completedNews += newsInADay_Head.size();
 
                 News::setHEAD("");
@@ -1011,9 +1022,9 @@ void Game::printInterface()
                 renderAnimation(emptyChickenFrames, 0, false, false, true);
 
                 renderCenteringSpaces();
-                std::cout << std::string(floor(155 - ("You Obtained " + std::to_string(resultingPoints) + " Hacker Point/s!").length()), '.') << "You Obtained " << resultingPoints << " Hacker Point/s!" << std::string(ceil(155 - ("You Obtained " + std::to_string(resultingPoints) + " Hacker Point/s!").length()), '.') << std::endl;
+                std::cout << std::string(floor(((155 - ("You Obtained " + std::to_string(resultingPoints) + " Hacker Point/s!").length())) / 2), '.') << "You Obtained " << resultingPoints << " Hacker Point/s!" << std::string(ceil(((155 - ("You Obtained " + std::to_string(resultingPoints) + " Hacker Point/s!").length())) / 2), '.') << std::endl;
 
-                renderAnimation(emptyChickenFrames, 0, false, false, true);
+                renderAnimation(emptyChickenFrames, 0, true, false, true);
                 
                 std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
@@ -1130,6 +1141,8 @@ void Game::typingEntrance(std::string head, std::string content, std::string end
     // controls
     displayUIControls(12);
     std::cout << std::endl;
+    SoundController::stopSoundMP3();
+
 
     if (end != "") {
         std::cout << typedContent << std::endl << std::endl;
@@ -1421,7 +1434,7 @@ void Game::resetUIButtonSelection()
         break;
     }
 
-    int screenTotalButtons[8] = {0, 1, 1, 3, 6, 1, 8, 1};
+    int screenTotalButtons[8] = {0, 1, 1, 3, 1 + maxCompany, 1, 8, 1};
 
     selectedUIButton = 0;
     minSelectedUIButtonOffset = 0;

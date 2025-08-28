@@ -20,7 +20,7 @@ private:
 	int tickInterval;
 	bool isGameRunning;
     int gameResult;
-	const static int maxCompany = 5;
+	const static int maxCompany = 10;
     int companyA;
     int companyB;
     int screenIndex;
