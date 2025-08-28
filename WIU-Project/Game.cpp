@@ -155,7 +155,7 @@ void Game::doTurn()
             if (currentTick % 250 == 0)
             {
                 int eventTrigger = rand() % 100;
-                if (eventTrigger >= 40)
+                if (eventTrigger >= 0)
                 {
                     randomCollabGenerator();
                 }
@@ -284,11 +284,11 @@ void Game::printInterface()
 
                 // Title Screen
                 renderAnimation(frame_Logo, 5, false, true, true);
-                virusName = "yes";
-                virusTypeIndex = 0;
-                companyStartIndex = 0;
-                screenIndex = 4;
-                player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                //virusName = "yes";
+                //virusTypeIndex = 0;
+                //companyStartIndex = 0;
+                screenIndex = 1;
+                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
                 break;
 
@@ -786,76 +786,71 @@ void Game::printInterface()
                 break;
             case 5:
                 while (screenIndex == 5) {
-                    if (gameplayButtonChosenIndex == 0) {
-                        // upgrade menu
-                    }
-                    else {
-                        system("cls");
-                        yes = std::round(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()) + 2;
-                        fraction = companies[gameplayButtonChosenIndex - 1]->getNetworkSize() / yes;
-                        iBricked = 0;
-                        iInfected = 0;
+                    system("cls");
+                    yes = std::round(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()) + 2;
+                    fraction = companies[gameplayButtonChosenIndex - 1]->getNetworkSize() / yes;
+                    iBricked = 0;
+                    iInfected = 0;
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+                    for (int i = yes; i > 0; i--) {
+                        if (companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers() >= fraction * i) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+                            if (iInfected == 0) {
+                                iInfected = i;
+                            }
+                        }
+
+                        if (companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers() >= fraction * i) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+
+                            if (iBricked == 0) {
+                                iBricked = i;
+                            }
+
+                        }
+
+                        if (i == yes) { // top
+                            renderAnimation(frame_Screen5BuildingTop, 0, false, false, true);
+                        }
+                        else if (i > 1) { // center
+                            renderAnimation(frame_Screen5BuildingCenterClone, 0, true, false, true);
+                        }
+                        else { // bottom
+                            renderAnimation(frame_Screen5BuildingBottom, 0, true, false, true);
+                        }
+
                         SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+                    }
 
-                        for (int i = yes; i > 0; i--) {
-                            if (companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers() >= fraction * i) {
-                                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                    std::string title[7] = { "COMPANY", "NETWORK SIZE", "SECURITY LEVEL", "INFECTION STATUS", "VIRUS PLANTED", "AMOUNT INFECTED DATA", "AMOUNT BRICKED DATA" };
+                    std::string content[7] = { companies[gameplayButtonChosenIndex - 1]->getName(),
+                        std::to_string(companies[gameplayButtonChosenIndex - 1]->getNetworkSize()),
+                        std::to_string(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()),
+                        std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus()),
+                        player.getPlayerVirus()->getName() + "[" + std::to_string(player.getPlayerVirus()->getComplexity()) + std::to_string(player.getPlayerVirus()->getSpeed()) + std::to_string(player.getPlayerVirus()->getPayload()) + std::to_string(player.getPlayerVirus()->getResilience()) + "]",
+                        std::to_string(companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers()) + " (" + std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus() * 100) + "%)",
+                        std::to_string(companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers()) + " (" + std::to_string(companies[gameplayButtonChosenIndex - 1]->getBrickedStatus() * 100) + "%)"
+                    };
 
-                                if (iInfected == 0) {
-                                    iInfected = i;
-                                }
-                            }
+                    std::cout << std::endl;
 
-                            if (companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers() >= fraction * i) {
-                                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
-
-                                if (iBricked == 0) {
-                                    iBricked = i;
-                                }
-
-                            }
-
-                            if (i == yes) { // top
-                                renderAnimation(frame_Screen5BuildingTop, 0, false, false, true);
-                            }
-                            else if (i > 1) { // center
-                                renderAnimation(frame_Screen5BuildingCenterClone, 0, true, false, true);
-                            }
-                            else { // bottom
-                                renderAnimation(frame_Screen5BuildingBottom, 0, true, false, true);
-                            }
-
-                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-                        }
-
-                        std::string title[7] = { "COMPANY", "NETWORK SIZE", "SECURITY LEVEL", "INFECTION STATUS", "VIRUS PLANTED", "AMOUNT INFECTED DATA", "AMOUNT BRICKED DATA" };
-                        std::string content[7] = { companies[gameplayButtonChosenIndex - 1]->getName(),
-                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNetworkSize()),
-                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getSecurityLevel()),
-                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus()),
-                            player.getPlayerVirus()->getName() + "[" + std::to_string(player.getPlayerVirus()->getComplexity()) + std::to_string(player.getPlayerVirus()->getSpeed()) + std::to_string(player.getPlayerVirus()->getPayload()) + std::to_string(player.getPlayerVirus()->getResilience()) + "]",
-                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers()) + " (" + std::to_string(companies[gameplayButtonChosenIndex - 1]->getInfectedStatus() * 100) + "%)",
-                            std::to_string(companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers()) + " (" + std::to_string(companies[gameplayButtonChosenIndex - 1]->getBrickedStatus() * 100) + "%)"
-                        };
-
-                        std::cout << std::endl;
-
-                        for (int k = 0; k < 7; k++) {
-                            renderCenteringSpaces();
-                            //std::cout << std::string((155 - (title[k].length() + 3 + content[k].length())) / 2, ' ');
-                            std::cout << title[k] << " | " << content[k] << std::endl << std::endl;
-                        }
-
-                        std::cout << std::endl << std::endl;
-
+                    for (int k = 0; k < 7; k++) {
                         renderCenteringSpaces();
-                        highlightSelectedUIButton(0, "[ RETURN ]", hConsole);
+                        //std::cout << std::string((155 - (title[k].length() + 3 + content[k].length())) / 2, ' ');
+                        std::cout << title[k] << " | " << content[k] << std::endl << std::endl;
+                    }
 
-                        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    std::cout << std::endl << std::endl;
 
-                        while (companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers() < fraction * (iBricked + 1) && companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers() < fraction * (iInfected + 1) && screenIndex == 5) {
-                            // yes
-                        }
+                    renderCenteringSpaces();
+                    highlightSelectedUIButton(0, "[ RETURN ]", hConsole);
+
+                    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+                    while (companies[gameplayButtonChosenIndex - 1]->getNoOfBrickedComputers() < fraction * (iBricked + 1) && companies[gameplayButtonChosenIndex - 1]->getNoOfInfectedComputers() < fraction * (iInfected + 1) && screenIndex == 5) {
+                        // yes
                     }
                 }
 
@@ -864,8 +859,6 @@ void Game::printInterface()
             {
                 while (screenIndex == 6) {
                     system("cls ");
-                    player.parseUpgrades();
-                    player.parseDependencies();
 
                     Upgrades* upgradesArray[20] = {nullptr};
                     int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
@@ -873,11 +866,25 @@ void Game::printInterface()
                     for (int i = 0; i < 20; i++) {
                         upgradesArray[i] = player.getUpgradesArray()[i];
                     }
-                    for (int i = 0; i < maxSelectedUIButtonOffset + 1; i++) {
+                    for (int i = 0; i < maxSelectedUIButtonOffset + 1 - 1; i++) {
                         renderCenteringSpaces();
                         highlightSelectedUIButton(i, "[ " + upgradesArray[currentUpgradesIndices[i]]->getName() + " ]", hConsole);
                         std::cout << std::endl;
+
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+                        renderCenteringSpaces();
+                        std::cout << upgradesArray[currentUpgradesIndices[i]]->getDesc() << std::endl;
+                        renderCenteringSpaces();
+                        std::cout << "Cost: " << upgradesArray[currentUpgradesIndices[i]]->getCost() << " Hacker Point/s" << std::endl << std::endl;
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                        
                     }
+
+                    renderCenteringSpaces();
+                    std::string temp = "Hacker Points : " + std::to_string(player.getHackingPoints());
+                    std::cout << temp << std::string(155 - (temp.length() + 10), ' ');
+                    highlightSelectedUIButton(maxSelectedUIButtonOffset, "[ RETURN ]", hConsole);
+                    std::cout << std::endl;
 
                     delayBeforeRefresh(previousScreenIndex);
                 }
@@ -1249,10 +1256,15 @@ void Game::inputHandler()
                     }
                 }
                 else if (screenIndex == 6) {
-                    int* balls = player.getCurrentUpgradeIndices();
-                    player.applyUpgrade(balls[selectedUIButton]);
-                    player.blockUpgrade();
-                    screenIndex = 4;
+                    if (selectedUIButton == maxSelectedUIButtonOffset) {
+                        screenIndex = 4;
+                    }
+                    else {
+                        int* balls = player.getCurrentUpgradeIndices();
+                        player.applyUpgrade(balls[selectedUIButton]);
+                        player.blockUpgrade();
+                        screenIndex = 4;
+                    }
                 }
 
                 break;
@@ -1304,13 +1316,13 @@ void Game::resetUIButtonSelection()
     case 0:
     case 1:
     case 4:
+    case 6:
         navigationType = 0; // 0 means up down
         break;
 
     case 2:
     case 3:
     case 5:
-    case 6:
         navigationType = 1; // 1 means sideways
         break;
 
@@ -1319,7 +1331,7 @@ void Game::resetUIButtonSelection()
         break;
     }
 
-    int screenTotalButtons[8] = {0, 1, 1, 3, 6, 1, 7, 1};
+    int screenTotalButtons[8] = {0, 1, 1, 3, 6, 1, 8, 1};
 
     selectedUIButton = 0;
     minSelectedUIButtonOffset = 0;
