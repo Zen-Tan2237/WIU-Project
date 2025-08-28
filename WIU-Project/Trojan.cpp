@@ -7,9 +7,7 @@ Trojan::Trojan() {
 	payload = 3; // 1 to 10
 	resilience = 4; //1 to 10
 }
-Trojan::~Trojan() {
-
-}
+Trojan::~Trojan() {}
 
 void Trojan::evolve(Upgrades* toUpgrade) {
 	std::cout << "Speed to upgrade: " << (toUpgrade->getSpeed() + 0.5f) << std::endl
@@ -171,7 +169,9 @@ void Trojan::miniGame(int& hackingPoints) {
 			}
 		}
 	}
-	
+	std::cout << '\n'; // Sections of the optiions
+
+
 	for (int i = 0; i < 2; i++) {
 		delete[] p_con[i];
 	}
@@ -272,16 +272,16 @@ int Trojan::conditionOffset(int maxValue, int& condition) { /* Set the string va
 void Trojan::printDialog(std::string department, std::string& synNm, std::string& synSub, std::string& synDate, std::string& synVer, std::string& fT) {
 	switch (rand() % 2) {
 	case 0: // Acting as a manager
-		std::cout << "You are acting as a manager, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the employees of the " << department << " department.\n";
+		std::cout << "You are acting as a manager, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the employees of the " << department << " department. ";
 		break;
 	case 1: // Acting as an employee
-		std::cout << "You are acting as an employee of the " << department << " department, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the manager of the department.\n";
+		std::cout << "You are acting as an employee of the " << department << " department, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the manager of the department. ";
 		break;
 	default:
 		break;
 	}
-	std::cout << "You have uncovered the latest file with the following syntax:\n";
-	std::cout << synNm << '_' << synSub << '_' << synDate << '_' << synVer << fT << '\n';
+	std::cout << "You have uncovered the latest file with the following syntax: ";
+	std::cout << synNm << '_' << synSub << '_' << synDate << '_' << synVer << "; ";
 	std::cout << "Name the TROJAN VIRUS with a similar syntax with the date and version being the follow up of that file.\n";
 	std::cout << '\n';
 }
