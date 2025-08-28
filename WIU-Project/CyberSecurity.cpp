@@ -14,12 +14,19 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 /* News */
 void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& virus) {
 	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
-	
+	std::string newsHeader;
+	std::string newsBody;
+
 	/* Virus Found ------------------------------------------ */ {
 		/**	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
-				news.virusFoundNews((rand() % 5), coy[i]->getName(), virus.getName());
+				news.virusFoundNews(rand() % 5, coy[i]->getName(), virus.getName());
+				newsHeader = News::getHEAD();
+				newsBody = News::getBODY();
+				std::cout << newsHeader;
+				std::cout << newsBody;
+
 				newsDetectDone[i] = 1;
 			}
 		}
@@ -28,13 +35,23 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& 
 		/**	SetConsoleTextAttribute(debug_cS, 6);	/**/
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-				news.cybersecurityWinningNews((rand() % 5), virus.getName()); // Code for cyber wins
+				news.cybersecurityWinningNews(rand() % 5, virus.getName()); // Code for cyber wins
+				newsHeader = News::getHEAD();
+				newsBody = News::getBODY();
+				std::cout << newsHeader;
+				std::cout << newsBody;
+
 				cyberNewsCount[0]++;
 			}
 		}
 		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-				news.cyberSecurityLosingNews((rand() % 5), virus.getName()); // Code for cyber losses
+				news.cyberSecurityLosingNews(rand() % 5, virus.getName()); // Code for cyber losses
+				newsHeader = News::getHEAD();
+				newsBody = News::getBODY();
+				std::cout << newsHeader;
+				std::cout << newsBody;
+
 				cyberNewsCount[1]++;
 			}
 		}
@@ -43,9 +60,17 @@ void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& 
 		/**	SetConsoleTextAttribute(debug_cS, 10);		/**/
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
 			news.PlayerWinNews(rand() % 2);
+			newsHeader = News::getHEAD();
+			newsBody = News::getBODY();
+			std::cout << newsHeader;
+			std::cout << newsBody;
 		}
 		else if (isCureComplete()) {
 			news.PlayerLoseNews(rand() % 2);
+			newsHeader = News::getHEAD();
+			newsBody = News::getBODY();
+			std::cout << newsHeader;
+			std::cout << newsBody;
 		}
 		/**	SetConsoleTextAttribute(debug_cS, 7);	/**/
 	}
