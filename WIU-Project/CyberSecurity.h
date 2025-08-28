@@ -55,8 +55,10 @@ public:
 	bool getIsVdetect() const; // will change if you run advance cure, a boolean is needed.
 	int getNewsIndex(int) const;
 	int getDetectionLevel() const;
+	/**/
 	bool getNewsDetectDone_bool(int) const; // use this to check if the virus is already detected
 	int getNewsDetectDone_int(int) const; // use this to set the news
+	/**/
 	static float getGlobalCureProgress();
 
 	void setNewsDetectDone(bool, int) const;
