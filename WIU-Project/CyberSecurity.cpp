@@ -22,7 +22,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		/**	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
 			which = -1; // Reset every instance.
-			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
+			if (isVDetect[i] && !newsDetectDone[i] && coy[i]->getBrickedStatus() >= 0.1f) { // news out at 0.33 / 33% infected and if ;
 				which = rand() % 5;
 
 				newsDetectDone[i] = 1;
@@ -244,7 +244,7 @@ bool CyberSecurity::getNewsDetectDone_bool(int type) const {
 	return newsDetectDone[type];
 }
 int CyberSecurity::getNewsDetectDone_int(int type) const {
-	if (newsDetectDone[type] == 1) {
+	if (newsDetectDone[type]) {
 		return type;
 	}
 	return -1;
