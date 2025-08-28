@@ -192,14 +192,16 @@ void CyberSecurity::cureProgressSpeed(int scaleSpeed, const Virus& virus) { // I
 }
 
 /* Display Status */
+/**
 void CyberSecurity::displayStatus() const {
-	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
 
 	std::cout
 		<< "Cure Status " << globalCureProgress << "%\n"
 		<< "Detection Level " << detectionLevel << '\n';
-	/* Program Debug Values */
+	// Program Debug Values
 	/**
+	HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	SetConsoleTextAttribute(debug_cS, 3);
 	for (int i = 1; i < maxCompany + 1; i++) {
 		std::cout << "D" << i << " " << isVDetect[i - 1] << " ";
@@ -222,13 +224,20 @@ void CyberSecurity::displayStatus() const {
 	}
 	std::cout << '\n';
 	SetConsoleTextAttribute(debug_cS, 7);
-	/**/
+	/**
 }
+/**/
 
 /* Getters ------------------------------------------------------------------------------ */
 /* Public */
+int CyberSecurity::getDetectionLevel() const {
+	return this->detectionLevel;
+}
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
+}
+float CyberSecurity::getGlobalCureProgress() {
+	return globalCureProgress;
 }
 
 /* Private */
