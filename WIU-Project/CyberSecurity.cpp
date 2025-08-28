@@ -23,7 +23,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		for (int i = 0; i < maxCompany; i++) {
 			which = -1; // Reset every instance.
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
-				which = rand() & 5;
+				which = rand() % 5;
 				newsDetectDone[i] = 1;
 			}
 			newsIndex[i] = which;
@@ -34,7 +34,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		which = -1; // Reset
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-				which = rand() & 5;
+				which = rand() % 5;
 				cyberNewsCount[0]++;
 			}
 		}
@@ -42,7 +42,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		which = -1; // Reset
 		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-				which = rand() & 5;
+				which = rand() % 5;
 				cyberNewsCount[1]++;
 			}
 		}
@@ -54,11 +54,11 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		which = -1; // Reset
 		/**	SetConsoleTextAttribute(debug_cS, 10);		/**/
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
-			which = rand() & 2;
+			which = rand() % 2;
 			push = 1;
 		}
 		else if (isCureComplete()) {
-			which = rand() & 2;
+			which = rand() % 2;
 		}
 		if (push) {
 			newsIndex[maxCompany + 2] = which;
@@ -357,10 +357,14 @@ for (int i = 0; i < maxCompany + 4;; i++) {
 	else if (i == maxCompany + 3) {
 		newZ->PlayerLoseNews(cyberSecurity->getNewsIndex(i));
 	}
+}
 
 	(0 to (maxCompany - 1))	|| VIRUS FOUND
 	(maxCompany)			|| CYBER WINNING
 	(maxCompany + 1)		|| CYBER LOSING
 	(maxCompany + 2)		|| PLAYER WIN
 	(maxCompany + 3)		|| PLAYER LOSE
+
+
+	cyberSecurity->getNewsIndex(maxCompany - (maxCompany - 0));
 \*/
