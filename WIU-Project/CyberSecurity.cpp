@@ -2,6 +2,8 @@
 #include <iostream>
 //#include <windows.h>
 
+bool CyberSecurity::cyberNews_Win[4] = { 0, 0, 0, 0 };
+bool CyberSecurity::cyberNews_Loss[4] = { 0, 0, 0, 0 };
 bool CyberSecurity::winCondition = 0; // Keep
 bool CyberSecurity::cureComplete = 0; // Keep
 int CyberSecurity::cyberNewsCount[2] = { 0, 0 }; // Keep
@@ -38,6 +40,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
 				which = rand() % 5;
+				cyberNews_Win[cyberNewsCount[0]] = 1;
 				cyberNewsCount[0]++;
 			}
 		}
@@ -46,6 +49,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		if (cyberNewsCount[1] < (sizeof(detectThreshold) / sizeof(detectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= detectThreshold[cyberNewsCount[1]]) {
 				which = rand() % 5;
+				cyberNews_Win[cyberNewsCount[1]] = 1;
 				cyberNewsCount[1]++;
 			}
 		}
@@ -256,6 +260,19 @@ int CyberSecurity::getNewsDetectDone_int(int type) const {
 		return type;
 	}
 	return -1;
+}
+
+int CyberSecurity::getCyberNewsCount_win() {
+	return cyberNewsCount[0];
+}
+int CyberSecurity::getCyberNewsCount_loss() {
+	return cyberNewsCount[1];
+}
+bool CyberSecurity::getCyberNews_Win(int type) {
+	return cyberNews_Win[type];
+}
+bool CyberSecurity::getCyberNews_Loss(int type) {
+	return cyberNews_Loss[type];
 }
 
 /* Private */

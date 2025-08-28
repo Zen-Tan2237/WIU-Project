@@ -953,6 +953,8 @@ void Game::printInterface()
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                 resetInputHandler();
 
+                SoundController::playSoundMP3("resources\\cartoon-phone-voice-88637.mp3", false);
+
                 for (int i = completedNews; i < newsInADay_Head.size(); i++) {
                     system("cls ");
                     SoundController::playSound(L"resources\\cartoon-phone-voice-88637.mp3");
