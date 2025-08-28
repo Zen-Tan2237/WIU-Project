@@ -50,70 +50,79 @@ public:
 		19, -1
 	};
 
-	std::string nameUpgrade[NUM_UPGRADES * 2] = {
-		// SPEED UPGRADES
-		"Email Spam Botnet", "Spreads via mass phishing campaigns. Speed increases slightly.",
-		"Exploit Kit Loader", "Uses known software vulnerabilities to spread. Speed increases moderately.",
-		"Remote Desktop Attack", "Brute-forces weak RDP logins to spread. Speed increases slightly.",
-		"Network Share Encryption", "Spreads through shared folders. Speed increases slightly.",
-		"Worm-Ransom Hybrid", "Combines worm-like spreading with ransomware. Speed increases significantly.",
+    std::string nameUpgradeRansomware[NUM_UPGRADES * 2] = {
+        // SPEED / SPREAD (6)
+        "Spam Campaign", "Mass phishing with malicious attachments. Spread increases.",
+        "Network Propagation", "Scans LAN shares and weak creds to spread laterally.",
+        "RDP Brute Forcer", "Breaks into exposed remote desktops; new footholds.",
+        "Exploit Kit Integration", "Bundles with exploit kits to auto-deliver. Faster spread.",
+        "Worm-Like Propagation", "Self-replicates across reachable hosts. Big speed boost.",
+        "Malicious Update Hijack", "Poisons updater channels to push payload widely.",
 
-		// PAYLOAD / COMPLEXITY UPGRADES
-		"File Encryption", "Encrypts files with basic algorithm. Increases payload.",
-		"Advanced Encryption", "Switches to stronger AES/RSA encryption. Increases complexity and payload.",
-		"Master Boot Record Hijack", "Locks system at boot with ransom note. Payload increases significantly.",
-		"Shadow Copy Deletion", "Deletes Windows backups to enforce ransom. Increases complexity.",
-		"Network File Encryption", "Encrypts files on mapped network drives. Significantly increases payload.",
-		"Double Extortion", "Steals data before encrypting. Victims face data leak threats. Significantly increases payload and complexity.",
+        // PAYLOAD / COMPLEXITY (6)
+        "AES File Encryption", "Encrypts user files with strong symmetric crypto. Payload up.",
+        "RSA Key Exchange", "Unique public keys per victim; hard to crack. Complexity up.",
+        "File Extension Targeting", "Prioritizes valuable file types first. Payload increases.",
+        "Shadow Copy Deletion", "Removes backups to block easy recovery. Complexity up.",
+        "Network Share Encryption", "Encrypts files on mapped/network drives. Big payload.",
+        "Double Extortion Module", "Steals data before encrypting; leak threats. Huge payload.",
 
-		// RESILIENCE UPGRADES
-		"Ransom Note Customizer", "Automatically generates notes per victim. Increases resilience.",
-		"Offline Encryption Mode", "Does not require contact with C2 server. Increases resilience.",
-		"Polymorphic Encryption Key", "Encryption key changes per victim, harder to crack. Increases resilience significantly.",
-		"Kill Switch Removal", "Removes built-in kill switch to prevent shutdown. Increases resilience.",
-		"Tor C2 Channel", "Uses Tor network for ransom communication. Increases resilience.",
-		"Payment Deadline Escalation", "Doubles ransom over time. Slows cure and increases victim pressure."
-	};
-
-
-
+        // RESILIENCE (8)
+        "Safe Mode Lockout", "Prevents recovery through safe mode. Resilience up.",
+        "Process Killer", "Terminates AV/backup processes before encrypting.",
+        "Tor Communication", "C2 hidden via Tor; takedown resistant.",
+        "Dynamic Encryption Routine", "Changes methods per run; analysis harder.",
+        "Offline Encryption Mode", "No C2 needed to start encryption.",
+        "Payment Portal Integration", "Automates ransom payment workflow.",
+        "Polymorphic Encryption Keys", "Keys differ per file/host; recovery difficult.",
+        "Boot Locker", "Locks at boot with ransom notice; severe disruption."
+    };
 
     float statsUpgradeRansomware[NUM_UPGRADES * 5] = {
-        // Simple Locker
-        0.2f, 0.2f, 0.8f, 0.1f, 14,
-        // Screen Blocker
-        0.1f, 0.3f, 1.0f, 0.2f, 18,
-        // File Encryptor I
-        0.2f, 0.4f, 1.5f, 0.3f, 24,
-        // File Encryptor II
-        0.3f, 0.6f, 2.0f, 0.4f, 32,
-        // Network Encryptor
-        0.3f, 0.7f, 2.5f, 0.5f, 36,
-        // Double Extortion
-        0.1f, 0.8f, 3.0f, 0.6f, 40,
+        // Spam Campaign
+        0.20f, 0.20f, 0.60f, 0.10f, 14,
+        // Network Propagation
+        0.35f, 0.25f, 0.50f, 0.15f, 22,
+        // RDP Brute Forcer
+        0.25f, 0.30f, 0.70f, 0.20f, 26,
+        // Exploit Kit Integration
+        0.30f, 0.40f, 0.80f, 0.25f, 32,
+        // Worm-Like Propagation
+        0.60f, 0.30f, 1.00f, 0.30f, 40,
+        // Malicious Update Hijack
+        0.45f, 0.35f, 0.80f, 0.25f, 34,
 
-        // Anti-Recovery
-        0, 0.5f, 0.5f, 0.7f, 28,
-        // Shadow Copy Deleter
-        0, 0.6f, 0.8f, 0.8f, 34,
-        // Boot Locker
-        -0.3f, 0.7f, 2.2f, 0.5f, 42,
+        // AES File Encryption
+        0.00f, 0.40f, 1.50f, 0.30f, 28,
+        // RSA Key Exchange
+        0.00f, 0.70f, 1.80f, 0.40f, 36,
+        // File Extension Targeting
+        0.00f, 0.30f, 1.20f, 0.20f, 24,
+        // Shadow Copy Deletion
+        0.00f, 0.50f, 0.60f, 0.60f, 30,
+        // Network Share Encryption
+        0.10f, 0.45f, 2.20f, 0.40f, 42,
+        // Double Extortion Module
+        -0.05f, 0.80f, 3.00f, 0.60f, 50,
+
+        // Safe Mode Lockout
+        0.00f, 0.20f, 0.10f, 0.70f, 22,
+        // Process Killer
+        -0.10f, 0.40f, 0.20f, 0.80f, 28,
+        // Tor Communication
+        0.00f, 0.35f, 0.00f, 0.90f, 26,
+        // Dynamic Encryption Routine
+        -0.10f, 0.60f, 0.20f, 0.80f, 34,
         // Offline Encryption Mode
-        0.2f, 0.6f, 1.5f, 0.4f, 30,
-        // Polymorphic Encryption
-        0, 0.9f, 1.8f, 0.6f, 38,
-        // Ransom Note Obfuscation
-        0, 0.4f, 0, 0.9f, 20,
-
-        // Crypto Upgrade (AES→RSA→Hybrid)
-        0, 1.0f, 3.5f, 0.7f, 50,
-        // Worm-Like Spread
-        0.7f, 0.5f, 2.0f, 0.5f, 45,
-        // RaaS (Ransomware as a Service)
-        0.3f, 1.2f, 3.0f, 0.8f, 60,
-        // Wiper Mode
-        -0.5f, 0.8f, 4.5f, 1.0f, 70
+        0.05f, 0.30f, 0.30f, 0.70f, 24,
+        // Payment Portal Integration
+        0.00f, 0.40f, 0.00f, 0.80f, 30,
+        // Polymorphic Encryption Keys
+        -0.10f, 0.70f, 0.50f, 0.90f, 38,
+        // Boot Locker
+        -0.20f, 0.50f, 2.50f, 0.70f, 48
     };
+
 
 
     Ransomware();
