@@ -153,7 +153,7 @@ void Worm::getInput() {
 		}
 		break;
 	default:
-		std::cout << "halalalal\n";
+		std::cout << "halalalal\n"; //halal indeed. #include <quran.h>, inshallah.
 		break;
 	}
 }

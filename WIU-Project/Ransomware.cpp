@@ -67,7 +67,7 @@ void Ransomware::miniGame(int& hackingPoints)
 }
 
 const std::string* Ransomware::getNameUpgrade() const {
-    return nameUpgrade;
+    return nameUpgrade;                                                     // Wait just wondering, why need pointer?? I cannot run away from pointers :(
 }
 
 const float* Ransomware::getStatsUpgrades() const {

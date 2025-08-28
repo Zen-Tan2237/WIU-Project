@@ -13,6 +13,7 @@ Virus::~Virus() {
 
 }
 
+// Like serious. I make this virtual for what....
 void Virus::evolve(Upgrades* toUpgrade) {
 	std::cout << "Speed to upgrade: " << toUpgrade->getSpeed() << std::endl
 		<< " Complexity to upgrade: " << toUpgrade->getComplexity() << std::endl

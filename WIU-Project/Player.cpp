@@ -1,7 +1,6 @@
 #include "Player.h"
 
 Player::Player() {
-	parseUpgrades();
 	hackingPoints = 5;
 	companyChoice = 0;
 	maxCompany = 0;
@@ -12,9 +11,12 @@ Player::Player() {
 	lengthOfArray = nullptr;
 	dependencyChain = nullptr;
 	currentUpgradeIndices = nullptr;
+
+
 }
 Player::~Player() {
-	for (int i = 0; i < NUM_UPGRADES; i++) {
+	// Dont need worry about playerVirus->getNumUpgrades() being null because if it is null then the player wouldnt have gotten to play the game right?
+	for (int i = 0; i < playerVirus->getNumUpgrades(); i++) {
 		delete upgradesArray[i];
 		upgradesArray[i] = nullptr;
 	}
@@ -86,6 +88,7 @@ void Player::setInitials(Company* companyList[], int type, int companyChoice, st
 		break;
 	default:
 		// I hate this
+		playerVirus = new Worm; // Default to worm if something goes wrong
 		break;
 	}
 
@@ -99,6 +102,7 @@ void Player::setInitials(Company* companyList[], int type, int companyChoice, st
 	// Initalise all upgrades stuff
 	parseUpgrades();
 	parseDependencies();
+
 }
 
 //*******************************************
@@ -108,19 +112,21 @@ void Player::setInitials(Company* companyList[], int type, int companyChoice, st
 // Note: meant to be scalable to read an external file, but ig if no time I'll just leave it here lol
 //*******************************************
 void Player::parseUpgrades() {
+	// I assume the virus has been set before this function is called! (I lazy to add in if (playerVirus == nullptr) check lol)
 	int parserIndex1 = 0;
 	int parserIndex2 = 0;
 	std::string* nameUpgrade = new std::string[playerVirus->getNumUpgrades() * 2];
 	float* statsUpgrade = new float [playerVirus->getNumUpgrades() * 5];
+	upgradesArray = new Upgrades * [playerVirus->getNumUpgrades()];
 
 	for (int i = 0; i < playerVirus->getNumUpgrades() * 2; i++) {
 		nameUpgrade[i] = playerVirus->getNameUpgrade()[i];
 	}
 	for (int i = 0; i < playerVirus->getNumUpgrades() * 5; i++) {
-		nameUpgrade[i] = playerVirus->getStatsUpgrades()[i];
+		statsUpgrade[i] = playerVirus->getStatsUpgrades()[i];
 	}
 
-	for (int i = 0; i < NUM_UPGRADES; i++) {
+	for (int i = 0; i < playerVirus->getNumUpgrades(); i++) {
 		upgradesArray[i] = new Upgrades(nameUpgrade[parserIndex1],
 				nameUpgrade[parserIndex1 + 1], 
 				statsUpgrade[parserIndex2], 
@@ -135,7 +141,7 @@ void Player::parseUpgrades() {
 }
 
 void Player::parseDependencies() {
-	int numberOfElements = sizeof(playerVirus->getDependentIndices()) / sizeof(playerVirus->getDependentIndices()[0]);
+	int numberOfElements = (playerVirus->getNumUpgrades() + 6);
 
 	// Count chains first
 	noOfChains = 0;
@@ -171,6 +177,7 @@ void Player::parseDependencies() {
 }
 
 void Player::printArrays() {
+
 	// Print chains
 	for (int i = 0; i < noOfChains; i++) {
 		std::cout << "Chain " << i + 1 << ": ";

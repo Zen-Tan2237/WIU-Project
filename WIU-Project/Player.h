@@ -169,8 +169,10 @@ public:
 	void setMaxCompany(int maxCompany);
 	Virus* getPlayerVirus() const;
 
-	Upgrades* upgradesArray[NUM_UPGRADES];
-	
+	//Upgrades* upgradesArray[NUM_UPGRADES];
+	Upgrades** upgradesArray; // Changed to pointer for dynamic allocation
+
+
 	void setHackingPoints(int hackingPoints);
 };
 
