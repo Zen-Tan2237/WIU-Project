@@ -17,6 +17,8 @@ private:
 	static const float detectThreshold[4];
 	static const float cureThreshold[4];
 
+	static bool cyberNews_Win[4];
+	static bool cyberNews_Loss[4];
 
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* newsDetectDone; // use its getters
@@ -60,6 +62,10 @@ public:
 	/**/
 	bool getNewsDetectDone_bool(int) const; // use this to check if the virus is already detected
 	int getNewsDetectDone_int(int) const; // use this to set the news
+	static int getCyberNewsCount_win();
+	static int getCyberNewsCount_loss();
+	static bool getCyberNews_Win(int);
+	static bool  getCyberNews_Loss(int);
 	/**/
 	static float getGlobalCureProgress();
 
