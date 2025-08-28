@@ -413,6 +413,6 @@ else; returns -1;
 
 cyberSecurity->getNewsIndex(getNewsDetectDone_int(i));
 getNewsDetectDone_bool() // gives true if it has been detected, triggerEvent() has to be run first. Afterwards you can set it to false once used, using setNewsDetectDone(bool, int).
-getNewsDetectDone_int() // can be used to get the company name as it retuns a value as shown above. Alsso make sure it is true before doing so;
+getNewsDetectDone_int() // can be used to get the company name as it retuns a value as shown above. Also make sure it is true before doing so;
 
 \*/
