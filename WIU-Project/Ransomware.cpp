@@ -3,7 +3,10 @@
 #include <cstdlib>
 
 Ransomware::Ransomware() {
-
+    speed = 2; // 1 for slow 5 max
+    complexity = 4; // 1 to 10
+    payload = 5; // 1 to 10
+    resilience = 3; //1 to 10
 }
 
 Ransomware::~Ransomware() {
