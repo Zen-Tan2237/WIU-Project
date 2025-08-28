@@ -162,7 +162,7 @@ void Player::parseDependencies() {
 	for (int i = 0; i < numberOfElements; i++) {
 		if (playerVirus->getDependentIndices()[i] == -1) {
 			int length = i - start;
-			dependencyChain[chainIndex] = new int[length + 1];
+			dependencyChain[chainIndex] = new int[length + 1]; // the warning lowkey pmo, its just VS stupid.
 
 			// Copy into 2D array
 			for (int j = 0; j < length; j++) {
@@ -203,7 +203,6 @@ int Player::getNoOfChains() {
 }
 
 void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedComputers) {
-	printArrays();
 
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
