@@ -127,6 +127,10 @@ void Company::update(Company* companies[])
 int Company::calculateInfected() // BALANCED
 {
 	float speedMult = 1.0 + 0.5 * (virus->getSpeed() - 1);
+	if (virus->getSpeed() == 0) {
+		speedMult = 0;
+	}
+	
 	float advantage = virus->getComplexity() - securityLevel;
 	if (advantage <= 0) {
 		advantage = 0;

@@ -13,14 +13,16 @@ int main() {
 
 	game->initGame();
 
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	std::cout << "Please resize your window";
+
 	std::thread inputHandler(&Game::inputHandler, game);
 	std::thread printInterface(&Game::printInterface, game);
-
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	std::thread consoleWidthHandler(&Game::consoleWidthHandler, game);
 
 	inputHandler.detach();
 	printInterface.detach();
-	std::cout << "Please resize your window";
+	consoleWidthHandler.detach();
 
 	while (game->getCurrentScreen() != 4) {
 		continue;

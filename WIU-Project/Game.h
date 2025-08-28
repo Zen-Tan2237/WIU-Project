@@ -35,7 +35,13 @@ private:
     int virusTypeIndex;
     int companyStartIndex;
     int gameplayButtonChosenIndex;
+    int consoleWidth;
+    int previousConsoleWidth;
+    bool refreshNow;
     char character;
+
+    std::vector<std::string> newsInADay_Head;
+    std::vector<std::string> newsInADay_Body;
 
 	std::string companyNames[50] = {
         // Tech
@@ -110,8 +116,17 @@ private:
 	Company* companies[maxCompany]; // list of all target companies
     News* newZ;
 
-    std::vector<std::vector<std::string>> element_barFilled;
-    std::vector<std::vector<std::string>> element_barUnfilled;
+    /*std::string element_barFilled;
+    std::string element_barUnfilled;*/
+    const std::string element_bars[7] = {
+        "\xE2\x96\x87", // 7/8
+        "\xE2\x96\x86", // 6/8
+        "\xE2\x96\x85", // 5/8
+        "\xE2\x96\x84", // 4/8
+        "\xE2\x96\x83", // 3/8
+        "\xE2\x96\x82", // 2/8
+        "\xE2\x96\x81"  // 1/8
+    };
 
     std::vector<std::vector<std::string>> emptyChickenFrames;
 
@@ -153,22 +168,25 @@ public:
     void setCurrentTick(int tickInterval); // Setter
     int getCurrentScreen() const;
 
-    int consoleWidthHandler();
+    void consoleWidthHandler();
 
     void doTurn();
     void printInterface();
-    void typingEntrance(std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender);
+    void typingEntrance(std::string head, std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender);
     void randomCollabGenerator();
     void CheckCompanyDead();
     void highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes);
     void displayUIControls(int previousSpaceUsed);
     void renderCenteringSpaces();
 
+    void delayBeforeRefresh(int previousScreenIndex);
+
     void inputHandler();
     void resetInputHandler();
     void resetUIButtonSelection();
 
     std::vector<std::vector<std::string>> loadFrames(const std::string& filename);
+    std::string loadChar(const std::string& filename);
     void renderAnimation(const std::vector<std::vector<std::string>>& frames, int delayMs, bool isContinued, bool haveControlsUI, bool hasEnd);
 };
 
