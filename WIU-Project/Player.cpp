@@ -1,4 +1,5 @@
 #include "Player.h"
+//#pragma warning(disable: 6386) // disable warning for buffer overrun, I know what I'm doing here. It's fine it doesn't explode the program trustttt
 
 Player::Player() {
 	hackingPoints = 5;
@@ -11,7 +12,7 @@ Player::Player() {
 	lengthOfArray = nullptr;
 	dependencyChain = nullptr;
 	currentUpgradeIndices = nullptr;
-
+	upgradesArray = nullptr;
 
 }
 Player::~Player() {
@@ -67,7 +68,7 @@ Virus* Player::getPlayerVirus() const {
 
 void Player::spendPoints(float cost) {
 	if (cost <= hackingPoints) {
-		hackingPoints -= cost;
+		hackingPoints -= static_cast<int>(cost); // wait why I made cost a float??? Should've been an int from the start haiz. Issok there's nothing static cast cant fix!
 		std::cout << "You have spent " << cost << " hacking points." << std::endl;
 	} 
 
@@ -127,13 +128,13 @@ void Player::parseUpgrades() {
 	}
 
 	for (int i = 0; i < playerVirus->getNumUpgrades(); i++) {
-		upgradesArray[i] = new Upgrades(nameUpgrade[parserIndex1],
-				nameUpgrade[parserIndex1 + 1], 
-				statsUpgrade[parserIndex2], 
-				statsUpgrade[parserIndex2 + 1], 
-				statsUpgrade[parserIndex2 + 2], 
-				statsUpgrade[parserIndex2 + 3],
-				statsUpgrade[parserIndex2 + 4]
+		upgradesArray[i] = new Upgrades(playerVirus->getNameUpgrade()[parserIndex1],
+				playerVirus->getNameUpgrade()[parserIndex1 + 1],
+				playerVirus->getStatsUpgrades()[parserIndex2],
+				playerVirus->getStatsUpgrades()[parserIndex2 + 1],
+				playerVirus->getStatsUpgrades()[parserIndex2 + 2],
+				playerVirus->getStatsUpgrades()[parserIndex2 + 3],
+				playerVirus->getStatsUpgrades()[parserIndex2 + 4]
 		);
 		parserIndex1 += 2;
 		parserIndex2 += 5;
@@ -141,7 +142,7 @@ void Player::parseUpgrades() {
 }
 
 void Player::parseDependencies() {
-	int numberOfElements = (playerVirus->getNumUpgrades() + 6);
+	int numberOfElements = playerVirus->getDependentIndicesLength();
 
 	// Count chains first
 	noOfChains = 0;
@@ -177,7 +178,7 @@ void Player::parseDependencies() {
 }
 
 void Player::printArrays() {
-
+	std::cout << std::endl;
 	// Print chains
 	for (int i = 0; i < noOfChains; i++) {
 		std::cout << "Chain " << i + 1 << ": ";
@@ -202,6 +203,8 @@ int Player::getNoOfChains() {
 }
 
 void Player::update(int noOfInfectedComputers, int networkSize, int noOfBrickedComputers) {
+	printArrays();
+
 	std::string upgrade;
 	if (noOfInfectedComputers - infectedComputersPrevious > 0 || noOfBrickedComputers - brickedComputersPrevious) {
 		int probability = (rand() % 10 +(noOfInfectedComputers - infectedComputersPrevious)/2);

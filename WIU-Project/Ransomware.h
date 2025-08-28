@@ -16,6 +16,7 @@ public:
     const float* getStatsUpgrades() const;
     const int* getDependentIndices() const;
     const int getNumUpgrades() const;
+    const int getDependentIndicesLength() const { return dependentIndicesLength; };
 
 private:
 
@@ -63,6 +64,7 @@ private:
         //Dependency Chain 7
         19, -1
     };
+    int dependentIndicesLength = NUM_UPGRADES + 6;
 
     std::string nameUpgrade[NUM_UPGRADES * 2] = {
         // SPEED / SPREAD (6)

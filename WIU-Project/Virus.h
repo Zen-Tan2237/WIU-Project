@@ -40,6 +40,7 @@ public:
 	virtual const float* getStatsUpgrades() const = 0;	// MANY PURE VIRTUAL
 	virtual const int* getDependentIndices() const = 0;	// SUCH ABSTRACT
 	virtual const int getNumUpgrades() const = 0;	// VERY INHERITANCE
+	virtual const int getDependentIndicesLength() const = 0; // MUCH VIRTUAL
 
 	// Anyways in all seriousness, this just to get the arrays from each derived class...
 

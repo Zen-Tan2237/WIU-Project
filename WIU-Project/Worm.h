@@ -66,6 +66,8 @@ private:
 		19, -1
 	};
 
+	int dependentIndicesLength = NUM_UPGRADES + 6;
+
 	std::string nameUpgrade[NUM_UPGRADES * 2] = { // First string is Name, After that is the description
 		// SPEED UPGRADES
 		"Polymorphic Engine", "The virus rewrites its code everytime it spreads to a new computer, harder to detect. Speed and complexity increase slightly",
@@ -156,5 +158,6 @@ public:
 	const float* getStatsUpgrades() const;
 	const int* getDependentIndices() const;
 	const int getNumUpgrades() const;
+	const int getDependentIndicesLength() const { return dependentIndicesLength; };
 };
 
