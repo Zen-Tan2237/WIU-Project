@@ -47,10 +47,10 @@ int Worm::miniGame() {
 		}
 	}
 	if (lose) {
-		std::cout << "you crashed. You get " << points << " points";
+		std::cout << "you crashed!";
 	}
 	else if (win) {
-		std::cout << "you win! You get " << points << " points";
+		std::cout << "you win!";
 	}
 	Sleep(3000);
 	for (int i = 0; i < row; i++)
