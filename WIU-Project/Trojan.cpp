@@ -145,22 +145,22 @@ void Trojan::miniGame(int& hackingPoints) {
 						/* Answer Allocation ++++++++++++++++++++++++++++++++++++++ */ {
 							if (i <= 1) {
 								if (randOpt[j] == p_con[i][condition[i]]) {
-									answers[i] = ansNum = '0';
+									answers[i] = ansNum + '0';
 								}
 							}
 							else if (i == 2) {
 								if (randOpt[j] == date[condition[i]]) {
-									answers[i] = ansNum = '0';
+									answers[i] = ansNum + '0';
 								}
 							}
 							else if (i == 3) {
 								if (randOpt[j] == ver[condition[i]]) {
-									answers[i] = ansNum = '0';
+									answers[i] = ansNum + '0';
 								}
 							}
 							else if (i == 4) {
 								if (randOpt[j] == fT[condition[i]]) {
-									answers[i] = ansNum = '0';
+									answers[i] = ansNum + '0';
 								}
 							}
 						}
@@ -275,7 +275,7 @@ void Trojan::printDialog(std::string department, std::string& synNm, std::string
 		std::cout << "You are acting as a manager, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the employees of the " << department << " department.\n";
 		break;
 	case 1: // Acting as an employee
-		std::cout << "You are acting as an employee of the " << department << "department, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the manager of the department.\n";
+		std::cout << "You are acting as an employee of the " << department << " department, you are to deliver the TROJAN VIRUS via a \"" << fT << "\" file, to the manager of the department.\n";
 		break;
 	default:
 		break;

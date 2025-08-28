@@ -13,6 +13,7 @@ protected:
 	float resilience;
 
 public:
+
 	virtual void evolve(Upgrades* toUpgrade);
 	void setAll10();
 	virtual void miniGame(int& hackingPoints) = 0;
