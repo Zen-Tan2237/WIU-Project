@@ -324,6 +324,10 @@ void Player::displayUpgrades() {
 }
 
 void Player::applyUpgrade(int upgradeIndex) {
+	if (hackingPoints < upgradesArray[upgradeIndex]->getCost()) {
+		std::cout << "Not enough hacking points to purchase this upgrade.\n";
+		return;
+	}
 	// Apply upgrade
 	playerVirus->evolve(upgradesArray[upgradeIndex]);
 	spendPoints(upgradesArray[upgradeIndex]->getCost());
