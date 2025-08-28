@@ -13,7 +13,7 @@ private:
 	static float globalCureProgress;
 	static float infectedRate_global;
 	
-	static const float infectThreshold[4];
+	static const float detectThreshold[4];
 	static const float cureThreshold[4];
 
 
