@@ -12,6 +12,7 @@
 int Company::totalNetworkSize = 0;
 int Company::totalNoOfInfectedComputers = 0;
 int Company::totalNoOfBrickedComputers = 0;
+int Company::totalUniqueCompanyInfections = 0;
 
 Company::Company()
 {
@@ -276,6 +277,7 @@ void Company::calculateSpread(Company* companies[]) // BALANCED
 				if (triggers) {
 					//std::cout << "Virus managed to spread to " << companies[chosenSpreadCompany]->getName() << ", with a chance of " << probability * 100 << "%" << std::endl;
 					companies[chosenSpreadCompany]->setNoOfInfectedComputers(1);
+					totalUniqueCompanyInfections++;
 				}
 				else {
 					//std::cout << "Virus failed: Security Too High" << std::endl;
@@ -374,6 +376,11 @@ int Company::getTotalNoOfInfectedComputers()
 int Company::getTotalNoOfBrickedComputers()
 {
 	return totalNoOfBrickedComputers;
+}
+
+int Company::getTotalUniqueCompanyInfections()
+{
+	return totalUniqueCompanyInfections;
 }
 
 bool Company::getIsFallen() const

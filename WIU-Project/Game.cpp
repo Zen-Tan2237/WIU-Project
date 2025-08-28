@@ -53,6 +53,7 @@ Game::Game()
     consoleWidth = 0;
     previousConsoleWidth = 0;
     completedNews = 0;
+    oldUniqueCompaniesInfected = 0;
 }
 
 Game::~Game()
@@ -209,7 +210,10 @@ void Game::doTurn()
                 gameResult = 1; // lost (cure found)
                 screenIndex = 8; 
             }
-
+            else if (Company::getTotalUniqueCompanyInfections() != oldUniqueCompaniesInfected) {
+                oldUniqueCompaniesInfected = Company::getTotalUniqueCompanyInfections();
+                player.setHackingPoints(player.getHackingPoints() + player.getPlayerVirus()->miniGame());
+            }
             else if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
                 int temp = rand() % 2;
                 newZ->PlayerWinNews(temp);
@@ -864,20 +868,35 @@ void Game::printInterface()
                     int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
 
                     for (int i = 0; i < 20; i++) {
-                        upgradesArray[i] = player.getUpgradesArray()[i];
+                        if (player.getUpgradesArray()[i] != nullptr) {
+                            upgradesArray[i] = player.getUpgradesArray()[i];
+                        }
                     }
                     for (int i = 0; i < maxSelectedUIButtonOffset + 1 - 1; i++) {
-                        renderCenteringSpaces();
-                        highlightSelectedUIButton(i, "[ " + upgradesArray[currentUpgradesIndices[i]]->getName() + " ]", hConsole);
-                        std::cout << std::endl;
+                        if (upgradesArray[currentUpgradesIndices[i]] != nullptr && currentUpgradesIndices[i] != -1) {
+                            renderCenteringSpaces();
+                            highlightSelectedUIButton(i, "[ " + upgradesArray[currentUpgradesIndices[i]]->getName() + " ]", hConsole);
+                            std::cout << std::endl;
 
-                        SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-                        renderCenteringSpaces();
-                        std::cout << upgradesArray[currentUpgradesIndices[i]]->getDesc() << std::endl;
-                        renderCenteringSpaces();
-                        std::cout << "Cost: " << upgradesArray[currentUpgradesIndices[i]]->getCost() << " Hacker Point/s" << std::endl << std::endl;
-                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-                        
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+                            renderCenteringSpaces();
+                            std::cout << upgradesArray[currentUpgradesIndices[i]]->getDesc() << std::endl;
+                            renderCenteringSpaces();
+                            std::cout << "Cost: " << upgradesArray[currentUpgradesIndices[i]]->getCost() << " Hacker Point/s" << std::endl << std::endl;
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                        }
+                        else {
+                            renderCenteringSpaces();
+                            highlightSelectedUIButton(i, "[ LOCKED ]", hConsole);
+                            std::cout << std::endl;
+
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+                            renderCenteringSpaces();
+                            std::cout << "This upgrade tree is locked" << std::endl;
+                            renderCenteringSpaces();
+                            std::cout << "Cost: Nil" << std::endl << std::endl;
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                        }
                     }
 
                     renderCenteringSpaces();
@@ -1260,10 +1279,14 @@ void Game::inputHandler()
                         screenIndex = 4;
                     }
                     else {
-                        int* balls = player.getCurrentUpgradeIndices();
-                        player.applyUpgrade(balls[selectedUIButton]);
-                        player.blockUpgrade();
-                        screenIndex = 4;
+                        int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
+
+                        if (currentUpgradesIndices[selectedUIButton] != -1) {
+                            player.applyUpgrade(currentUpgradesIndices[selectedUIButton]);
+                            player.blockUpgrade();
+
+                            screenIndex = 4;
+                        }     
                     }
                 }
 
