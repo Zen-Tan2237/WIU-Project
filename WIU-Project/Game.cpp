@@ -844,7 +844,7 @@ void Game::typingEntrance(std::string head, std::string content, std::string end
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     std::string typedContent = "";
-    std::string instantContent = "\n";
+    std::string instantContent = "";
     int noOfLines = 0;
     int perLine = 100;
     int iteration = 0;
