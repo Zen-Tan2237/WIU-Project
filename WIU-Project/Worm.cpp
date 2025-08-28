@@ -24,6 +24,13 @@ void Worm::evolve(Upgrades* toUpgrade) {
 
 int Worm::miniGame() {
 	srand(static_cast<unsigned int>(time(0)));
+	lose = false;
+	win = false;
+	wormRow = 0;
+	wormCol = 0;
+	wormRowPrevious = wormRow;
+	wormColPrevious = wormCol;
+	dir = 's';
 	int points = 0;
 	for (int i = 0; i < row; i++) {
 		board[i] = new char[col];
@@ -32,13 +39,18 @@ int Worm::miniGame() {
 	makeboard();
 	board[wormRow][wormCol] = 'W';
 	printboard();
-	while (!lose) {
+	while (!lose && !win) {
 		update();
 		if (wormCol % 6 == 2 && wormColPrevious % 6 != 2) {
-			points++;
+			points+= 3;
 		}
 	}
-	std::cout << "you crashed. You get " << points << " points";
+	if (lose) {
+		std::cout << "you crashed. You get " << points << " points";
+	}
+	else if (win) {
+		std::cout << "you win! You get " << points << " points";
+	}
 	Sleep(3000);
 	for (int i = 0; i < row; i++)
 	{
@@ -145,11 +157,11 @@ void Worm::getInput() {
 				wormCol++;
 			}
 			else {
-				lose = true;
+				win = true;
 			}
 		}
 		else {
-			lose = true;
+			win = true;
 		}
 		break;
 	default:

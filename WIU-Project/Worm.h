@@ -12,13 +12,14 @@ class Worm : public Virus
 private:
 	const int row = 10;
 	const int col = 72;
-	bool lose = false;
-	int wormRow = 0;
-	int wormCol = 0;
-	int wormRowPrevious = wormRow;
-	int wormColPrevious = wormCol;
-	char dir = 's';
-	char** board = new char* [row];
+	bool lose;
+	bool win;
+	int wormRow;
+	int wormCol;
+	int wormRowPrevious;
+	int wormColPrevious;
+	char dir;
+	char** board;
 
 
 
