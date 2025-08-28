@@ -1357,7 +1357,8 @@ void Game::inputHandler()
                             int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
 
                             if (currentUpgradesIndices[selectedUIButton] != -1) {
-                                float cost = player.getUpgradesArray()[selectedUIButton]->getCost();
+                                float cost = player.getUpgradesArray()[currentUpgradesIndices[selectedUIButton]]->getCost();
+                                std::cout << "cost" << cost << std::endl;
 
                                 if (player.getHackingPoints() >= cost) {
                                     player.applyUpgrade(currentUpgradesIndices[selectedUIButton]);
