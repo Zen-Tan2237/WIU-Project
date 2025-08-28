@@ -12,15 +12,17 @@ private:
 	static int cyberNewsCount[2];
 	static float globalCureProgress;
 	static float infectedRate_global;
-
-	static const float infectThreshold[4];
+	
+	static const float detectThreshold[4];
 	static const float cureThreshold[4];
+
 
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* newsDetectDone;
 	int* newsIndex; // for both head and body
 	float* fightStrength;
 	float* researchEfficiency;
+
 
 
 	//bool* isResearching; // Debug variable
@@ -49,8 +51,11 @@ public:
 	//void displayStatus() const;
 
 	bool getCureComplete() const;
+	bool getIsVdetect() const; // will change if you run advance cure, a boolean is needed.
 	int getNewsIndex(int) const;
 	int getDetectionLevel() const;
+	bool getNewsDetectDone_bool(int) const; // use this to check if the virus is already detected
+	int getNewsDetectDone_int(int) const; // use this to set the news
 	static float getGlobalCureProgress();
 
 	CyberSecurity(int);

@@ -7,7 +7,7 @@ int CyberSecurity::cyberNewsCount[2] = { 0, 0 }; // Keep
 float CyberSecurity::globalCureProgress = 0.0f; // Keep
 float CyberSecurity::infectedRate_global = 0; // Keep
 
-const float CyberSecurity::infectThreshold[4] = { 3.0f, 15.0f, 39.0f, 75.0f }; // Keep
+const float CyberSecurity::detectThreshold[4] = { 25.0f, 40.0f, 65.0f, 85.0f }; // Keep
 const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; // Keep
 
 /* Function Members --------------------------------------------------------------------- */
@@ -22,8 +22,9 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		/**	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
 			which = -1; // Reset every instance.
-			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
+			if (isVDetect[i] && !newsDetectDone[i] && coy[i]->getBrickedStatus() >= 0.1f) { // news out at 0.33 / 33% infected and if ;
 				which = rand() % 5;
+
 				newsDetectDone[i] = 1;
 			}
 			newsIndex[i] = which;
@@ -40,8 +41,8 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		}
 		newsIndex[maxCompany] = which;
 		which = -1; // Reset
-		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
-			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
+		if (cyberNewsCount[1] < (sizeof(detectThreshold) / sizeof(detectThreshold[0]))) { // Prevents memory corruption / crashes
+			if (infectedRate_global >= detectThreshold[cyberNewsCount[1]]) {
 				which = rand() % 5;
 				cyberNewsCount[1]++;
 			}
@@ -106,19 +107,19 @@ void CyberSecurity::advanceCure(Company* coy[], const Virus& virus) {
 
 	switch (detectionLevel) { // sets progress speed based on detection level | detection level is set to 0 on initialization.
 	case 1: {
-		this->cureProgressSpeed(409, virus); // 0.001 -> 1 to INF;
+		this->cureProgressSpeed(439, virus); // 0.001 -> 1 to INF;
 		break;
 	}
 	case 2: {
-		this->cureProgressSpeed(617, virus); // 0.001 -> 1 to INF;
+		this->cureProgressSpeed(647, virus); // 0.001 -> 1 to INF;
 		break;
 	}
 	case 3: {
-		this->cureProgressSpeed(825, virus); // 0.001 -> 1 to INF;
+		this->cureProgressSpeed(855, virus); // 0.001 -> 1 to INF;
 		break;
 	}
 	case 4: {
-		this->cureProgressSpeed(1433, virus); // 0.001 -> 1 to INF;
+		this->cureProgressSpeed(1483, virus); // 0.001 -> 1 to INF;
 		break;
 	}
 	default: {
@@ -151,22 +152,22 @@ bool CyberSecurity::isVirusDetected(float udr, const Company& coy, const Virus& 
 	return 0;
 }
 void CyberSecurity::detectionLevelCheck() { // Checks if total infected networks have reached the thresholds
-	if (infectedRate_global >= infectThreshold[3]) {
+	if (infectedRate_global >= detectThreshold[3]) {
 		detectionLevel = 4;
 	}
-	else if (infectedRate_global >= infectThreshold[2]) {
+	else if (infectedRate_global >= detectThreshold[2]) {
 		detectionLevel = 3;
 	}
-	else if (infectedRate_global >= infectThreshold[1]) {
+	else if (infectedRate_global >= detectThreshold[1]) {
 		detectionLevel = 2;
 	}
-	else if (infectedRate_global >= infectThreshold[0]) {
+	else if (infectedRate_global >= detectThreshold[0]) {
 		detectionLevel = 1;
 	}
 }
 // undeadRate used V
 bool CyberSecurity::doResearch(int type, float threshold) const {
-	if (undeadRate[type] >= threshold && detectionLevel > 0 && Company::getTotalNoOfBrickedComputers() > 0) {
+	if (undeadRate[type] >= threshold && detectionLevel > 0) {
 		return 1;
 	}
 	return 0;
@@ -227,6 +228,9 @@ void CyberSecurity::displayStatus() const {
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
 }
+bool CyberSecurity::getIsVdetect() const {
+	return this->isVDetect;
+}
 int CyberSecurity::getNewsIndex(int type) const {
 	return this->newsIndex[type];
 }
@@ -235,6 +239,15 @@ int CyberSecurity::getDetectionLevel() const {
 }
 float CyberSecurity::getGlobalCureProgress() {
 	return globalCureProgress;
+}
+bool CyberSecurity::getNewsDetectDone_bool(int type) const {
+	return newsDetectDone[type];
+}
+int CyberSecurity::getNewsDetectDone_int(int type) const {
+	if (newsDetectDone[type]) {
+		return type;
+	}
+	return -1;
 }
 
 /* Private */
@@ -336,35 +349,44 @@ CyberSecurity::~CyberSecurity() {
 
 /*\
 
-To get the news
-\1/ 
-std::string Header;
-std::string Body;
 
+
+To set & print the news
+\1/ 
 for (int i = 0; i < maxCompany + 4;; i++) {
 	if (i < maxCompany) {
-		newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), company[]->getName(), virus[]->getName());
+		newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), company[]->getName(), virus->getName()); // everytime this code is run the static string will get overwriten.
+		std::cout << News::getHEAD; // this is how to print it if you need to 
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany) {
-		newZ->cybersecurityWinningNews(cyberSecurity->getNewsIndex(i), virus[]->getName());
+		newZ->cybersecurityWinningNews(cyberSecurity->getNewsIndex(i), virus->getName()); 
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany + 1) {
-		newZ->cyberSecurityLosingNews(cyberSecurity->getNewsIndex(i), virus[]->getName());
+		newZ->cyberSecurityLosingNews(cyberSecurity->getNewsIndex(i), virus->getName());
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany + 2) {
 		newZ->PlayerWinNews(cyberSecurity->getNewsIndex(i));
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany + 3) {
 		newZ->PlayerLoseNews(cyberSecurity->getNewsIndex(i));
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 }
 
+\2/ set indivisual News 
 	(0 to (maxCompany - 1))	|| VIRUS FOUND
 	(maxCompany)			|| CYBER WINNING
 	(maxCompany + 1)		|| CYBER LOSING
 	(maxCompany + 2)		|| PLAYER WIN
 	(maxCompany + 3)		|| PLAYER LOSE
-
 
 	cyberSecurity->getNewsIndex(maxCompany - (maxCompany - 0));
 \*/
