@@ -211,8 +211,7 @@ void Game::doTurn()
                 screenIndex = 8; 
             }
             else if (Company::getTotalUniqueCompanyInfections() != oldUniqueCompaniesInfected) {
-                oldUniqueCompaniesInfected = Company::getTotalUniqueCompanyInfections();
-                player.setHackingPoints(player.getHackingPoints() + player.getPlayerVirus()->miniGame());
+                screenIndex = 9;
             }
             else if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
                 int temp = rand() % 2;
@@ -288,11 +287,11 @@ void Game::printInterface()
 
                 // Title Screen
                 renderAnimation(frame_Logo, 5, false, true, true);
-                //virusName = "yes";
-                //virusTypeIndex = 0;
-                //companyStartIndex = 0;
-                screenIndex = 1;
-                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                virusName = "yes";
+                virusTypeIndex = 1;
+                companyStartIndex = 0;
+                screenIndex = 4;
+                player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
                 break;
 
@@ -962,6 +961,14 @@ void Game::printInterface()
 
                 isGameRunning = false;
                 break;
+            case 9: // minigame   
+                system("cls");
+                player.setHackingPoints(player.getHackingPoints() + player.getPlayerVirus()->miniGame());
+                oldUniqueCompaniesInfected = Company::getTotalUniqueCompanyInfections();
+
+                screenIndex = 4;
+
+                break;
             default:
                 break;
             } 
@@ -1217,112 +1224,114 @@ void Game::delayBeforeRefresh(int previousScreenIndex)
 void Game::inputHandler()
 {
     while (isGameRunning) {
-        char characterInput = _getch();
-        refreshNow = true;
+        if (screenIndex != 9) {
+            char characterInput = _getch();
+            refreshNow = true;
 
-        if (character != characterInput) {
-            character = characterInput;
-        }
-
-        if (isNamingVirus) {
-            if (character == '\r' && virusName.length() > 0) {
-                isNamingVirus = false;
+            if (character != characterInput) {
+                character = characterInput;
             }
-            else if (character == '\b') {
-                if (virusName.length() > 0) {
-                    virusName.pop_back();
+
+            if (isNamingVirus) {
+                if (character == '\r' && virusName.length() > 0) {
+                    isNamingVirus = false;
+                }
+                else if (character == '\b') {
+                    if (virusName.length() > 0) {
+                        virusName.pop_back();
+                    }
+                }
+                else if (virusName.length() < 20) {
+                    virusName = virusName + character;
                 }
             }
-            else if (virusName.length() < 20){
-                virusName = virusName + character;
-            }
-        }
-        else {
-            switch (character) {
-            case ' ':
-                if (screenIndex == 1) { // screen 1 selected button
-                    if (selectedUIButton == 0) {
-                        screenIndex = 2;
-                        resetInputHandler();
+            else {
+                switch (character) {
+                case ' ':
+                    if (screenIndex == 1) { // screen 1 selected button
+                        if (selectedUIButton == 0) {
+                            screenIndex = 2;
+                            resetInputHandler();
+                        }
                     }
-                }
-                else if (screenIndex == 3) { // screen 3 selected button
-                    if (isChoosingVirusType) {
-                        virusTypeIndex = selectedUIButton;
-                        isChoosingVirusType = false;
-                        resetInputHandler();
+                    else if (screenIndex == 3) { // screen 3 selected button
+                        if (isChoosingVirusType) {
+                            virusTypeIndex = selectedUIButton;
+                            isChoosingVirusType = false;
+                            resetInputHandler();
+                        }
+                        else if (isChoosingCompanyStart) { // screen 3.5 selected button
+                            companyStartIndex = selectedUIButton;
+                            isChoosingCompanyStart = false;
+                            player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                            resetInputHandler();
+                        }
                     }
-                    else if (isChoosingCompanyStart) { // screen 3.5 selected button
-                        companyStartIndex = selectedUIButton;
-                        isChoosingCompanyStart = false;
-                        player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
-                        resetInputHandler();
-                    }
-                }
-                else if (screenIndex == 4) { // screen 4 selected button
-                    gameplayButtonChosenIndex = selectedUIButton;
+                    else if (screenIndex == 4) { // screen 4 selected button
+                        gameplayButtonChosenIndex = selectedUIButton;
 
-                    if (gameplayButtonChosenIndex == 0) {
-                        screenIndex = 6;
+                        if (gameplayButtonChosenIndex == 0) {
+                            screenIndex = 6;
+                        }
+                        else {
+                            screenIndex = 5;
+                        }
                     }
-                    else {
-                        screenIndex = 5;
-                    }
-                }
-                else if (screenIndex == 5) { // screen 5 selected button
-                    if (selectedUIButton == 0) {
-                        screenIndex = 4;
-                    }
-                }
-                else if (screenIndex == 6) {
-                    if (selectedUIButton == maxSelectedUIButtonOffset) {
-                        screenIndex = 4;
-                    }
-                    else {
-                        int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
-
-                        if (currentUpgradesIndices[selectedUIButton] != -1) {
-                            player.applyUpgrade(currentUpgradesIndices[selectedUIButton]);
-                            player.blockUpgrade();
-
+                    else if (screenIndex == 5) { // screen 5 selected button
+                        if (selectedUIButton == 0) {
                             screenIndex = 4;
-                        }     
+                        }
                     }
+                    else if (screenIndex == 6) {
+                        if (selectedUIButton == maxSelectedUIButtonOffset) {
+                            screenIndex = 4;
+                        }
+                        else {
+                            int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
+
+                            if (currentUpgradesIndices[selectedUIButton] != -1) {
+                                player.applyUpgrade(currentUpgradesIndices[selectedUIButton]);
+                                player.blockUpgrade();
+
+                                screenIndex = 4;
+                            }
+                        }
+                    }
+
+                    break;
+
+                case 'w':
+                case 'W':
+                    if (navigationType == 0) {
+                        if (selectedUIButton - 1 >= minSelectedUIButtonOffset) selectedUIButton--;
+                    }
+                    break;
+
+                case 'a':
+                case 'A':
+                    if (navigationType == 1) {
+                        if (selectedUIButton - 1 >= minSelectedUIButtonOffset) selectedUIButton--;
+                    }
+                    break;
+
+                case 's':
+                case 'S':
+                    if (navigationType == 0) {
+                        if (selectedUIButton + 1 <= maxSelectedUIButtonOffset) selectedUIButton++;
+                    }
+                    break;
+
+                case 'd':
+                case 'D':
+                    if (navigationType == 1) {
+                        if (selectedUIButton + 1 <= maxSelectedUIButtonOffset) selectedUIButton++;
+                    }
+                    break;
+
+                default:
+                    std::cout << "yes" << std::endl;
+                    break;
                 }
-
-                break;
-
-            case 'w':
-            case 'W':
-                if (navigationType == 0) {
-                    if (selectedUIButton - 1 >= minSelectedUIButtonOffset) selectedUIButton--;
-                }
-                break;
-
-            case 'a':
-            case 'A':
-                if (navigationType == 1) {
-                    if (selectedUIButton - 1 >= minSelectedUIButtonOffset) selectedUIButton--;
-                }
-                break;
-
-            case 's':
-            case 'S':
-                if (navigationType == 0) {
-                    if (selectedUIButton + 1 <= maxSelectedUIButtonOffset) selectedUIButton++;
-                }
-                break;
-
-            case 'd':
-            case 'D':
-                if (navigationType == 1) {
-                    if (selectedUIButton + 1 <= maxSelectedUIButtonOffset) selectedUIButton++;
-                }
-                break;
-
-            default:
-                std::cout << "yes" << std::endl;
-                break;
             }
         }
     }

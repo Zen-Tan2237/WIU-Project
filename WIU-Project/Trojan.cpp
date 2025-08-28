@@ -181,7 +181,13 @@ int Trojan::miniGame() {
 	p_con = nullptr;
 
 	if (playerInput(answers)) {
-		points++;
+		std::cout << "File Sent Successfuly" << '\n';
+		std::cout << '\n';
+		std::cout << "5 HACKER POINTS GAINED";
+		points += 5;
+	}
+	else {
+		std::cout << "File Sending Failed" << '\n';
 	}
 	return points;
 }
@@ -285,6 +291,9 @@ void Trojan::printDialog(std::string department, std::string& synNm, std::string
 	std::cout << "You have uncovered the latest file with the following syntax: ";
 	std::cout << synNm << '_' << synSub << '_' << synDate << '_' << synVer << "; ";
 	std::cout << "Name the TROJAN VIRUS with a similar syntax with the date and version being the follow up of that file.\n";
+	std::cout << '\n';
+	std::cout << "v1 -> v2 -> v3 -> final -> final_v2 -> v1\n";
+	std::cout << "Q1 -> Q2 -> Q3 -> Q4\n";
 	std::cout << '\n';
 }
 void Trojan::printSynSectNm(int type) {
