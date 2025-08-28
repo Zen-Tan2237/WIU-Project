@@ -16,7 +16,7 @@ public:
 
 	virtual void evolve(Upgrades* toUpgrade); // I forgot why I even made this virtual... haiz lazy to change la.
 	void setAll10();
-	virtual void miniGame(int& hackingPoints) = 0; // pure virtual (make Mr Izan proud realll)
+	virtual int miniGame() = 0; // pure virtual (make Mr Izan proud realll)
 	void displayStats();
 
 	Virus();

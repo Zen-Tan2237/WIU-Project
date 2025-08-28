@@ -22,7 +22,7 @@ void Ransomware::evolve(Upgrades* toUpgrade) {
     resilience += toUpgrade->getResilience();
 }
 
-void Ransomware::miniGame(int& hackingPoints)
+int Ransomware::miniGame()
 {
     for (int i = 0; i < 3; i++)
     {
@@ -58,12 +58,13 @@ void Ransomware::miniGame(int& hackingPoints)
     if (Points > 4)
     {
         std::cout << "You Win the mini game\n";
-        hackingPoints += 20;
+        Points += 20;
     }
     else
     {
         std::cout << "You Lose the minigame\n";
     }
+    return Points;
 }
 
 const std::string* Ransomware::getNameUpgrade() const {

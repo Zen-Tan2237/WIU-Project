@@ -148,7 +148,7 @@ public:
 	~Worm();
 
 	void evolve(Upgrades*) override;
-	void miniGame(int& hackingPoints);
+	int miniGame();
 	void makeboard();
 	void printboard();
 	void update();

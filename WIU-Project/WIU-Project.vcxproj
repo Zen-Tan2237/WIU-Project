@@ -182,6 +182,14 @@
     <Text Include="yes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="..\..\..\..\..\..\sounds\8bitMusic.wav" />
+    <Media Include="..\..\..\..\..\..\sounds\beep-313342.mp3" />
+    <Media Include="..\..\..\..\..\..\sounds\cartoon-phone-voice-88637.mp3" />
+    <Media Include="..\..\..\..\..\..\sounds\computer-processing-sound-effects-short-click-select-03-122132.mp3" />
+    <Media Include="..\..\..\..\..\..\sounds\medium-text-blip-14855.mp3" />
+    <Media Include="..\..\..\..\..\..\sounds\menuing.wav" />
+    <Media Include="..\..\..\..\..\..\sounds\skill-attack-combo-music-note-3-384969.mp3" />
+    <Media Include="..\..\..\..\..\..\sounds\trap-drums-loop-sound-effect-311578.mp3" />
     <Media Include="..\..\..\..\Downloads\hacking-sfx.wav" />
     <Media Include="resources\yipeeee.wav" />
   </ItemGroup>
