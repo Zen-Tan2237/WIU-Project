@@ -12,7 +12,7 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 
 /* Function Members --------------------------------------------------------------------- */
 /* News */
-/* Go to section 3 */
+/* Go to section 3 of the text below */
 void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
 	int which;
