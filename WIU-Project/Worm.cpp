@@ -32,6 +32,7 @@ int Worm::miniGame() {
 	wormColPrevious = wormCol;
 	dir = 's';
 	int points = 0;
+	board = new char* [row];
 	for (int i = 0; i < row; i++) {
 		board[i] = new char[col];
 	}
