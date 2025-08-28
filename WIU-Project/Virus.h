@@ -1,4 +1,4 @@
-#pragma once // guys remember to pragma twice bro
+#pragma once // guys remember to pragma twice
 #include <iostream>
 #include <string>
 #include "Upgrades.h"

@@ -1,5 +1,5 @@
 #include "Player.h"
-//#pragma warning(disable: 6386) // disable warning for buffer overrun, I know what I'm doing here. It's fine it doesn't explode the program trustttt
+// #pragma warning(disable: 6386) // disable warning for buffer overrun, I know what I'm doing here. It's fine it doesn't explode the program trustttt
 
 Player::Player() {
 	hackingPoints = 5;
@@ -118,7 +118,7 @@ void Player::parseUpgrades() {
 	int parserIndex2 = 0;
 	std::string* nameUpgrade = new std::string[playerVirus->getNumUpgrades() * 2];
 	float* statsUpgrade = new float [playerVirus->getNumUpgrades() * 5];
-	upgradesArray = new Upgrades * [playerVirus->getNumUpgrades()];
+	upgradesArray = new Upgrades* [playerVirus->getNumUpgrades()];
 
 	for (int i = 0; i < playerVirus->getNumUpgrades() * 2; i++) {
 		nameUpgrade[i] = playerVirus->getNameUpgrade()[i];
