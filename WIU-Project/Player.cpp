@@ -175,6 +175,7 @@ void Player::parseDependencies() {
 			start = i + 1;
 		}
 	}
+	blockUpgrade();
 }
 
 void Player::printArrays() {
