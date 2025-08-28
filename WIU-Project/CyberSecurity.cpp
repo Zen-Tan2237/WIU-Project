@@ -12,6 +12,7 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 
 /* Function Members --------------------------------------------------------------------- */
 /* News */
+/* Go to section 3 */
 void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
 	int which;
@@ -357,7 +358,7 @@ CyberSecurity::~CyberSecurity() {
 
 /*\
 To set & print the news.
-\1/ 
+\1/
 for (int i = 0; i < maxCompany + 4;; i++) {
 	if (i < maxCompany) {
 		newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), company[]->getName(), virus->getName()); // everytime this code is run the static string will get overwriten.
@@ -396,9 +397,11 @@ for (int i = 0; i < maxCompany + 4;; i++) {
 	cyberSecurity->getNewsIndex(maxCompany - (maxCompany - 0));
 
 newsSetectDone
-\3/ 
+\3/
 if newsSetectDone == true; returns value i;
-else retturns -1
+else; returns -1;
+
 cyberSecurity->getNewsIndex(getNewsDetectDone_int(i));
+getNewsDetectDone_int // can be used to get the company name as it retuns a value as shown above
 
 \*/

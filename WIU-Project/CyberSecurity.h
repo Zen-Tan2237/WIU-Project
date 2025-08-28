@@ -43,6 +43,7 @@ private:
 	void setFightStrength(int, const Company&);
 
 public:
+	/* Go to cpp */
 	void triggerEvent(Company* [], const Virus&);
 	bool isCureComplete();
 
