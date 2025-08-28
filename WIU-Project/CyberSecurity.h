@@ -2,7 +2,6 @@
 
 #include "Company.h"
 #include "Virus.h"
-#include "News.h"
 
 class CyberSecurity {
 private:
@@ -19,8 +18,10 @@ private:
 
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* newsDetectDone;
+	int* newsIndex; // for both head and body
 	float* fightStrength;
 	float* researchEfficiency;
+
 
 	//bool* isResearching; // Debug variable
 	float* undeadRate; // 0-100, 100.0f = no dead, 0.0f = all dead
@@ -40,15 +41,16 @@ private:
 	void setFightStrength(int, const Company&);
 
 public:
-	void triggerEvent(Company* [], const News&, const Virus&);
+	void triggerEvent(Company* [], const Virus&);
 	bool isCureComplete();
 
 	void advanceCure(Company* [], const Virus&);
 
 	//void displayStatus() const;
 
-	int getDetectionLevel() const; 
 	bool getCureComplete() const;
+	int getNewsIndex(int) const;
+	int getDetectionLevel() const;
 	static float getGlobalCureProgress();
 
 	CyberSecurity(int);
