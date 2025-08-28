@@ -49,6 +49,9 @@ private:
         19, -1
     };
 
+
+    int dependentIndicesLength = NUM_UPGRADES + 6;
+
     std::string nameUpgrade[NUM_UPGRADES * 2] = {
         // SPEED / SPREAD (6)
         "Phishing Email Campaign", "Disguises as a harmless attachment to trick users. Slight speed boost.",
@@ -151,5 +154,6 @@ public:
     const float* getStatsUpgrades() const;
     const int* getDependentIndices() const;
     const int getNumUpgrades() const;
+    const int getDependentIndicesLength() const { return dependentIndicesLength; };
 
 };
