@@ -24,6 +24,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 			which = -1; // Reset every instance.
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
 				which = rand() % 5;
+
 				newsDetectDone[i] = 1;
 			}
 			newsIndex[i] = which;
@@ -227,6 +228,9 @@ void CyberSecurity::displayStatus() const {
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
 }
+bool CyberSecurity::getIsVdetect() const {
+	return this->isVDetect;
+}
 int CyberSecurity::getNewsIndex(int type) const {
 	return this->newsIndex[type];
 }
@@ -235,6 +239,15 @@ int CyberSecurity::getDetectionLevel() const {
 }
 float CyberSecurity::getGlobalCureProgress() {
 	return globalCureProgress;
+}
+bool CyberSecurity::getNewsDetectDone_bool(int type) const {
+	return newsDetectDone[type];
+}
+int CyberSecurity::getNewsDetectDone_int(int type) const {
+	if (newsDetectDone[type] == 1) {
+		return type;
+	}
+	return -1;
 }
 
 /* Private */
@@ -336,35 +349,44 @@ CyberSecurity::~CyberSecurity() {
 
 /*\
 
-To get the news
-\1/ 
-std::string Header;
-std::string Body;
 
+
+To set & print the news
+\1/ 
 for (int i = 0; i < maxCompany + 4;; i++) {
 	if (i < maxCompany) {
-		newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), company[]->getName(), virus[]->getName());
+		newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), company[]->getName(), virus->getName()); // everytime this code is run the static string will get overwriten.
+		std::cout << News::getHEAD; // this is how to print it if you need to 
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany) {
-		newZ->cybersecurityWinningNews(cyberSecurity->getNewsIndex(i), virus[]->getName());
+		newZ->cybersecurityWinningNews(cyberSecurity->getNewsIndex(i), virus->getName()); 
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany + 1) {
-		newZ->cyberSecurityLosingNews(cyberSecurity->getNewsIndex(i), virus[]->getName());
+		newZ->cyberSecurityLosingNews(cyberSecurity->getNewsIndex(i), virus->getName());
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany + 2) {
 		newZ->PlayerWinNews(cyberSecurity->getNewsIndex(i));
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 	else if (i == maxCompany + 3) {
 		newZ->PlayerLoseNews(cyberSecurity->getNewsIndex(i));
+		std::cout << News::getHEAD;
+		std::cout << News::getBODY;
 	}
 }
 
+\2/ set indivisual News 
 	(0 to (maxCompany - 1))	|| VIRUS FOUND
 	(maxCompany)			|| CYBER WINNING
 	(maxCompany + 1)		|| CYBER LOSING
 	(maxCompany + 2)		|| PLAYER WIN
 	(maxCompany + 3)		|| PLAYER LOSE
-
 
 	cyberSecurity->getNewsIndex(maxCompany - (maxCompany - 0));
 \*/
