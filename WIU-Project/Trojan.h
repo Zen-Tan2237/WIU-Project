@@ -29,12 +29,12 @@ public:
 		MALVERTISING_NETWORK,
 		SUPPY_CHAIN_INJECTION,
 		//COMPLEXITY/PAYLOAD UPGRADES
-		ENCRYPTION_LAYER,
-		KEYLOGGER_MODULE,
-		ROOTKIT_INJECTION,
-		BRICKING_ROUTINE,
-		DATA_WIPER,
-		ANTIVIRUS_BYPASS,
+		CREDENTIAL_STEALER,
+		REMOTE_ACCESS_MODULE,
+		PRIVILAGE_EXTENSION_EXPLOIT,
+		SYSTEM_SERVICE_INJECTION,
+		DATA_EXFILTRATION,
+		BANKING_TROJAN_MODULE,
 		//RESILIENCE UPGRADES
 		CODE_OBFUSCATION_I,
 		CODE_OBFUSCATION_II,
@@ -64,7 +64,7 @@ public:
 		19, -1
 	};
 
-    std::string nameUpgradeTrojan[NUM_UPGRADES * 2] = {
+    std::string nameUpgrade[NUM_UPGRADES * 2] = {
         // SPEED / SPREAD (6)
         "Phishing Email Campaign", "Disguises as a harmless attachment to trick users. Slight speed boost.",
         "Fake Software Installer", "Masquerades as a legit installer; users self-infect. Modest speed boost.",
@@ -92,7 +92,7 @@ public:
         "Steganography Delivery", "Hides payload in media files to avoid detection."
     };
 
-    float statsUpgradeTrojan[NUM_UPGRADES * 5] = {
+    float statsUpgrade[NUM_UPGRADES * 5] = {
         // Phishing Email Campaign
         0.25f, 0.20f, 0.15f, 0.10f, 12,
         // Fake Software Installer
