@@ -121,10 +121,12 @@ private:
 
     static std::string HEAD;
     static std::string BODY;
+    static std::string EFFECTS;
     static int pastNews[7][2];
 
     static void setHEAD(std::string);
     static void setBODY(std::string);
+    static void setEFFECTS(std::string);
 
 public:
     News();
@@ -141,6 +143,7 @@ public:
 
     static std::string getHEAD();
     static std::string getBODY();
+    static std::string getEFFECTS();
 
     void setPastNews(int, int, int);
 };
