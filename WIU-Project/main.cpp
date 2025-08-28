@@ -10,7 +10,6 @@ int main() {
 	srand((unsigned)time(0));
 
 	Game* game = new Game;
-
 	game->initGame();
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));

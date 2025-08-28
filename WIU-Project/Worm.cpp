@@ -22,7 +22,7 @@ void Worm::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Worm::miniGame(int &hackingPoints) {
+int Worm::miniGame() {
 	srand(static_cast<unsigned int>(time(0)));
 	int points = 0;
 	for (int i = 0; i < row; i++) {
@@ -39,13 +39,13 @@ void Worm::miniGame(int &hackingPoints) {
 		}
 	}
 	std::cout << "you crashed. You get " << points << " points";
-	hackingPoints += points;
-	Sleep(5000);
+	Sleep(3000);
 	for (int i = 0; i < row; i++)
 	{
 		delete[] board[i];
 	}
 	delete[] board;
+	return points;
 }
 void Worm::makeboard() {
 	for (int i = 0; i < row; i++) {

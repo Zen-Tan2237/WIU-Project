@@ -21,10 +21,11 @@ void Trojan::evolve(Upgrades* toUpgrade) {
 	resilience += toUpgrade->getResilience();
 }
 
-void Trojan::miniGame(int& hackingPoints) {
+int Trojan::miniGame() {
 	char answers[5] = { '-', '-', '-', '-', '-' };
 	int condiOffset[2] = { 0, 0 };
 	int* condition = new int[5];
+	int points = 0;
 	std::string date[] = {
 		"Q1",
 		"Q2",
@@ -180,8 +181,9 @@ void Trojan::miniGame(int& hackingPoints) {
 	p_con = nullptr;
 
 	if (playerInput(answers)) {
-		hackingPoints++;
+		points++;
 	}
+	return points;
 }
 
 /* Naming Conventions */

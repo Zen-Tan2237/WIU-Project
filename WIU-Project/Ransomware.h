@@ -9,7 +9,7 @@ public:
     ~Ransomware();
 
     void evolve(Upgrades*) override;
-    void miniGame(int& hackingPoints);
+    int miniGame();
 
 
     const std::string* getNameUpgrade() const;

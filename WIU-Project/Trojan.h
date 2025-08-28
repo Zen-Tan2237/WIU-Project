@@ -147,7 +147,7 @@ public:
     ~Trojan();
 
     void evolve(Upgrades*);
-    void miniGame(int& hackingPoints);
+    int miniGame();
 
 
     const std::string* getNameUpgrade() const;

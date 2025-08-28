@@ -8,6 +8,7 @@ private:
 	static int totalNetworkSize;
 	static int totalNoOfInfectedComputers;
 	static int totalNoOfBrickedComputers;
+	static int totalUniqueCompanyInfections;
 
 	std::string companyName;
 	int networkSize; // how big the company is 
@@ -42,6 +43,7 @@ public:
 	static int getTotalNetworkSize();
 	static int getTotalNoOfInfectedComputers();
 	static int getTotalNoOfBrickedComputers();
+	static int getTotalUniqueCompanyInfections();
 
 	bool getIsFallen() const;
 	void setIsFallen(bool isFallen);

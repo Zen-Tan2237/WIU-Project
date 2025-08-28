@@ -41,6 +41,7 @@ private:
     bool refreshNow;
     int completedNews;
     char character;
+    int oldUniqueCompaniesInfected;
 
     std::vector<std::string> newsInADay_Head;
     std::vector<std::string> newsInADay_Body;
