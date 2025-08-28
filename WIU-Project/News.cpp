@@ -84,6 +84,8 @@ void News::companyCollabNews(int type, std::string companyA, std::string company
 	default:
 		break;
 	}
+
+	setEFFECTS(companyA + " and " + companyB + " have their spread increased \(virus can spread more easily \) v");
 }
 
 /* 5 Instances */
@@ -95,7 +97,7 @@ void News::virusFoundNews(int type, std::string company, std::string virus) cons
 	}
 		break;
 	case 1: {
-		setHEAD("VIIRUS DETECT! Who Will Be Next?");
+		setHEAD("VIRUS DETECT! Who Will Be Next?");
 		setBODY(company + " is in chaos after viruses were detected within their communication system. \"We don't even know which is a real email at this point\" says employee at the company.");
 	}
 		break;
@@ -117,6 +119,8 @@ void News::virusFoundNews(int type, std::string company, std::string virus) cons
 	default:
 		break;
 	}
+
+	setEFFECTS("Cybersecurity has been triggered");
 }
 
 /* 5 Instances */
@@ -214,6 +218,8 @@ void News::companyDeadNews(int type, std::string company, std::string virus) con
 	}
 		break;
 	}
+
+	setEFFECTS(company + " has fallen");
 }
 
 /* 2 Instances */
@@ -258,11 +264,19 @@ std::string News::getHEAD() {
 std::string News::getBODY() {
 	return BODY;
 }
+
+std::string News::getEFFECTS() {
+	return EFFECTS;
+}
+
 void News::setHEAD(std::string head) {
 	HEAD = head;
 }
 void News::setBODY(std::string body) {
 	BODY = body;
+}
+void News::setEFFECTS(std::string effects) {
+	EFFECTS = effects;
 }
 void News::setPastNews(int row, int col, int type) {
 	pastNews[row][col] = type;

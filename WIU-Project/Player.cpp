@@ -110,8 +110,18 @@ void Player::setInitials(Company* companyList[], int type, int companyChoice, st
 void Player::parseUpgrades() {
 	int parserIndex1 = 0;
 	int parserIndex2 = 0;
+	std::string* nameUpgrade = new std::string[playerVirus->getNumUpgrades() * 2];
+	float* statsUpgrade = new float [playerVirus->getNumUpgrades() * 5];
+
+	for (int i = 0; i < playerVirus->getNumUpgrades() * 2; i++) {
+		nameUpgrade[i] = playerVirus->getNameUpgrade()[i];
+	}
+	for (int i = 0; i < playerVirus->getNumUpgrades() * 5; i++) {
+		nameUpgrade[i] = playerVirus->getStatsUpgrades()[i];
+	}
+
 	for (int i = 0; i < NUM_UPGRADES; i++) {
-		upgradesArray[i] = new Upgrades(nameUpgrade[parserIndex1], 
+		upgradesArray[i] = new Upgrades(nameUpgrade[parserIndex1],
 				nameUpgrade[parserIndex1 + 1], 
 				statsUpgrade[parserIndex2], 
 				statsUpgrade[parserIndex2 + 1], 
@@ -125,12 +135,12 @@ void Player::parseUpgrades() {
 }
 
 void Player::parseDependencies() {
-	int numberOfElements = sizeof(dependentIndices) / sizeof(dependentIndices[0]);
+	int numberOfElements = sizeof(playerVirus->getDependentIndices()) / sizeof(playerVirus->getDependentIndices()[0]);
 
 	// Count chains first
 	noOfChains = 0;
 	for (int i = 0; i < numberOfElements; i++) {
-		if (dependentIndices[i] == -1) {
+		if (playerVirus->getDependentIndices()[i] == -1) {
 			noOfChains++;
 		}
 	}
@@ -143,13 +153,13 @@ void Player::parseDependencies() {
 	int chainIndex = 0;
 	int start = 0;
 	for (int i = 0; i < numberOfElements; i++) {
-		if (dependentIndices[i] == -1) {
+		if (playerVirus->getDependentIndices()[i] == -1) {
 			int length = i - start;
 			dependencyChain[chainIndex] = new int[length + 1];
 
 			// Copy into 2D array
 			for (int j = 0; j < length; j++) {
-				dependencyChain[chainIndex][j] = dependentIndices[start + j];
+				dependencyChain[chainIndex][j] = playerVirus->getDependentIndices()[start + j];
 			}
 
 			dependencyChain[chainIndex][length] = -1; // stopper

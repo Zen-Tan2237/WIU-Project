@@ -20,7 +20,7 @@ public:
 	void displayStats();
 
 	Virus();
-	~Virus();
+	virtual ~Virus();
 
 	//GETTERS SETTERS
 	float getSpeed() const;
@@ -34,6 +34,11 @@ public:
 	void setPayload(float payload);
 	void setResilience(float resilience);
 	void setName(std::string name);
+
+	virtual const std::string* getNameUpgrade() const = 0;
+	virtual const float* getStatsUpgrades() const = 0;
+	virtual const int* getDependentIndices() const = 0;
+	virtual const int getNumUpgrades() const = 0;
 
 };
 

@@ -65,3 +65,19 @@ void Ransomware::miniGame(int& hackingPoints)
         std::cout << "You Lose the minigame\n";
     }
 }
+
+const std::string* Ransomware::getNameUpgrade() const {
+    return nameUpgrade;
+}
+
+const float* Ransomware::getStatsUpgrades() const {
+    return statsUpgrade;
+}
+
+const int* Ransomware::getDependentIndices() const {
+    return dependentIndices;
+}
+
+const int Ransomware::getNumUpgrades() const {
+    return NUM_UPGRADES;
+}
