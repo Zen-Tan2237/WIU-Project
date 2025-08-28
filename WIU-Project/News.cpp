@@ -90,7 +90,7 @@ void News::companyCollabNews(int type, std::string companyA, std::string company
 		break;
 	}
 
-	setEFFECTS(companyA + " and " + companyB + " have their spread rate increased with each other (virus can spread more easily)");
+	setEFFECTS("The spread rate between " + companyA + " and " + companyB + " has increased (virus can spread more easily)");
 }
 
 /* 5 Instances */
