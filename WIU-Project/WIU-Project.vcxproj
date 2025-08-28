@@ -172,6 +172,8 @@
     <Text Include="Screen4GameplayUI1.txt" />
     <Text Include="Screen4GameplayUI2.txt" />
     <Text Include="Screen4GameplayUI3.txt" />
+    <Text Include="Screen4GameplayUI4.txt" />
+    <Text Include="Screen4GameplayUIEnd.txt" />
     <Text Include="Screen5BuildingBottom.txt" />
     <Text Include="Screen5BuildingCenterClone.txt" />
     <Text Include="Screen5BuildingTop.txt" />

@@ -266,7 +266,7 @@ void Company::calculateSpread(Company* companies[]) // BALANCED
 					probability = 1.0f; // guaranteed
 				}
 				else {
-					probability = 1.0f / std::pow(1.5f, advantage + 2);
+					probability = 1.0f / std::pow(2.0f, advantage + 2);
 				}
 
 				triggers = (rand() % 1000) < (int)(probability * 1000.0);

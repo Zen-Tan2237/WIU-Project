@@ -42,6 +42,7 @@ private:
 
     std::vector<std::string> newsInADay_Head;
     std::vector<std::string> newsInADay_Body;
+    std::vector<std::string> newsInADay_Effects;
 
 	std::string companyNames[50] = {
         // Tech
@@ -153,6 +154,8 @@ private:
     std::vector<std::vector<std::string>> frame_Screen4GameplayUI1;
     std::vector<std::vector<std::string>> frame_Screen4GameplayUI2;
     std::vector<std::vector<std::string>> frame_Screen4GameplayUI3;
+    std::vector<std::vector<std::string>> frame_Screen4GameplayUI4;
+    std::vector<std::vector<std::string>> frame_Screen4GameplayUIEnd;
 
     std::vector<std::vector<std::string>> frame_Screen5BuildingBottom;
     std::vector<std::vector<std::string>> frame_Screen5BuildingCenterClone;
@@ -172,7 +175,7 @@ public:
 
     void doTurn();
     void printInterface();
-    void typingEntrance(std::string head, std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender);
+    void typingEntrance(std::string head, std::string content, std::string end, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender);
     void randomCollabGenerator();
     void CheckCompanyDead();
     void highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes);

@@ -76,17 +76,23 @@ void Game::initGame()
     element_barUnfilled = "-";*/
 
     emptyChickenFrames = loadFrames("emptyChickenFrames.txt");
+
     frame_Logo = loadFrames("Logo.txt");
     frame_LogoInteractToStart1 = loadFrames("LogoInteractToStart1.txt");
     frame_LogoInteractToStart2 = loadFrames("LogoInteractToStart2.txt");
+
     frame_Screen2DialoguePt1 = loadFrames("Screen2DialoguePt1.txt");
     frame_Screen2DialoguePt2 = loadFrames("Screen2DialoguePt2.txt");
     frame_Screen2DialoguePt3 = loadFrames("Screen2DialoguePt3.txt");
+
     frame_Screen3Welcome = loadFrames("Screen3Welcome.txt");
+
     frame_Screen3NameVirus = loadFrames("Screen3NameVirus.txt");
+
     frame_Screen3VirusType = loadFrames("Screen3VirusType.txt");
     frame_Screen3VirusType1 = loadFrames("Screen3VirusType1.txt");
     frame_Screen3VirusType2 = loadFrames("Screen3VirusType2.txt");
+
     frame_Screen3CompanyStart = loadFrames("Screen3CompanyStart.txt");
     frame_Screen3CompanyStart1 = loadFrames("Screen3CompanyStart1.txt");
     frame_Screen3CompanyStart2 = loadFrames("Screen3CompanyStart2.txt");
@@ -94,6 +100,8 @@ void Game::initGame()
     frame_Screen4GameplayUI1 = loadFrames("Screen4GameplayUI1.txt");
     frame_Screen4GameplayUI2 = loadFrames("Screen4GameplayUI2.txt");
     frame_Screen4GameplayUI3 = loadFrames("Screen4GameplayUI3.txt");
+    frame_Screen4GameplayUI4 = loadFrames("Screen4GameplayUI4.txt");
+    frame_Screen4GameplayUIEnd = loadFrames("Screen4GameplayUIEnd.txt");
 
     frame_Screen5BuildingBottom = loadFrames("Screen5BuildingBottom.txt");
     frame_Screen5BuildingCenterClone = loadFrames("Screen5BuildingCenterClone.txt");
@@ -147,6 +155,7 @@ void Game::doTurn()
                     randomCollabGenerator();
                     newsInADay_Head.push_back(newZ->getHEAD());
                     newsInADay_Body.push_back(newZ->getBODY());
+                    newsInADay_Effects.push_back(newZ->getEFFECTS());
                 }
             }
 
@@ -221,11 +230,11 @@ void Game::printInterface()
 
                 // Title Screen
                 renderAnimation(frame_Logo, 5, false, true, true);
-                virusName = "yes";
-                virusTypeIndex = 0;
-                companyStartIndex = 0;
-                screenIndex = 4;
-                player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                //virusName = "yes";
+                //virusTypeIndex = 0;
+                //companyStartIndex = 0;
+                screenIndex = 1;
+                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
                 break;
 
@@ -274,19 +283,19 @@ void Game::printInterface()
                     for (int i = 0; i < sizeof(screenIndex2_dialogues) / sizeof(screenIndex2_dialogues[0]); i++) {
                         switch (i) {
                         case 0:
-                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt1);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], "", typingInterval, true, frame_Screen2DialoguePt1);
                             break;
 
                         case 1:
-                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt2);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], "", typingInterval, true, frame_Screen2DialoguePt2);
                             break;
 
                         case 2:
-                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt3);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], "", typingInterval, true, frame_Screen2DialoguePt3);
                             break;
 
                         default:
-                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, emptyChickenFrames);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], "", typingInterval, true, emptyChickenFrames);
                             break;
                         }
 
@@ -452,7 +461,7 @@ void Game::printInterface()
 
                     for (int yes = 1; yes < 11; yes++) {
                         //renderAnimation(element_barFilled, 0, true, false, false);
-                        if (yes == player.getPlayerVirus()->getComplexity()) {
+                        if (yes == (int)player.getPlayerVirus()->getComplexity()) {
                             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
@@ -481,7 +490,7 @@ void Game::printInterface()
 
                     for (int yes = 1; yes < 11; yes++) {
                         //renderAnimation(element_barFilled, 0, true, false, false);
-                        if (yes == player.getPlayerVirus()->getSpeed()) {
+                        if (yes == (int)player.getPlayerVirus()->getSpeed()) {
                             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
@@ -506,7 +515,7 @@ void Game::printInterface()
 
                     for (int yes = 01; yes < 11; yes++) {
                         //renderAnimation(element_barFilled, 0, true, false, false);
-                        if (yes == player.getPlayerVirus()->getPayload()) {
+                        if (yes == (int)player.getPlayerVirus()->getPayload()) {
                             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
@@ -531,7 +540,7 @@ void Game::printInterface()
 
                     for (int yes = 1; yes < 11; yes++) {
                         //renderAnimation(element_barFilled, 0, true, false, false);
-                        if (yes == player.getPlayerVirus()->getResilience()) {
+                        if (yes == (int)player.getPlayerVirus()->getResilience()) {
                             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
@@ -670,6 +679,36 @@ void Game::printInterface()
                     std::cout << std::setprecision(2) << tempWOW;
                     std::cout << std::string(155 - (tempWOW.length() + 1), ' ') << "." << std::endl;
 
+                    // pt 8 (auto)
+                    renderAnimation(frame_Screen4GameplayUI4, 0, true, false, true);
+
+                    // pt 9 (manual)
+                    renderCenteringSpaces();
+                    std::cout << ". ";
+                    for (int yes = 1; yes < 101; yes++) {
+                        //renderAnimation(element_barFilled, 0, true, false, false);
+                        if (yes == (int)CyberSecurity::getGlobalCureProgress()) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+                        }
+                        else {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+                        }
+
+                        if (abs((int)CyberSecurity::getGlobalCureProgress() - yes) > 5) {
+                            std::cout << element_bars[6];
+                        }
+                        else {
+                            std::cout << element_bars[abs((int)CyberSecurity::getGlobalCureProgress() - yes)];
+                        }
+
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                    }
+                    std::cout << std::string(155 - (2 + 100 + 1), ' ') << "." << std::endl;
+
+                    // pt end (auto)
+                    renderAnimation(frame_Screen4GameplayUIEnd, 0, true, true, true);
+
+
                     //renderAnimation(frame_Screen4GameplayUI3, 0, true, false, true);
 
                     //renderCenteringSpaces();
@@ -770,7 +809,7 @@ void Game::printInterface()
                 resetInputHandler();
 
                 for (int i = 0; i < newsInADay_Head.size(); i++) {
-                    typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], typingInterval, true, frame_Screen2DialoguePt1);
+                    typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen2DialoguePt1);
 
                     resetInputHandler();
                     while (character != ' ') {
@@ -781,6 +820,7 @@ void Game::printInterface()
                 
                 newsInADay_Head.clear();
                 newsInADay_Body.clear();
+                newsInADay_Effects.clear();
                 screenIndex = 4;
 
                 std::cout << "alert" << std::endl;
@@ -794,7 +834,7 @@ void Game::printInterface()
     
 }
 
-void Game::typingEntrance(std::string head, std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender)
+void Game::typingEntrance(std::string head, std::string content, std::string end, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -896,7 +936,16 @@ void Game::typingEntrance(std::string head, std::string content, int delayMs, bo
     displayUIControls(10);
     std::cout << std::endl;
 
-    std::cout << instantContent << std::endl;
+    if (end != "") {
+        std::cout << typedContent << std::endl << std::endl;
+        SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+        std::cout << std::string(floor((consoleWidth - ("[ " + end + " ]").length()) / 2), ' ') << "[ " << end << " ]" << std::endl;
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    }
+    else {
+        std::cout << typedContent << std::endl;
+    }
+    
 
     /*for (int i = 0; i < content.length(); i++) {
         system("cls ");
@@ -962,6 +1011,7 @@ void Game::CheckCompanyDead()
             newZ->companyDeadNews(virusTypeIndex, companies[i]->getName(), virusName);
             newsInADay_Head.push_back(newZ->getHEAD());
             newsInADay_Body.push_back(newZ->getBODY());
+            newsInADay_Effects.push_back(newZ->getEFFECTS());
         }
     }
 }
