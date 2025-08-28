@@ -84,6 +84,7 @@ void Game::initGame()
     frame_Screen2DialoguePt1 = loadFrames("Screen2DialoguePt1.txt");
     frame_Screen2DialoguePt2 = loadFrames("Screen2DialoguePt2.txt");
     frame_Screen2DialoguePt3 = loadFrames("Screen2DialoguePt3.txt");
+    frame_Screen7DialogueNews = loadFrames("Screen7DialogueNews.txt");
 
     frame_Screen3Welcome = loadFrames("Screen3Welcome.txt");
 
@@ -703,7 +704,11 @@ void Game::printInterface()
 
                         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
-                    std::cout << std::string(155 - (2 + 100 + 1), ' ') << "." << std::endl;
+
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+                    std::cout << " (" << (int)CyberSecurity::getGlobalCureProgress() << "%)";
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                    std::cout << std::string(155 - (2 + 100 + 1 + (" (" + std::to_string((int)CyberSecurity::getGlobalCureProgress()) + "%)").length()), ' ') << "." << std::endl;
 
                     // pt end (auto)
                     renderAnimation(frame_Screen4GameplayUIEnd, 0, true, true, true);
@@ -809,7 +814,7 @@ void Game::printInterface()
                 resetInputHandler();
 
                 for (int i = 0; i < newsInADay_Head.size(); i++) {
-                    typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen2DialoguePt1);
+                    typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen7DialogueNews);
 
                     resetInputHandler();
                     while (character != ' ') {
@@ -823,7 +828,7 @@ void Game::printInterface()
                 newsInADay_Effects.clear();
                 screenIndex = 4;
 
-                std::cout << "alert" << std::endl;
+                std::cout << "alert " << screenIndex << std::endl;
                 
                 break;
             default:
@@ -859,7 +864,7 @@ void Game::typingEntrance(std::string head, std::string content, std::string end
     // buttons
     renderCenteringSpaces();
     highlightSelectedUIButton(0, "[ SKIP ]", hConsole);
-    displayUIControls(6);
+    displayUIControls(8);
 
     // ui controls
     renderCenteringSpaces();
@@ -933,7 +938,7 @@ void Game::typingEntrance(std::string head, std::string content, std::string end
     highlightSelectedUIButton(0, "[ CONTINUE ]", hConsole);
 
     // controls
-    displayUIControls(10);
+    displayUIControls(12);
     std::cout << std::endl;
 
     if (end != "") {
@@ -1004,11 +1009,14 @@ void Game::randomCollabGenerator()
 
 void Game::CheckCompanyDead()
 {
-    for (int i = 0; i < 5; i++)
+    int temp;
+
+    for (int i = 0; i < maxCompany; i++)
     {
         if (companies[i]->getBrickedStatus() == 1)
         { 
-            newZ->companyDeadNews(virusTypeIndex, companies[i]->getName(), virusName);
+            temp = rand() % 5;
+            newZ->companyDeadNews(temp, companies[i]->getName(), virusName);
             newsInADay_Head.push_back(newZ->getHEAD());
             newsInADay_Body.push_back(newZ->getBODY());
             newsInADay_Effects.push_back(newZ->getEFFECTS());
