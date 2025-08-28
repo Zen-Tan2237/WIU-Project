@@ -93,7 +93,7 @@ private:
 		"Code Refactor III", "The code was rewritten. Sets cures progress back",
 		"Kill Switch", "The virus has a kill switch, removing itself when it detects it's being analysed. Increases resilience and slows down cure progress.",
 		"Signature Mutation", "The virus changes it's digital signature, confusing analysts. Sets cure progress back.",
-		"Virtual Machine Detection", "The virus does not run in Virtual Machines, mutually exclusive to Virtual Machine Leak",
+		"Virtual Machine Detection", "The virus does not run in Virtual Machines. Complicating research progress",
 	};
 
 

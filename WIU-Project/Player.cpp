@@ -116,18 +116,19 @@ void Player::parseUpgrades() {
 	// I assume the virus has been set before this function is called! (I lazy to add in if (playerVirus == nullptr) check lol)
 	int parserIndex1 = 0;
 	int parserIndex2 = 0;
-	std::string* nameUpgrade = new std::string[playerVirus->getNumUpgrades() * 2];
-	float* statsUpgrade = new float [playerVirus->getNumUpgrades() * 5];
-	upgradesArray = new Upgrades* [playerVirus->getNumUpgrades()];
+	int numUpgrades = playerVirus->getNumUpgrades();
+	std::string* nameUpgrade = new std::string[numUpgrades * 2];
+	float* statsUpgrade = new float [numUpgrades * 5];
+	upgradesArray = new Upgrades* [numUpgrades];
 
-	for (int i = 0; i < playerVirus->getNumUpgrades() * 2; i++) {
+	for (int i = 0; i < numUpgrades * 2; i++) {
 		nameUpgrade[i] = playerVirus->getNameUpgrade()[i];
 	}
-	for (int i = 0; i < playerVirus->getNumUpgrades() * 5; i++) {
+	for (int i = 0; i < numUpgrades * 5; i++) {
 		statsUpgrade[i] = playerVirus->getStatsUpgrades()[i];
 	}
 
-	for (int i = 0; i < playerVirus->getNumUpgrades(); i++) {
+	for (int i = 0; i < numUpgrades; i++) {
 		upgradesArray[i] = new Upgrades(playerVirus->getNameUpgrade()[parserIndex1],
 				playerVirus->getNameUpgrade()[parserIndex1 + 1],
 				playerVirus->getStatsUpgrades()[parserIndex2],
