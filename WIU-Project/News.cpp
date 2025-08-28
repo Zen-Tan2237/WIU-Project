@@ -85,7 +85,7 @@ void News::companyCollabNews(int type, std::string companyA, std::string company
 		break;
 	}
 
-	setEFFECTS(companyA + " and " + companyB + " have their spread increased \(virus can spread more easily \) v");
+	setEFFECTS(companyA + " and " + companyB + " have their spread increased (virus can spread more easily) v");
 }
 
 /* 5 Instances */
