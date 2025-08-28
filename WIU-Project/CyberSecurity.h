@@ -8,6 +8,7 @@ private:
 	int maxCompany;
 	int detectionLevel;
 
+	static bool winCondition;
 	static bool cureComplete;
 	static int cyberNewsCount[2];
 	static float globalCureProgress;
@@ -19,6 +20,7 @@ private:
 
 	bool* isVDetect; // Condition for if a company detects the virus
 	bool* newsDetectDone; // use its getters
+	bool* newsDetectDone_buffer; // use its getters
 	int* newsIndex; // for both head and body
 	float* fightStrength;
 	float* researchEfficiency;

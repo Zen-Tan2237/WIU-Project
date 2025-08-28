@@ -2,6 +2,7 @@
 #include <iostream>
 //#include <windows.h>
 
+bool CyberSecurity::winCondition = 0; // Keep
 bool CyberSecurity::cureComplete = 0; // Keep
 int CyberSecurity::cyberNewsCount[2] = { 0, 0 }; // Keep
 float CyberSecurity::globalCureProgress = 0.0f; // Keep
@@ -26,6 +27,7 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 			if (isVDetect[i] && !newsDetectDone[i] && coy[i]->getBrickedStatus() >= 0.1f) { // news out at 0.33 / 33% infected and if ;
 				which = rand() % 5;
 				newsDetectDone[i] = 1;
+				newsDetectDone_buffer[i] = 1;
 			}
 			newsIndex[i] = which;
 		}
@@ -54,17 +56,19 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 		bool push = 0;
 		which = -1; // Reset
 		/**	SetConsoleTextAttribute(debug_cS, 10);		/**/
-		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
+		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize() && !winCondition) {
+			winCondition = 1;
 			which = rand() % 2;
 			push = 1;
 		}
-		else if (isCureComplete()) {
+		else if (isCureComplete() && !winCondition) {
+			winCondition = 1;
 			which = rand() % 2;
 		}
-		if (push) {
+		if (push && !winCondition) {
 			newsIndex[maxCompany + 2] = which;
 		}
-		else {
+		else if  (!winCondition){
 			newsIndex[maxCompany + 3] = which;
 		}
 		/**	SetConsoleTextAttribute(debug_cS, 7);	/**/
@@ -293,6 +297,7 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 
 	isVDetect = new bool[coyAmt];
 	newsDetectDone = new bool[coyAmt];
+	newsDetectDone_buffer = new bool[coyAmt];
 	newsIndex = new int[coyAmt + 4];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
@@ -303,6 +308,7 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 	for (int i = 0; i < coyAmt; i++) {
 		isVDetect[i] = 0;
 		newsDetectDone[i] = 0;
+		newsDetectDone_buffer[i] = 0;;
 
 		//isResearching[i] = 0; // Remove
 	}
@@ -316,6 +322,7 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 
 	isVDetect = new bool[coyAmt];
 	newsDetectDone = new bool[coyAmt];
+	newsDetectDone_buffer = new bool[coyAmt];
 	newsIndex = new int[coyAmt + 4];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
@@ -326,6 +333,7 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 	for (int i = 0; i < coyAmt; i++) {
 		isVDetect[i] = 0;
 		newsDetectDone[i] = 0;
+		newsDetectDone_buffer[i] = 0;;
 
 		//isResearching[i] = 0; // Remove
 	}
@@ -338,6 +346,7 @@ CyberSecurity::~CyberSecurity() {
 	delete[]
 		isVDetect,
 		newsDetectDone,
+		newsDetectDone_buffer,
 		newsIndex,
 		fightStrength,
 		researchEfficiency,
@@ -348,6 +357,7 @@ CyberSecurity::~CyberSecurity() {
 
 	isVDetect = nullptr;
 	newsDetectDone = nullptr;
+	newsDetectDone_buffer = nullptr;
 	newsIndex = nullptr;
 	fightStrength = nullptr;
 	researchEfficiency = nullptr;
