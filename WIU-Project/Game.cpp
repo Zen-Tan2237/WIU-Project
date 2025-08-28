@@ -48,6 +48,9 @@ Game::Game()
     virusTypeIndex = 0;
     gameplayButtonChosenIndex = 0;
     companyStartIndex = 0;
+    refreshNow = false;
+    consoleWidth = 0;
+    previousConsoleWidth = 0;
 }
 
 Game::~Game()
@@ -67,9 +70,10 @@ void Game::initGame()
         companyNames[temp] = "none";
         std::cout << "yes" << std::endl;
     }
+        
 
-    element_barFilled = loadFrames("barFilledCharacter.txt");
-    element_barUnfilled = loadFrames("barUnfilledCharacter.txt");
+    /*element_barFilled = "\xE2\x96\x84";
+    element_barUnfilled = "-";*/
 
     emptyChickenFrames = loadFrames("emptyChickenFrames.txt");
     frame_Logo = loadFrames("Logo.txt");
@@ -125,20 +129,6 @@ void Game::doTurn()
                 }
             }
 
-            if (currentTick % 50 == 0)
-            {
-                int eventTrigger = rand() % 100;
-                if (eventTrigger >= 80)
-                {
-                    randomCollabGenerator();
-                }
-            }
-
-            if (currentTick % 10 == 0)
-            {
-                //randomMutation;
-            }
-
             // update company infectivity
             for (int i = 0; i < tickInterval; i++) {
                 for (int j = 0; j < maxCompany; j++) {
@@ -148,14 +138,30 @@ void Game::doTurn()
                 currentTick++;
             }
 
-            // Company::getTotalStuff();
-
-            // update player chioces
-            // player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
+            // all the news stuff
+            if (currentTick % 50 == 0)
+            {
+                int eventTrigger = rand() % 100;
+                if (eventTrigger >= 80)
+                {
+                    randomCollabGenerator();
+                    newsInADay_Head.push_back(newZ->getHEAD());
+                    newsInADay_Body.push_back(newZ->getBODY());
+                }
+            }
 
             CheckCompanyDead();
 
+            if (newsInADay_Head.size() > 0) {
+                screenIndex = 7;
+            }
+
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+            // Company::getTotalStuff();
+
+            // update player chioces
+            player.update(Company::getTotalNoOfInfectedComputers(), Company::getTotalNetworkSize(), Company::getTotalNoOfBrickedComputers());
         }
     }
     
@@ -205,9 +211,7 @@ void Game::printInterface()
         int yes;
         std::string interactToStartContent = "[ HOLD <SPACE> TO START ]";
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(750));
-
-        if (screenIndex != previousScreenIndex && consoleWidthHandler() > 155) {
+        if (screenIndex != previousScreenIndex && consoleWidth > 155) {
             resetUIButtonSelection();
             previousScreenIndex = screenIndex;
 
@@ -217,11 +221,11 @@ void Game::printInterface()
 
                 // Title Screen
                 renderAnimation(frame_Logo, 5, false, true, true);
-                //virusName = "yes";
-                //virusTypeIndex = 0;
-                //companyStartIndex = 0;
-                screenIndex = 1;
-                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                virusName = "yes";
+                virusTypeIndex = 0;
+                companyStartIndex = 0;
+                screenIndex = 4;
+                player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
                 break;
 
@@ -231,12 +235,12 @@ void Game::printInterface()
                         renderAnimation(frame_LogoInteractToStart1, 3, false, false, true);
 
                         if (155 - interactToStartContent.length() > 1) {
-                            std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
+                            std::cout << std::string(floor((consoleWidth - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
                             highlightSelectedUIButton(0, interactToStartContent, hConsole);
                             std::cout << std::string(ceil((155 - interactToStartContent.length()) / 2), '.') << std::endl;
                         }
                         else {
-                            std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
+                            std::cout << std::string(floor((consoleWidth - 155) / 2), ' ') << std::string(floor((155 - interactToStartContent.length()) / 2), '.');
                             highlightSelectedUIButton(0, interactToStartContent, hConsole);
                             std::cout << std::string(ceil((155 - interactToStartContent.length()) / 2), '.') << std::endl;
                         }
@@ -246,17 +250,22 @@ void Game::printInterface()
                     else {
                         renderAnimation(frame_LogoInteractToStart1, 0, false, false, true);
 
-                        std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(155, '.') << std::endl;
+                        std::cout << std::string(floor((consoleWidth - 155) / 2), ' ') << std::string(155, '.') << std::endl;
 
                         renderAnimation(frame_LogoInteractToStart2, 0, true, true, true);
 
                         interactToStartContent = "[ HOLD <SPACE> TO START ]";
                     }
 
-                    if (screenIndex == 1) {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                    for (int i = 0; i < 50; i++) {
+                        if (screenIndex != 1) {
+                            break;
+                        }
+
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
                     }
                 }
+
                 break;
 
             case 2: // dialogue screen
@@ -265,19 +274,19 @@ void Game::printInterface()
                     for (int i = 0; i < sizeof(screenIndex2_dialogues) / sizeof(screenIndex2_dialogues[0]); i++) {
                         switch (i) {
                         case 0:
-                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt1);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt1);
                             break;
 
                         case 1:
-                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt2);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt2);
                             break;
 
                         case 2:
-                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt3);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, frame_Screen2DialoguePt3);
                             break;
 
                         default:
-                            typingEntrance(screenIndex2_dialogues[i], typingInterval, true, emptyChickenFrames);
+                            typingEntrance("BACKSTORY", screenIndex2_dialogues[i], typingInterval, true, emptyChickenFrames);
                             break;
                         }
 
@@ -296,23 +305,21 @@ void Game::printInterface()
                     system("cls ");
                     renderAnimation(frame_Screen3Welcome, 0, false, true, true);
 
-                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-
                     renderAnimation(frame_Screen3NameVirus, 2, false, true, true); // ask for name of virus
                     isNamingVirus = true;
 
                     while (isNamingVirus) {
-                        if (virusName != "") {
-                            if (character != -1) {
-                                system("cls");
-                                renderAnimation(emptyChickenFrames, 0, false, false, true);
-                                std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ') << std::string(floor((155 - virusName.length()) / 2), '.');
-                                highlightSelectedUIButton(0, virusName, hConsole);
-                                std::cout << std::string(ceil((155 - virusName.length()) / 2), '.') << std::endl;
-                                renderAnimation(emptyChickenFrames, 0, true, true, true);
-                                resetInputHandler();
-                            }
+                        if (virusName != "") { // wait until something is inputted
+                            system("cls");
+                            renderAnimation(emptyChickenFrames, 0, false, false, true);
+                            std::cout << std::string(floor((consoleWidth - 155) / 2), ' ') << std::string(floor((155 - virusName.length()) / 2), '.');
+                            highlightSelectedUIButton(0, virusName, hConsole);
+                            std::cout << std::string(ceil((155 - virusName.length()) / 2), '.') << std::endl;
+                            renderAnimation(emptyChickenFrames, 0, true, true, true);
+                            resetInputHandler();
                         }
+
+                        delayBeforeRefresh(previousScreenIndex);
                     }
 
                     system("cls ");
@@ -345,6 +352,8 @@ void Game::printInterface()
                             renderAnimation(frame_Screen3VirusType2, 0, true, true, true);
                             resetInputHandler();
                         }
+
+                        delayBeforeRefresh(previousScreenIndex);
                     }
 
                     system("cls ");
@@ -418,6 +427,8 @@ void Game::printInterface()
                             renderAnimation(frame_Screen3CompanyStart2, 0, true, true, true);
                             resetInputHandler();
                         }
+
+                        delayBeforeRefresh(previousScreenIndex);
                     }
 
                     screenIndex = 4;
@@ -425,9 +436,6 @@ void Game::printInterface()
                 break;
             case 4:
                 while (screenIndex == 4) {
-                    system("cls ");
-                    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-
                     // pt1 (auto)
                     renderAnimation(frame_Screen4GameplayUI1, 0, false, false, true);
 
@@ -442,15 +450,23 @@ void Game::printInterface()
                     renderCenteringSpaces();
                     std::cout << ".                                                                              . Complexity : " << std::string(10 - 10, ' ');
 
-                    for (int yes = 0; yes < 10; yes++) {
-                        if (yes < player.getPlayerVirus()->getComplexity()) {
-                            //renderAnimation(element_barFilled, 0, true, false, false);
-                            std::cout << "#";
+                    for (int yes = 1; yes < 11; yes++) {
+                        //renderAnimation(element_barFilled, 0, true, false, false);
+                        if (yes == player.getPlayerVirus()->getComplexity()) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
-                            //renderAnimation(element_barUnfilled, 0, true, false, false);
-                            std::cout << "-";
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                         }
+
+                        if (abs((int)player.getPlayerVirus()->getComplexity() - yes) > 5) {
+                            std::cout << element_bars[6];
+                        }
+                        else {
+                            std::cout << element_bars[abs((int)player.getPlayerVirus()->getComplexity() - yes)];
+                        }
+
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
                     std::cout << " (" << player.getPlayerVirus()->getComplexity() << "/10)" << std::string(43, ' ') << "." << std::endl;
@@ -463,15 +479,23 @@ void Game::printInterface()
 
                     std::cout << ". Speed : " << std::string(10 - 5, ' ');
 
-                    for (int yes = 0; yes < 10; yes++) {
-                        if (yes < player.getPlayerVirus()->getSpeed()) {
-                            //renderAnimation(element_barFilled, 0, true, false, false);
-                            std::cout << "#";
+                    for (int yes = 1; yes < 11; yes++) {
+                        //renderAnimation(element_barFilled, 0, true, false, false);
+                        if (yes == player.getPlayerVirus()->getSpeed()) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
-                            //renderAnimation(element_barUnfilled, 0, true, false, false);
-                            std::cout << "-";
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                         }
+
+                        if (abs((int)player.getPlayerVirus()->getSpeed() - yes) > 5) {
+                            std::cout << element_bars[6];
+                        }
+                        else {
+                            std::cout << element_bars[abs((int)player.getPlayerVirus()->getSpeed() - yes)];
+                        }
+
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
                     std::cout << " (" << player.getPlayerVirus()->getSpeed() << "/10)" << std::string(43, ' ') << "." << std::endl;
@@ -480,15 +504,23 @@ void Game::printInterface()
                     renderCenteringSpaces();
                     std::cout << ".                                                                              . Payload : " << std::string(10 - 7, ' ');
 
-                    for (int yes = 0; yes < 10; yes++) {
-                        if (yes < player.getPlayerVirus()->getPayload()) {
-                            //renderAnimation(element_barFilled, 0, true, false, false);
-                            std::cout << "#";
+                    for (int yes = 01; yes < 11; yes++) {
+                        //renderAnimation(element_barFilled, 0, true, false, false);
+                        if (yes == player.getPlayerVirus()->getPayload()) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
-                            //renderAnimation(element_barUnfilled, 0, true, false, false);
-                            std::cout << "-";
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                         }
+
+                        if (abs((int)player.getPlayerVirus()->getPayload() - yes) > 5) {
+                            std::cout << element_bars[6];
+                        }
+                        else {
+                            std::cout << element_bars[abs((int)player.getPlayerVirus()->getPayload() - yes)];
+                        }
+
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
                     std::cout << " (" << player.getPlayerVirus()->getPayload() << "/10)" << std::string(43, ' ') << "." << std::endl;
@@ -497,15 +529,23 @@ void Game::printInterface()
                     renderCenteringSpaces();
                     std::cout << ".                                                                              . Resilience : " << std::string(10 - 10, ' ');
 
-                    for (int yes = 0; yes < 10; yes++) {
-                        if (yes < player.getPlayerVirus()->getResilience()) {
-                            //renderAnimation(element_barFilled, 0, true, false, false);
-                            std::cout << "#";
+                    for (int yes = 1; yes < 11; yes++) {
+                        //renderAnimation(element_barFilled, 0, true, false, false);
+                        if (yes == player.getPlayerVirus()->getResilience()) {
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
                         }
                         else {
-                            //renderAnimation(element_barUnfilled, 0, true, false, false);
-                            std::cout << "-";
+                            SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                         }
+
+                        if (abs((int)player.getPlayerVirus()->getResilience() - yes) > 5) {
+                            std::cout << element_bars[6];
+                        }
+                        else {
+                            std::cout << element_bars[abs((int)player.getPlayerVirus()->getResilience() - yes)];
+                        }
+
+                        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     }
 
                     std::cout << " (" << player.getPlayerVirus()->getResilience() << "/10)" << std::string(43, ' ') << "." << std::endl;
@@ -516,9 +556,7 @@ void Game::printInterface()
                     renderCenteringSpaces();
                     std::cout << ".                                                                              . ";
                     highlightSelectedUIButton(0, "[ EVOLVE ]", hConsole);
-                    std::cout << std::string(10 - 10, ' ') << std::endl;
-
-                    
+                    std::cout << "                                                               . " << std::endl;
 
                     // pt4 (auto)
 
@@ -527,7 +565,6 @@ void Game::printInterface()
                     // pt5 (manual)
 
                     int temp = 0;
-                    int oldSelection = selectedUIButton;
 
                     for (int i = 0; i < maxCompany; i++) {
                         if (companies[i]->getName().length() > temp) {
@@ -582,16 +619,70 @@ void Game::printInterface()
                         std::cout << std::string(155 - (tempWOW.length() + 1) - (8), ' ') << "." << std::endl;
                     }
 
+                    // pt6 (auto)
+
                     renderAnimation(frame_Screen4GameplayUI3, 0, true, false, true);
 
-                    for (int yes = 0; yes < 50; yes++) {
-                        if (oldSelection != selectedUIButton) {
-                            break;
-                        }
+                    // pt7 (manual)
 
-                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    tempWOW = ". Global" + std::string((temp + 2) - 6, ' ')
+                        + "Status" + std::string((12 + 2) - 6, ' ')
+                        + "No. Of Infected" + std::string(2 + 5, ' ')
+                        + "No. Of Bricked" + std::string(2 + 5, ' ')
+                        + "Network Size" + std::string(2 + 5, ' ');
+
+
+                    renderCenteringSpaces();
+                    std::cout << tempWOW << std::string(155 - (tempWOW.length() + 1), ' ') << "." << std::endl;
+
+                    // gloabl status
+                    std::string tempEvenMoreWOW = " ";
+                    tempWOW = ". " + tempEvenMoreWOW + std::string((temp + 2) - tempEvenMoreWOW.length(), ' ');
+
+                    // infected status
+                    if (Company::getTotalNoOfInfectedComputers() == 0) {
+                        tempEvenMoreWOW = "--SAFE--";
+
                     }
-                    
+                    else if (Company::getTotalNoOfInfectedComputers() < Company::getTotalNetworkSize()) {
+                        tempEvenMoreWOW = "~PARTIAL~";
+                    }
+                    else {
+                        tempEvenMoreWOW = "!!INFECTED!!";
+                    }
+                    tempWOW = tempWOW + tempEvenMoreWOW + std::string((12 + 2) - tempEvenMoreWOW.length(), ' ');
+
+                    // no of infected
+                    int value = (Company::getTotalNoOfInfectedComputers() / Company::getTotalNetworkSize()) * 100;
+                    tempEvenMoreWOW = std::to_string(Company::getTotalNoOfInfectedComputers()) + " (" + std::to_string(value) + "%)";
+                    tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 15) - tempEvenMoreWOW.length(), ' ');
+
+                    // no of bricked
+                    value = (Company::getTotalNoOfBrickedComputers() / Company::getTotalNetworkSize()) * 100;
+                    tempEvenMoreWOW = std::to_string(Company::getTotalNoOfBrickedComputers()) + " (" + std::to_string(value) + "%)";
+                    tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 14) - tempEvenMoreWOW.length(), ' ');
+
+                    // network size
+                    tempEvenMoreWOW = std::to_string(Company::getTotalNetworkSize());
+                    tempWOW = tempWOW + tempEvenMoreWOW + std::string((2 + 5 + 12) - tempEvenMoreWOW.length(), ' ');
+
+                    renderCenteringSpaces();
+                    std::cout << std::setprecision(2) << tempWOW;
+                    std::cout << std::string(155 - (tempWOW.length() + 1), ' ') << "." << std::endl;
+
+                    //renderAnimation(frame_Screen4GameplayUI3, 0, true, false, true);
+
+                    //renderCenteringSpaces();
+                    //std::cout << ". " << newZ->getHEAD() << std::string(155 - (newZ->getHEAD().length() + 3), ' ') << "." << std::endl;
+                    //std::cout << "." << std::string(155 - 2, ' ') << "." << std::endl;
+
+                    //renderCenteringSpaces();
+
+                    //for (int eachline = 0; eachline < ceil(newZ->getBODY().length() / (155 - 3)); eachline++) {
+                    //    std::cout << ". " << newZ->getBODY() << std::string(155 - (newZ->getBODY().length() + 3), ' ') << "." << std::endl;
+                    //}
+
+                    delayBeforeRefresh(previousScreenIndex);
                 }
                 break;
             case 5:
@@ -667,9 +758,33 @@ void Game::printInterface()
                             // yes
                         }
                     }
-
                 }
 
+                break;
+            case 6: // upgrade
+                player.displayUpgrades();
+
+            case 7: // news screen
+                system("cls ");
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+                resetInputHandler();
+
+                for (int i = 0; i < newsInADay_Head.size(); i++) {
+                    typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], typingInterval, true, frame_Screen2DialoguePt1);
+
+                    resetInputHandler();
+                    while (character != ' ') {
+                        continue;
+                    }
+                    resetInputHandler();
+                }
+                
+                newsInADay_Head.clear();
+                newsInADay_Body.clear();
+                screenIndex = 4;
+
+                std::cout << "alert" << std::endl;
+                
                 break;
             default:
                 break;
@@ -679,7 +794,7 @@ void Game::printInterface()
     
 }
 
-void Game::typingEntrance(std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender)
+void Game::typingEntrance(std::string head, std::string content, int delayMs, bool startingChar, std::vector<std::vector<std::string>> graphicsToRender)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -697,7 +812,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
 
     // line
     renderCenteringSpaces();
-    std::cout << "Backstory" << std::endl;
+    std::cout << head << std::endl;
     renderCenteringSpaces();
     std::cout << std::string(155, '.') << std::endl;
 
@@ -729,11 +844,11 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
             }
         }
 
-        typedContent = typedContent + "\n" + std::string(floor((consoleWidthHandler() - line.length()) / 2), ' ');
-        instantContent = instantContent + "\n" + std::string(floor((consoleWidthHandler() - line.length()) / 2), ' ') + line;
+        typedContent = typedContent + "\n" + std::string(floor((consoleWidth - line.length()) / 2), ' ');
+        instantContent = instantContent + "\n" + std::string(floor((consoleWidth - line.length()) / 2), ' ') + line;
         noOfLines++;
 
-        std::cout << std::endl << std::string(floor((consoleWidthHandler() - line.length()) / 2), ' ');
+        std::cout << std::endl << std::string(floor((consoleWidth - line.length()) / 2), ' ');
 
         for (int i = 0; i < line.length(); i++) {
 
@@ -769,7 +884,7 @@ void Game::typingEntrance(std::string content, int delayMs, bool startingChar, s
 
     // line
     renderCenteringSpaces();
-    std::cout << "Backstory" << std::endl;
+    std::cout << head << std::endl;
     renderCenteringSpaces();
     std::cout << std::string(155, '.') << std::endl;
 
@@ -806,6 +921,7 @@ void Game::randomCollabGenerator()
 {
     // check how many companies can collab
     std::vector<int> eligibleCompanies;
+
     for (int i = 0; i < 5; ++i)
     {
         if (companies[i]->getInfectedStatus() < 0.7f)
@@ -817,14 +933,23 @@ void Game::randomCollabGenerator()
     // collabing only runs if 2 or more companies can collab
     if (eligibleCompanies.size() >= 2)
     {
-        std::shuffle(eligibleCompanies.begin(), eligibleCompanies.end(), std::default_random_engine(static_cast<unsigned>(std::time(0))));
-        int companyA = eligibleCompanies[0];
-        int companyB = eligibleCompanies[1];
+        //std::shuffle(eligibleCompanies.begin(), eligibleCompanies.end(), std::default_random_engine(static_cast<unsigned>(std::time(0))));
+
+        int randint = rand() % eligibleCompanies.size();
+        int temp = randint;
+        int companyA = eligibleCompanies[randint];
+        do {
+            randint = rand() % eligibleCompanies.size();
+        } while (randint == temp);
+        int companyB = eligibleCompanies[randint];
 
         // print out and set the finalised companies collabing spread
-        newZ->companyCollabNews(companies[companyA]->getName(), companies[companyB]->getName());
-        companies[companyA]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyB);
-        companies[companyB]->setCollabSpreadWeightIndex(rand() % 4 + 1, companyA);
+        temp = rand() % 5;
+        newZ->companyCollabNews(temp, companies[companyA]->getName(), companies[companyB]->getName());
+
+        temp = rand() % 3 + 2;
+        companies[companyA]->setCollabSpreadWeightIndex(temp, companyB);
+        companies[companyB]->setCollabSpreadWeightIndex(temp, companyA);
     }
 }
 
@@ -834,7 +959,9 @@ void Game::CheckCompanyDead()
     {
         if (companies[i]->getBrickedStatus() == 1)
         { 
-            newZ->companyDeadNews(companies[i]->getName());
+            newZ->companyDeadNews(virusTypeIndex, companies[i]->getName(), virusName);
+            newsInADay_Head.push_back(newZ->getHEAD());
+            newsInADay_Body.push_back(newZ->getBODY());
         }
     }
 }
@@ -842,13 +969,14 @@ void Game::CheckCompanyDead()
 void Game::highlightSelectedUIButton(int thisUIButton, std::string content, HANDLE yes)
 {
     if (thisUIButton == selectedUIButton) {
-        SetConsoleTextAttribute(yes, BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+        SetConsoleTextAttribute(yes, BACKGROUND_RED | BACKGROUND_INTENSITY);
         std::cout << content;
-        SetConsoleTextAttribute(yes, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     }
     else {
+        SetConsoleTextAttribute(yes, FOREGROUND_RED | FOREGROUND_INTENSITY);
         std::cout << content;
     }
+    SetConsoleTextAttribute(yes, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 }
 
 void Game::displayUIControls(int previousSpaceUsed)
@@ -871,17 +999,37 @@ void Game::displayUIControls(int previousSpaceUsed)
 
 void Game::renderCenteringSpaces()
 {
-    std::cout << std::string(floor((consoleWidthHandler() - 155) / 2), ' ');
+    std::cout << std::string(floor((consoleWidth - 155) / 2), ' ');
+}
+
+void Game::delayBeforeRefresh(int previousScreenIndex)
+{
+    if (screenIndex == previousScreenIndex) {
+        for (int i = 0; i < 50; i++) {
+            if (refreshNow) {
+                refreshNow = false;
+                break;
+            }
+
+            if (screenIndex != previousScreenIndex) {
+                break;
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
 }
 
 void Game::inputHandler()
 {
     while (true) {
         char characterInput = _getch();
+        refreshNow = true;
 
         if (character != characterInput) {
             character = characterInput;
         }
+
         if (isNamingVirus) {
             if (character == '\r' && virusName.length() > 0) {
                 isNamingVirus = false;
@@ -1030,6 +1178,40 @@ std::vector<std::vector<std::string>> Game::loadFrames(const std::string & filen
     return frames;
 }
 
+std::string Game::loadChar(const std::string& filename)
+{
+    std::ifstream file(filename, std::ios::binary); // open as binary
+    if (!file) {
+        std::cerr << "Cannot open file\n";
+        return "";
+    }
+
+    std::string utf8Char;
+    char c;
+    int bytesRead = 0;
+
+    // Read the first UTF-8 character (1 to 4 bytes)
+    file.get(c);
+    if (file) {
+        unsigned char first = static_cast<unsigned char>(c);
+        int numBytes = 1;
+
+        // Determine number of bytes for this UTF-8 character
+        if ((first & 0x80) == 0x00) numBytes = 1;          // ASCII
+        else if ((first & 0xE0) == 0xC0) numBytes = 2;     // 2-byte UTF-8
+        else if ((first & 0xF0) == 0xE0) numBytes = 3;     // 3-byte UTF-8
+        else if ((first & 0xF8) == 0xF0) numBytes = 4;     // 4-byte UTF-8
+
+        utf8Char += c;
+        for (int i = 1; i < numBytes; ++i) {
+            file.get(c);
+            if (file) utf8Char += c;
+        }
+
+        return utf8Char;
+    }
+}
+
 // Render one loop of animation frames
 void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, int delayMs, bool isContinued, bool haveControlsUI, bool hasEnd) {
     std::string totalRender = "";
@@ -1055,8 +1237,8 @@ void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, i
                 firstLine = false;
             }
 
-            if (consoleWidthHandler() - line.length() > 1) {
-                totalRender = totalRender + std::string(floor((consoleWidthHandler() - line.length()) / 2), ' ') + line + std::string(ceil((consoleWidthHandler() - line.length()) / 2), ' ') + "\n";
+            if (consoleWidth - line.length() > 1) {
+                totalRender = totalRender + std::string(floor((consoleWidth - line.length()) / 2), ' ') + line + std::string(ceil((consoleWidth - line.length()) / 2), ' ') + "\n";
             }
             else {
                 totalRender = totalRender + std::string(1, ' ') + line + std::string(1, ' ') + "\n";
@@ -1078,21 +1260,30 @@ void Game::renderAnimation(const std::vector<std::vector<std::string>>&frames, i
     }
 }
 
-int Game::consoleWidthHandler() {
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    int consoleWidth = 0;
+void Game::consoleWidthHandler() {
+    while (true) {
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        int consoleWidthTemp = 0;
 
-    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
-        consoleWidth = csbi.dwSize.X;
-    }
-    else {
-        std::cerr << "Error: Could not get console screen buffer info." << std::endl;
-    }
+        if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+            consoleWidthTemp = csbi.dwSize.X;
+        }
+        else {
+            std::cerr << "Error: Could not get console screen buffer info." << std::endl;
+        }
 
-    if (consoleWidth > 155) {
-        return consoleWidth;
-    }
-    else {
-        return 155;
+        if (consoleWidthTemp > 155) {
+            consoleWidth = consoleWidthTemp;
+        }
+        else {
+            consoleWidth = 155;
+        }
+
+        if (previousConsoleWidth != consoleWidth) {
+            previousConsoleWidth = consoleWidth;
+            refreshNow = true;
+        }
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(25));
     }
 }
