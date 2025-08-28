@@ -18,7 +18,7 @@ private:
 
 
 	bool* isVDetect; // Condition for if a company detects the virus
-	bool* newsDetectDone;
+	bool* newsDetectDone; // use its getters
 	int* newsIndex; // for both head and body
 	float* fightStrength;
 	float* researchEfficiency;
@@ -57,6 +57,8 @@ public:
 	bool getNewsDetectDone_bool(int) const; // use this to check if the virus is already detected
 	int getNewsDetectDone_int(int) const; // use this to set the news
 	static float getGlobalCureProgress();
+
+	void setNewsDetectDone(bool, int) const;
 
 	CyberSecurity(int);
 	CyberSecurity(int, int);

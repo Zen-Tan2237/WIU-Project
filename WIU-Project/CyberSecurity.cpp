@@ -24,7 +24,6 @@ void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 			which = -1; // Reset every instance.
 			if (isVDetect[i] && !newsDetectDone[i] && coy[i]->getBrickedStatus() >= 0.1f) { // news out at 0.33 / 33% infected and if ;
 				which = rand() % 5;
-
 				newsDetectDone[i] = 1;
 			}
 			newsIndex[i] = which;
@@ -144,6 +143,7 @@ bool CyberSecurity::isVirusDetected(float udr, const Company& coy, const Virus& 
 		else if (coy.getSecurityLevel() >= 9.0f && coy.getNoOfBrickedComputers() >= getDetectThreshold_individual(coy)) {}
 		else if (Company::getTotalNoOfBrickedComputers() >= this->getDetectThreshold_global(coy)) {}
 		else if ((coy.getSecurityLevel() >= (virus.getComplexity() - 1)) && (udr > 20.0f)) {}
+		else if (coy.getInfectedStatus() >= getDetectThreshold_individual(coy) / 40.0f && detectionLevel == 3) {}
 		else {
 			return 0;
 		}
@@ -232,6 +232,9 @@ bool CyberSecurity::getIsVdetect() const {
 	return this->isVDetect;
 }
 int CyberSecurity::getNewsIndex(int type) const {
+	if (type == -1) {
+		return -1;
+	}
 	return this->newsIndex[type];
 }
 int CyberSecurity::getDetectionLevel() const {
@@ -259,6 +262,11 @@ int CyberSecurity::getDetectThreshold_global(const Company& coy) const {
 }
 
 /* Setters ------------------------------------------------------------------------------ */
+/* Public */
+void CyberSecurity::setNewsDetectDone(bool value, int type) const {
+	this->newsDetectDone[type] = value;
+}
+
 /* Private */
 void CyberSecurity::setUndeadRate(int type, const Company& coy) {
 	this->undeadRate[type] = (1 - coy.getBrickedStatus()) * 100.0f; // percentage of undead computers
@@ -348,10 +356,7 @@ CyberSecurity::~CyberSecurity() {
 }
 
 /*\
-
-
-
-To set & print the news
+To set & print the news.
 \1/ 
 for (int i = 0; i < maxCompany + 4;; i++) {
 	if (i < maxCompany) {
@@ -389,4 +394,11 @@ for (int i = 0; i < maxCompany + 4;; i++) {
 	(maxCompany + 3)		|| PLAYER LOSE
 
 	cyberSecurity->getNewsIndex(maxCompany - (maxCompany - 0));
+
+newsSetectDone
+\3/ 
+if newsSetectDone == true; returns value i;
+else retturns -1
+cyberSecurity->getNewsIndex(getNewsDetectDone_int(i));
+
 \*/
