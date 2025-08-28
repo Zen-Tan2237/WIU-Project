@@ -5,6 +5,7 @@
 
 std::string News::HEAD = "A Bright & Sunny Day!";
 std::string News::BODY = "A bright and sunny day.";
+std::string News::EFFECTS = "None";
 int News::pastNews[7][2] = {
 	{ -1, -1 },
 	{ -1, -1 },
@@ -17,6 +18,10 @@ int News::pastNews[7][2] = {
 News::News() {}
 News::~News() {}
 News::News(std::string VirusName) {
+
+
+
+
 	/*
 	randomEventHeadlines[2][1] =
 	{ "Global Cybersecurity Teams Contain Spread of " + VirusName + " Virus in Record Time." };
@@ -85,7 +90,7 @@ void News::companyCollabNews(int type, std::string companyA, std::string company
 		break;
 	}
 
-	setEFFECTS(companyA + " and " + companyB + " have their spread increased (virus can spread more easily) v");
+	setEFFECTS(companyA + " and " + companyB + " have their spread rate between " + companyA + " and " + companyB + "increased(virus can spread more easily)");
 }
 
 /* 5 Instances */
@@ -120,7 +125,7 @@ void News::virusFoundNews(int type, std::string company, std::string virus) cons
 		break;
 	}
 
-	setEFFECTS("Cybersecurity has been triggered");
+	setEFFECTS("Cybersecurity has been triggered and started researching for a digital cure against " + virus);
 }
 
 /* 5 Instances */
