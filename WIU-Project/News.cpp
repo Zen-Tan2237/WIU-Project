@@ -6,15 +6,7 @@
 std::string News::HEAD = "A Bright & Sunny Day!";
 std::string News::BODY = "A bright and sunny day.";
 std::string News::EFFECTS = "None";
-int News::pastNews[7][2] = {
-	{ -1, -1 },
-	{ -1, -1 },
-	{ -1, -1 },
-	{ -1, -1 }, 
-	{ -1, -1 },
-	{ -1, -1 },
-	{ -1, -1 }
-};
+
 News::News() {}
 News::~News() {}
 News::News(std::string VirusName) {
@@ -284,7 +276,4 @@ void News::setBODY(std::string body) {
 }
 void News::setEFFECTS(std::string effects) {
 	EFFECTS = effects;
-}
-void News::setPastNews(int row, int col, int type) {
-	pastNews[row][col] = type;
 }
