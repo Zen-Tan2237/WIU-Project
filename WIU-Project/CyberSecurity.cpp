@@ -285,7 +285,7 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 		//isResearching[i] = 0; // Remove
 	}
 	for (int i = 0; i < coyAmt + 4; i++) {
-		newsIndex[i] = '-';
+		newsIndex[i] = -1;
 	}
 }
 CyberSecurity::CyberSecurity(int coyAmt, int dL) {
@@ -309,7 +309,7 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 	}
 
 	for (int i = 0; i < coyAmt + 4; i++) {
-		newsIndex[i] = '-';
+		newsIndex[i] = -1;
 	}
 }
 CyberSecurity::~CyberSecurity() {
