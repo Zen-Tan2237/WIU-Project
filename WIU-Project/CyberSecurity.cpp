@@ -398,10 +398,11 @@ for (int i = 0; i < maxCompany + 4;; i++) {
 
 newsSetectDone
 \3/
-if newsSetectDone == true; returns value i;
+if newsDetectDone == true; returns value i;
 else; returns -1;
 
 cyberSecurity->getNewsIndex(getNewsDetectDone_int(i));
-getNewsDetectDone_int // can be used to get the company name as it retuns a value as shown above
+getNewsDetectDone_bool() // gives true if it has been detected, triggerEvent() has to be run first. Afterwards you can set it to false once used, using setNewsDetectDone(bool, int).
+getNewsDetectDone_int() // can be used to get the company name as it retuns a value as shown above.
 
 \*/
