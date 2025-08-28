@@ -16,6 +16,7 @@
 #include "algorithm"
 
 #include "Game.h"
+#include "SoundController.h"
 
 Game::Game()
 {
@@ -153,16 +154,50 @@ void Game::doTurn()
             }
 
             // all the news stuff
-            if (currentTick % 250 == 0)
+            if (currentTick % 400 == 0)
             {
                 int eventTrigger = rand() % 100;
-                if (eventTrigger >= 0)
+                if (eventTrigger >= 60)
                 {
                     randomCollabGenerator();
                 }
             }
 
             CheckCompanyDead();
+
+            for (int i = 0; i < maxCompany + 4; i++) {
+                if (cyberSecurity->getNewsDetectDone_bool(i) && i < maxCompany) {
+                    newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), companies[cyberSecurity->getNewsDetectDone_int(i)]->getName(), player.getPlayerVirus()->getName());
+                    cyberSecurity->setNewsDetectDone(0, i);
+                    newsInADay_Head.push_back(newZ->getHEAD());
+                    newsInADay_Body.push_back(newZ->getBODY());
+                    newsInADay_Effects.push_back(newZ->getEFFECTS());
+                }
+                else if (i == maxCompany) {
+                    newZ->cybersecurityWinningNews(cyberSecurity->getNewsIndex(i), player.getPlayerVirus()->getName());
+                    newsInADay_Head.push_back(newZ->getHEAD());
+                    newsInADay_Body.push_back(newZ->getBODY());
+                    newsInADay_Effects.push_back(newZ->getEFFECTS());
+                }
+                else if (i == maxCompany + 1) {
+                    newZ->cyberSecurityLosingNews(cyberSecurity->getNewsIndex(i), player.getPlayerVirus()->getName());
+                    newsInADay_Head.push_back(newZ->getHEAD());
+                    newsInADay_Body.push_back(newZ->getBODY());
+                    newsInADay_Effects.push_back(newZ->getEFFECTS());
+                }
+                else if (i == maxCompany + 2) {
+                    newZ->PlayerWinNews(cyberSecurity->getNewsIndex(i));
+                    newsInADay_Head.push_back(newZ->getHEAD());
+                    newsInADay_Body.push_back(newZ->getBODY());
+                    newsInADay_Effects.push_back(newZ->getEFFECTS());
+                }
+                else if (i == maxCompany + 3) {
+                    newZ->PlayerLoseNews(cyberSecurity->getNewsIndex(i));
+                    newsInADay_Head.push_back(newZ->getHEAD());
+                    newsInADay_Body.push_back(newZ->getBODY());
+                    newsInADay_Effects.push_back(newZ->getEFFECTS());
+                }
+            }
 
             //for (int i = 0; i < maxCompany + 4; i++) {
             //    int idx = cyberSecurity->getNewsIndex(i);
@@ -274,6 +309,7 @@ void Game::printInterface()
         int fraction;
         int iBricked;
         int iInfected;
+        int resultingPoints;
         int yes;
         std::string interactToStartContent = "[ HOLD <SPACE> TO START ]";
 
@@ -287,11 +323,11 @@ void Game::printInterface()
 
                 // Title Screen
                 renderAnimation(frame_Logo, 5, false, true, true);
-                virusName = "yes";
-                virusTypeIndex = 1;
-                companyStartIndex = 0;
-                screenIndex = 4;
-                player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
+                //virusName = "yes";
+                //virusTypeIndex = 1;
+                //companyStartIndex = 0;
+                screenIndex = 1;
+                //player.setInitials(companies, virusTypeIndex + 1, companyStartIndex + 1, virusName);
 
                 break;
 
@@ -902,7 +938,10 @@ void Game::printInterface()
                     std::string temp = "Hacker Points : " + std::to_string(player.getHackingPoints());
                     std::cout << temp << std::string(155 - (temp.length() + 10), ' ');
                     highlightSelectedUIButton(maxSelectedUIButtonOffset, "[ RETURN ]", hConsole);
-                    std::cout << std::endl;
+                    std::cout << std::endl << std::endl;
+
+                    renderCenteringSpaces();
+                    displayUIControls(0);
 
                     delayBeforeRefresh(previousScreenIndex);
                 }
@@ -914,8 +953,11 @@ void Game::printInterface()
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                 resetInputHandler();
 
+                SoundController::playSoundMP3("resources\\cartoon-phone-voice-88637.mp3", false);
+
                 for (int i = completedNews; i < newsInADay_Head.size(); i++) {
                     system("cls ");
+                    SoundController::playSound(L"resources\\cartoon-phone-voice-88637.mp3");
                     typingEntrance("TODAY'S HEADLINES: " + newsInADay_Head[i], newsInADay_Body[i], newsInADay_Effects[i], typingInterval, true, frame_Screen7DialogueNews);
 
                     resetInputHandler();
@@ -963,9 +1005,19 @@ void Game::printInterface()
                 break;
             case 9: // minigame   
                 system("cls");
-                player.setHackingPoints(player.getHackingPoints() + player.getPlayerVirus()->miniGame());
-                oldUniqueCompaniesInfected = Company::getTotalUniqueCompanyInfections();
+                resultingPoints = player.getPlayerVirus()->miniGame();
+                player.setHackingPoints(player.getHackingPoints() + resultingPoints);
+                system("cls");
+                renderAnimation(emptyChickenFrames, 0, false, false, true);
 
+                renderCenteringSpaces();
+                std::cout << std::string(floor(155 - ("You Obtained " + std::to_string(resultingPoints) + " Hacker Point/s!").length()), '.') << "You Obtained " << resultingPoints << " Hacker Point/s!" << std::string(ceil(155 - ("You Obtained " + std::to_string(resultingPoints) + " Hacker Point/s!").length()), '.') << std::endl;
+
+                renderAnimation(emptyChickenFrames, 0, false, false, true);
+                
+                std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+
+                oldUniqueCompaniesInfected = Company::getTotalUniqueCompanyInfections();
                 screenIndex = 4;
 
                 break;
@@ -1226,6 +1278,8 @@ void Game::inputHandler()
     while (isGameRunning) {
         if (screenIndex != 9) {
             char characterInput = _getch();
+            //SoundController::playSound(L"resources\hacking-sfx.wav");
+
             refreshNow = true;
 
             if (character != characterInput) {
@@ -1290,10 +1344,14 @@ void Game::inputHandler()
                             int* currentUpgradesIndices = player.getCurrentUpgradeIndices();
 
                             if (currentUpgradesIndices[selectedUIButton] != -1) {
-                                player.applyUpgrade(currentUpgradesIndices[selectedUIButton]);
-                                player.blockUpgrade();
+                                float cost = player.getUpgradesArray()[selectedUIButton]->getCost();
 
-                                screenIndex = 4;
+                                if (player.getHackingPoints() >= cost) {
+                                    player.applyUpgrade(currentUpgradesIndices[selectedUIButton]);
+                                    player.blockUpgrade();
+
+                                    screenIndex = 4;
+                                }
                             }
                         }
                     }
@@ -1329,7 +1387,7 @@ void Game::inputHandler()
                     break;
 
                 default:
-                    std::cout << "yes" << std::endl;
+                    std::cout << "[ Input issue. Please retry ]" << std::endl;
                     break;
                 }
             }
