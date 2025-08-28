@@ -122,7 +122,6 @@ private:
     static std::string HEAD;
     static std::string BODY;
     static std::string EFFECTS;
-    static int pastNews[7][2];
 
     static void setHEAD(std::string);
     static void setBODY(std::string);
@@ -133,19 +132,17 @@ public:
     ~News();
     News(std::string VirusName);
     
-    void companyCollabNews(int, std::string, std::string) const;
-    void virusFoundNews(int, std::string, std::string) const;
-    void cybersecurityWinningNews(int, std::string) const;
-    void cyberSecurityLosingNews(int, std::string) const;
-    void companyDeadNews(int, std::string, std::string) const;
+    void companyCollabNews(int, std::string coyA, std::string coyB) const;
+    void virusFoundNews(int, std::string coy, std::string vir) const;
+    void cybersecurityWinningNews(int, std::string vir) const;
+    void cyberSecurityLosingNews(int, std::string vir) const;
+    void companyDeadNews(int, std::string coy, std::string vir) const;
     void PlayerWinNews(int) const;
     void PlayerLoseNews(int) const;
 
     static std::string getHEAD();
     static std::string getBODY();
     static std::string getEFFECTS();
-
-    void setPastNews(int, int, int);
 };
 
 // in case there is more than 1 virus type

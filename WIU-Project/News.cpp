@@ -6,15 +6,7 @@
 std::string News::HEAD = "A Bright & Sunny Day!";
 std::string News::BODY = "A bright and sunny day.";
 std::string News::EFFECTS = "None";
-int News::pastNews[7][2] = {
-	{ -1, -1 },
-	{ -1, -1 },
-	{ -1, -1 },
-	{ -1, -1 }, 
-	{ -1, -1 },
-	{ -1, -1 },
-	{ -1, -1 }
-};
+
 News::News() {}
 News::~News() {}
 News::News(std::string VirusName) {
@@ -222,6 +214,8 @@ void News::companyDeadNews(int type, std::string company, std::string virus) con
 		setBODY(" Crippling Cyberattack Destroys All Orders, Invoices, and Communication Logs. With months of business lost and no records to rebuild from, the CEO said continuing would be \"financially and emotionally impossible\". Cyberattacks towards " + company + " have crippled their records of orders, invoices, and communication logs, resulting in months of business records being lost and unable to recover, the Chairman says that continuing operations would result in an uncertain future for the company, and its people.");
 	}
 		break;
+	default:
+		break;
 	}
 
 	setEFFECTS(company + " has fallen");
@@ -282,7 +276,4 @@ void News::setBODY(std::string body) {
 }
 void News::setEFFECTS(std::string effects) {
 	EFFECTS = effects;
-}
-void News::setPastNews(int row, int col, int type) {
-	pastNews[row][col] = type;
 }

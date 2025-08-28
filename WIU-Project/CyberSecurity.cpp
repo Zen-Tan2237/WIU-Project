@@ -12,65 +12,59 @@ const float CyberSecurity::cureThreshold[4] = { 35.0f, 50.0f, 75.0f, 95.0f }; //
 
 /* Function Members --------------------------------------------------------------------- */
 /* News */
-void CyberSecurity::triggerEvent(Company* coy[], const News& news, const Virus& virus) {
+void CyberSecurity::triggerEvent(Company* coy[], const Virus& virus) {
 	/** HANDLE debug_cS = GetStdHandle(STD_OUTPUT_HANDLE); /**/
-	std::string newsHeader;
-	std::string newsBody;
+	int which;
+	//std::string newsHeader;
+	//std::string newsBody;
 
 	/* Virus Found ------------------------------------------ */ {
 		/**	SetConsoleTextAttribute(debug_cS, 4);	/**/
 		for (int i = 0; i < maxCompany; i++) {
+			which = -1; // Reset every instance.
 			if (isVDetect[i] && !newsDetectDone[i] && (coy[i]->getInfectedStatus() >= 0.80f || coy[i]->getBrickedStatus() >= 0.1f)) { // news out at 0.33 / 33% infected and if ;
-				news.virusFoundNews(rand() % 5, coy[i]->getName(), virus.getName());
-				newsHeader = News::getHEAD();
-				newsBody = News::getBODY();
-				std::cout << newsHeader;
-				std::cout << newsBody;
-
+				which = rand() & 5;
 				newsDetectDone[i] = 1;
 			}
+			newsIndex[i] = which;
 		}
 	}
 	/* Cyber Win/Loss --------------------------------------- */ {
 		/**	SetConsoleTextAttribute(debug_cS, 6);	/**/
+		which = -1; // Reset
 		if (cyberNewsCount[0] < (sizeof(cureThreshold) / sizeof(cureThreshold[0]))) { // Prevents memory corruption / crashes
 			if (globalCureProgress >= cureThreshold[cyberNewsCount[0]]) {
-				news.cybersecurityWinningNews(rand() % 5, virus.getName()); // Code for cyber wins
-				newsHeader = News::getHEAD();
-				newsBody = News::getBODY();
-				std::cout << newsHeader;
-				std::cout << newsBody;
-
+				which = rand() & 5;
 				cyberNewsCount[0]++;
 			}
 		}
+		newsIndex[maxCompany] = which;
+		which = -1; // Reset
 		if (cyberNewsCount[1] < (sizeof(infectThreshold) / sizeof(infectThreshold[0]))) { // Prevents memory corruption / crashes
 			if (infectedRate_global >= infectThreshold[cyberNewsCount[1]]) {
-				news.cyberSecurityLosingNews(rand() % 5, virus.getName()); // Code for cyber losses
-				newsHeader = News::getHEAD();
-				newsBody = News::getBODY();
-				std::cout << newsHeader;
-				std::cout << newsBody;
-
+				which = rand() & 5;
 				cyberNewsCount[1]++;
 			}
 		}
+		newsIndex[maxCompany + 1] = which;
+
 	}
 	/* Game Win/Loss Condition ------------------------------ */ {
+		bool push = 0;
+		which = -1; // Reset
 		/**	SetConsoleTextAttribute(debug_cS, 10);		/**/
 		if (Company::getTotalNoOfBrickedComputers() == Company::getTotalNetworkSize()) {
-			news.PlayerWinNews(rand() % 2);
-			newsHeader = News::getHEAD();
-			newsBody = News::getBODY();
-			std::cout << newsHeader;
-			std::cout << newsBody;
+			which = rand() & 2;
+			push = 1;
 		}
 		else if (isCureComplete()) {
-			news.PlayerLoseNews(rand() % 2);
-			newsHeader = News::getHEAD();
-			newsBody = News::getBODY();
-			std::cout << newsHeader;
-			std::cout << newsBody;
+			which = rand() & 2;
+		}
+		if (push) {
+			newsIndex[maxCompany + 2] = which;
+		}
+		else {
+			newsIndex[maxCompany + 3] = which;
 		}
 		/**	SetConsoleTextAttribute(debug_cS, 7);	/**/
 	}
@@ -230,11 +224,14 @@ void CyberSecurity::displayStatus() const {
 
 /* Getters ------------------------------------------------------------------------------ */
 /* Public */
-int CyberSecurity::getDetectionLevel() const {
-	return this->detectionLevel;
-}
 bool CyberSecurity::getCureComplete() const {
 	return this->cureComplete;
+}
+int CyberSecurity::getNewsIndex(int type) const {
+	return this->newsIndex[type];
+}
+int CyberSecurity::getDetectionLevel() const {
+	return this->detectionLevel;
 }
 float CyberSecurity::getGlobalCureProgress() {
 	return globalCureProgress;
@@ -274,6 +271,7 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 
 	isVDetect = new bool[coyAmt];
 	newsDetectDone = new bool[coyAmt];
+	newsIndex = new int[coyAmt + 4];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
 
@@ -285,6 +283,9 @@ CyberSecurity::CyberSecurity(int coyAmt) {
 		newsDetectDone[i] = 0;
 
 		//isResearching[i] = 0; // Remove
+	}
+	for (int i = 0; i < coyAmt + 4; i++) {
+		newsIndex[i] = -1;
 	}
 }
 CyberSecurity::CyberSecurity(int coyAmt, int dL) {
@@ -293,9 +294,10 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 
 	isVDetect = new bool[coyAmt];
 	newsDetectDone = new bool[coyAmt];
+	newsIndex = new int[coyAmt + 4];
 	fightStrength = new float[coyAmt];
 	researchEfficiency = new float[coyAmt];
-
+	
 	//isResearching = new bool[coyAmt]; // Remove
 	undeadRate = new float[coyAmt];
 
@@ -305,11 +307,16 @@ CyberSecurity::CyberSecurity(int coyAmt, int dL) {
 
 		//isResearching[i] = 0; // Remove
 	}
+
+	for (int i = 0; i < coyAmt + 4; i++) {
+		newsIndex[i] = -1;
+	}
 }
 CyberSecurity::~CyberSecurity() {
-	delete[] 
+	delete[]
 		isVDetect,
 		newsDetectDone,
+		newsIndex,
 		fightStrength,
 		researchEfficiency,
 
@@ -319,9 +326,41 @@ CyberSecurity::~CyberSecurity() {
 
 	isVDetect = nullptr;
 	newsDetectDone = nullptr;
+	newsIndex = nullptr;
 	fightStrength = nullptr;
 	researchEfficiency = nullptr;
 
 	//isResearching = nullptr; // Remove
 	undeadRate = nullptr;
 }
+
+/*\
+
+To get the news
+\1/ 
+std::string Header;
+std::string Body;
+
+for (int i = 0; i < maxCompany + 4;; i++) {
+	if (i < maxCompany) {
+		newZ->virusFoundNews(cyberSecurity->getNewsIndex(i), company[]->getName(), virus[]->getName());
+	}
+	else if (i == maxCompany) {
+		newZ->cybersecurityWinningNews(cyberSecurity->getNewsIndex(i), virus[]->getName());
+	}
+	else if (i == maxCompany + 1) {
+		newZ->cyberSecurityLosingNews(cyberSecurity->getNewsIndex(i), virus[]->getName());
+	}
+	else if (i == maxCompany + 2) {
+		newZ->PlayerWinNews(cyberSecurity->getNewsIndex(i));
+	}
+	else if (i == maxCompany + 3) {
+		newZ->PlayerLoseNews(cyberSecurity->getNewsIndex(i));
+	}
+
+	(0 to (maxCompany - 1))	|| VIRUS FOUND
+	(maxCompany)			|| CYBER WINNING
+	(maxCompany + 1)		|| CYBER LOSING
+	(maxCompany + 2)		|| PLAYER WIN
+	(maxCompany + 3)		|| PLAYER LOSE
+\*/

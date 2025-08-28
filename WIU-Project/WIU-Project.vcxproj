@@ -177,6 +177,7 @@
     <Text Include="Screen5BuildingBottom.txt" />
     <Text Include="Screen5BuildingCenterClone.txt" />
     <Text Include="Screen5BuildingTop.txt" />
+    <Text Include="Screen7DialogueNews.txt" />
     <Text Include="tempEdit.txt" />
     <Text Include="yes.txt" />
   </ItemGroup>

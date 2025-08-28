@@ -138,6 +138,7 @@ private:
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt1;
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt2;
     std::vector<std::vector<std::string>> frame_Screen2DialoguePt3;
+    std::vector<std::vector<std::string>> frame_Screen7DialogueNews;
 
     std::vector<std::vector<std::string>> frame_Screen3Welcome;
 

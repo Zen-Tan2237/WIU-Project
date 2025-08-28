@@ -117,6 +117,7 @@
     <Text Include="yes.txt" />
     <Text Include="Screen4GameplayUI4.txt" />
     <Text Include="Screen4GameplayUIEnd.txt" />
+    <Text Include="Screen7DialogueNews.txt" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\..\..\..\Downloads\hacking-sfx.wav" />
